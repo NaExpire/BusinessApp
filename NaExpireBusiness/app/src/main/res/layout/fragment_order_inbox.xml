@@ -6,8 +6,6 @@
     android:padding="5dp"
     tools:context="com.capstone.naexpire.naexpirebusiness.OrderInboxFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <ListView
         android:id="@+id/lstOrderInbox"
         android:layout_width="match_parent"

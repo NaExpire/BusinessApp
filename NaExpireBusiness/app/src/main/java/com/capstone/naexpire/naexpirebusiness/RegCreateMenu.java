@@ -1,21 +1,16 @@
 package com.capstone.naexpire.naexpirebusiness;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class RegCreateMenu extends AppCompatActivity {
@@ -49,7 +44,7 @@ public class RegCreateMenu extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(RegCreateMenu.this);
-                View mView = getLayoutInflater().inflate(R.layout.dialogue_menu, null);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_menu, null);
                 final EditText mName = (EditText) mView.findViewById(R.id.txtItemName);
                 final EditText mPrice = (EditText) mView.findViewById(R.id.txtPrice);
                 final EditText mDescription = (EditText) mView.findViewById(R.id.txtDescription);
@@ -91,7 +86,7 @@ public class RegCreateMenu extends AppCompatActivity {
                 final int spot = position;
 
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(RegCreateMenu.this);
-                View mView = getLayoutInflater().inflate(R.layout.dialogue_menu, null);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_menu, null);
                 final EditText mName = (EditText) mView.findViewById(R.id.txtItemName);
                 final EditText mPrice = (EditText) mView.findViewById(R.id.txtPrice);
                 final EditText mDescription = (EditText) mView.findViewById(R.id.txtDescription);

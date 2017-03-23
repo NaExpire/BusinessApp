@@ -1,8 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context="com.capstone.naexpire.naexpirebusiness.EditMenuFragment">
 
+    <Button
+        android:id="@+id/btnEditMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Save Changes"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"/>
 
-</FrameLayout>
+    <ListView
+        android:id="@+id/lstEditMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/btnEditMenu"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
+
+</RelativeLayout>

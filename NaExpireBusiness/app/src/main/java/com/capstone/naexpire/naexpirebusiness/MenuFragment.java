@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -68,7 +67,7 @@ public class MenuFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 AlertDialog.Builder dBuilder = new AlertDialog.Builder(MenuFragment.this.getContext());
-                View dView = getActivity().getLayoutInflater().inflate(R.layout.dialogue_discount, null);
+                View dView = getActivity().getLayoutInflater().inflate(R.layout.dialog_discount, null);
                 final EditText quantity = (EditText) dView.findViewById(R.id.txtQuantity);
                 final EditText dPrice = (EditText) dView.findViewById(R.id.txtDiscountPrice);
                 Button saveDiscount = (Button) dView.findViewById(R.id.btnNewDiscount);

@@ -1,7 +1,193 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context="com.capstone.naexpire.naexpirebusiness.AccountInfoFragment">
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/lblNothing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:id="@+id/btnAcctInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/lblNothing"
+        android:text="Account Info"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"/>
+
+    <Button
+        android:id="@+id/btnFoodInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblNothing"
+        android:text="Food Types"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnAcctInfo">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/lblRestName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Restaurant Name"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtRestName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblRestName"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/lblRestAddr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRestName"
+                android:layout_marginTop="5dp"
+                android:text="Restaurant Address"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtRestAddr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblRestAddr"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/lblRestPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRestAddr"
+                android:layout_marginTop="5dp"
+                android:text="Restaurant Phone"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtRestPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblRestPhone"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/lblRestDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRestPhone"
+                android:layout_marginTop="5dp"
+                android:text="Restaurant Description"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtRestDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblRestDesc"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/lblUsn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRestDesc"
+                android:layout_marginTop="50dp"
+                android:text="Username"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtUsn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblUsn"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/lblEm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtUsn"
+                android:layout_marginTop="5dp"
+                android:text="Email"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtEm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblEm"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/lblPPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtEm"
+                android:layout_marginTop="5dp"
+                android:text="Personal Phone"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtPPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblPPhone"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/lblNewPass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtPPhone"
+                android:layout_marginTop="5dp"
+                android:text="New Password"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtNewPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblNewPass"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/lblCNewPass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtNewPass"
+                android:layout_marginTop="5dp"
+                android:text="Confirm New Password"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/txtCNewPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblCNewPass"
+                android:layout_marginTop="5dp"/>
+
+            <Button
+                android:id="@+id/btnSaveAcctEdits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtCNewPass"
+                android:text="Save Changes"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

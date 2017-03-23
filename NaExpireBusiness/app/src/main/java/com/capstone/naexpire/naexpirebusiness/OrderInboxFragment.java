@@ -9,11 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -53,7 +50,7 @@ public class OrderInboxFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(OrderInboxFragment.this.getContext());
-                View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialogue_order_inbox, null);
+                View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_order_inbox, null);
                 final TextView orderID = (TextView) dialogView.findViewById(R.id.lblOrderInfo);
                 final TextView custName = (TextView) dialogView.findViewById(R.id.lblCustName);
                 final TextView timePlaced = (TextView) dialogView.findViewById(R.id.lblTimePlaced);
