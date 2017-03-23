@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/lblDiscount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="New Discount"
+        android:textStyle="bold"
+        android:layout_marginTop="5sp"
+        android:textSize="25sp"/>
+
+    <EditText
+        android:id="@+id/txtQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblDiscount"
+        android:layout_marginTop="5sp"
+        android:hint="Quantity"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/txtDiscountPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblDiscount"
+        android:layout_marginLeft="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_toRightOf="@id/txtQuantity"
+        android:hint="Discounted Price"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/btnNewDiscount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtQuantity"
+        android:layout_marginTop="5sp"
+        android:text="Add Discount"
+        android:textColor="@android:color/background_light"
+        android:background="@color/colorAccent"/>
+
+</RelativeLayout>

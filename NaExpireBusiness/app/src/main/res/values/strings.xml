@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">NaExpireBusiness</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirmPass">Confirm Password</string>
+    <string name="address">Address</string>
+    <string name="phone">Phone</string>
+    <string name="restName">Restaurant Name</string>
+    <string name="next">Next</string>
+    <string name="login">Login</string>
+    <string name="forgot">Forgot Password</string>
+    <string name="register">Register</string>
+    <string name="neew">New</string>
+    <string name="newfoodtype">New Food Type</string>
+    <string name="foodtypeslabel">Select Food Types You Serve</string>
+    <string name="createmenu">Create Menu</string>
+    <string name="newmenuitem">New Menu Item</string>
+    <string name="finish">Finish</string>
+    <string name="title_activity_nav_drawer">NavDrawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string-array name="filter_array">
+        <item>All</item>
+        <item>Favorites</item>
+        <item>Price: High to Low</item>
+        <item>Price: Low to High</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

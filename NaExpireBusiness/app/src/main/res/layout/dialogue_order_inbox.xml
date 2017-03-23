@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/lblOrderInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Order #xxxxxx"
+        android:textStyle="bold"
+        android:layout_marginTop="5sp"
+        android:textSize="25sp"/>
+
+    <TextView
+        android:id="@+id/lblCustNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lblOrderInfo"
+        android:text="Customer Name"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/lblCustName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/lblCustNameLabel"
+        android:layout_alignBaseline="@id/lblCustNameLabel"/>
+
+    <TextView
+        android:id="@+id/lblTimePlacedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/lblCustNameLabel"
+        android:text="Time Placed"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/lblTimePlaced"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/lblTimePlacedLabel"
+        android:layout_alignBaseline="@id/lblTimePlacedLabel"/>
+
+    <TextView
+        android:id="@+id/lblOrderTotalLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/lblTimePlacedLabel"
+        android:text="Order Total"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/lblOrderTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/lblOrderTotalLabel"
+        android:layout_alignBaseline="@id/lblOrderTotalLabel"/>
+
+    <TextView
+        android:id="@+id/lblItemsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/lblOrderTotalLabel"
+        android:text="Items in Order"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/lblItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/lblItemsLabel"
+        android:layout_alignBaseline="@id/lblItemsLabel"/>
+
+    <Button
+        android:id="@+id/btnFulfilled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/lblItems"
+        android:text="Fulfilled"
+        android:textColor="@android:color/background_light"
+        android:background="@color/colorAccent"/>
+
+</RelativeLayout>
