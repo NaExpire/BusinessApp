@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    tools:context="com.capstone.naexpire.naexpirebusiness.RegCreateMenu">
+    tools:context="com.capstone.naexpire.naexpirebusiness.ActivityRegCreateMenu">
 
     <TextView
         android:id="@+id/lblMenuLabel"
@@ -23,20 +23,17 @@
         android:text="@string/finish"
         android:onClick="clickFinishRegistration"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"/>
 
     <ListView
         android:id="@+id/lstMenu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@id/btnFinish"
-        android:layout_below="@id/lblMenuLabel"/>
+        android:layout_below="@id/lblMenuLabel"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 
-    <Button
-        android:id="@+id/btnNewItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+ New Item"
-        android:layout_toLeftOf="@id/btnFinish"
-        android:layout_alignBaseline="@id/btnFinish"/>
 </RelativeLayout>

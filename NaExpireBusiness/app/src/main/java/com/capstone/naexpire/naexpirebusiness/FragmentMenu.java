@@ -18,9 +18,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class MenuFragment extends Fragment {
+public class FragmentMenu extends Fragment {
 
-    public MenuFragment() {
+    public FragmentMenu() {
         // Required empty public constructor
     }
 
@@ -50,23 +50,23 @@ public class MenuFragment extends Fragment {
             if(ar[i].equals("yyyyyy")) found = true;
         }
 
-        MenuFragment.this.getActivity().setTitle("Menu"); //set activity title
+        FragmentMenu.this.getActivity().setTitle("Menu"); //set activity title
 
         //spinner to select filter method for menu items
         Spinner spinner = (Spinner) view.findViewById(R.id.spnFilter);
         ArrayAdapter<CharSequence> spAdapter = ArrayAdapter.createFromResource(
-                MenuFragment.this.getContext(),
+                FragmentMenu.this.getContext(),
                 R.array.filter_array, android.R.layout.simple_spinner_item);
         spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spAdapter);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MenuFragment.this.getContext(), android.R.layout.simple_list_item_1, arr);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(FragmentMenu.this.getContext(), android.R.layout.simple_list_item_1, arr);
         final ListView listView = (ListView) view.findViewById(R.id.lstRestrauntMenu);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                AlertDialog.Builder dBuilder = new AlertDialog.Builder(MenuFragment.this.getContext());
+                AlertDialog.Builder dBuilder = new AlertDialog.Builder(FragmentMenu.this.getContext());
                 View dView = getActivity().getLayoutInflater().inflate(R.layout.dialog_discount, null);
                 final EditText quantity = (EditText) dView.findViewById(R.id.txtQuantity);
                 final EditText dPrice = (EditText) dView.findViewById(R.id.txtDiscountPrice);
@@ -83,10 +83,10 @@ public class MenuFragment extends Fragment {
                         String p = dPrice.getText().toString();
 
                         if(q.isEmpty() || p.isEmpty()){
-                            Toast.makeText(MenuFragment.this.getActivity(),"Fill All Fields", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FragmentMenu.this.getActivity(),"Fill All Fields", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(MenuFragment.this.getActivity(),"Discount Created", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FragmentMenu.this.getActivity(),"Discount Created", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                     }

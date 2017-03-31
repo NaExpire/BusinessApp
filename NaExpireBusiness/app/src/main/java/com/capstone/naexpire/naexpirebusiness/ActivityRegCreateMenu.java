@@ -1,9 +1,11 @@
 package com.capstone.naexpire.naexpirebusiness;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,15 +15,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class RegCreateMenu extends AppCompatActivity {
+public class ActivityRegCreateMenu extends AppCompatActivity {
 
-    MenuItem mItem;
-    ArrayList<MenuItem> items = new ArrayList<MenuItem>();
-    ArrayList<String> names = new ArrayList<String>();
-    ArrayList<String> prices = new ArrayList<String>();
-    ArrayList<String> descriptions = new ArrayList<String>();
     ArrayList<String> foodTypes = new ArrayList<String>(); //chosen food types from previous activity
-    CustomMenuAdapter adapter;
+    ListAdapterMenu adapter;
     String[] rInfo = new String[5]; //restaurant information
 
     @Override
@@ -35,15 +32,19 @@ public class RegCreateMenu extends AppCompatActivity {
 
         setTitle("Register"); //set activity title
 
-        adapter = new CustomMenuAdapter(this, names, prices, descriptions);
+        View footer =  ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_add, null);
+
+        adapter = new ListAdapterMenu(this);
         final ListView listView = (ListView) findViewById(R.id.lstMenu);
+        listView.addFooterView(footer);
         listView.setAdapter(adapter);
 
-        Button mButton = (Button) findViewById(R.id.btnNewItem);
-        mButton.setOnClickListener(new View.OnClickListener(){
+        Button foot = (Button) footer.findViewById(R.id.btnFooterNew);
+
+        foot.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(RegCreateMenu.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegCreateMenu.this);
                 View mView = getLayoutInflater().inflate(R.layout.dialog_menu, null);
                 final EditText mName = (EditText) mView.findViewById(R.id.txtItemName);
                 final EditText mPrice = (EditText) mView.findViewById(R.id.txtPrice);
@@ -60,17 +61,14 @@ public class RegCreateMenu extends AppCompatActivity {
                         if(mName.getText().toString().isEmpty() ||
                                 mPrice.getText().toString().isEmpty() ||
                                 mDescription.getText().toString().isEmpty()){
-                            Toast.makeText(RegCreateMenu.this, "Fill all Fields",
+                            Toast.makeText(ActivityRegCreateMenu.this, "Fill all Fields",
                                     Toast.LENGTH_SHORT).show();
                         }
                         else{
                             String n = mName.getText().toString();
-                            Double p = Double.parseDouble(mPrice.getText().toString());
+                            String p = "$" + Double.parseDouble(mPrice.getText().toString());
                             String d = mDescription.getText().toString();
-                            mItem = new MenuItem(n, p, d);
-                            items.add(mItem);
-                            updateNames();
-                            adapter.notifyDataSetChanged(); //redraw the list on the screen
+                            adapter.newItem(n, p, d);
                             dialog.dismiss();
                         }
                     }
@@ -79,13 +77,13 @@ public class RegCreateMenu extends AppCompatActivity {
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String n = items.get(position).getName();
-                Double p = items.get(position).getPrice();
-                String d = items.get(position).getDescription();
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                String n = adapter.getName(position);
+                String p = adapter.getPrice(position);
+                String d = adapter.getDescrip(position);
                 final int spot = position;
 
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(RegCreateMenu.this);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegCreateMenu.this);
                 View mView = getLayoutInflater().inflate(R.layout.dialog_menu, null);
                 final EditText mName = (EditText) mView.findViewById(R.id.txtItemName);
                 final EditText mPrice = (EditText) mView.findViewById(R.id.txtPrice);
@@ -93,7 +91,7 @@ public class RegCreateMenu extends AppCompatActivity {
                 Button mSave = (Button) mView.findViewById(R.id.btnSaveItem);
 
                 mName.setText(n);
-                mPrice.setText(p.toString());
+                mPrice.setText(p.substring(1));
                 mDescription.setText(d);
 
                 mBuilder.setView(mView);
@@ -106,17 +104,14 @@ public class RegCreateMenu extends AppCompatActivity {
                         if(mName.getText().toString().isEmpty() ||
                                 mPrice.getText().toString().isEmpty() ||
                                 mDescription.getText().toString().isEmpty()){
-                            Toast.makeText(RegCreateMenu.this, "Fill all Fields",
+                            Toast.makeText(ActivityRegCreateMenu.this, "Fill all Fields",
                                     Toast.LENGTH_SHORT).show();
                         }
                         else{
                             String n = mName.getText().toString();
-                            Double p = Double.parseDouble(mPrice.getText().toString());
+                            String p = "$"+Double.parseDouble(mPrice.getText().toString());
                             String d = mDescription.getText().toString();
-                            mItem = new MenuItem(n, p, d);
-                            items.set(spot, mItem);
-                            updateNames();
-                            adapter.notifyDataSetChanged(); //redraw the list on the screen
+                            adapter.editItem(position, n, p, d);
                             dialog.dismiss();
                         }
                     }
@@ -125,50 +120,11 @@ public class RegCreateMenu extends AppCompatActivity {
         });
     }
 
-    void updateNames(){
-        names.clear();
-        prices.clear();
-        descriptions.clear();
-        for(int i = 0; i < items.size();i++){
-            String row = items.get(i).getName();
-            names.add(row);
-            row = "$"+items.get(i).getPrice();
-            prices.add(row);
-            row = items.get(i).getDescription();
-            descriptions.add(row);
-        }
-    }
-
-    public class MenuItem{
-        private String name;
-        private double price;
-        private String description;
-
-        MenuItem(){
-            name = "";
-            price = 0.00;
-            description = "";
-        }
-
-        MenuItem(String n, Double p, String d){
-            name = n;
-            price  = p;
-            description = d;
-        }
-        String getName(){return name;}
-        Double getPrice(){return price;}
-        String getDescription(){return description;}
-
-        void setName(String n){name = n;}
-        void setPrice(Double p){price = p;}
-        void setDescription(String d){description = d;}
-    }
-
     public void clickFinishRegistration(View view){
 
         //send restraunt info to server
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ActivityLogin.class);
         startActivity(intent);
     }
 }

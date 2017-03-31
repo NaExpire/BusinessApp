@@ -16,13 +16,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class EditFoodTypesFragment extends Fragment {
+public class FragmentEditFoodTypes extends Fragment {
 
-    CustomFoodTypeAdapter adapter;
+    ListAdapterFoodType adapter;
     ArrayList<String> fTypes = new ArrayList<String>();
+    ArrayList<String> checked = new ArrayList<String>();
 
 
-    public EditFoodTypesFragment() {
+    public FragmentEditFoodTypes() {
         // Required empty public constructor
     }
 
@@ -32,15 +33,20 @@ public class EditFoodTypesFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         //test data
-        fTypes.add("Cajun");
         fTypes.add("Mexican");
-        fTypes.add("Chinese");
+        fTypes.add("Italian");
+        fTypes.add("Indian");
+        fTypes.add("Cajun");
+        fTypes.add("Thai");
+        fTypes.add("Greek");
+        checked.add("Italian");
+        checked.add("Thai");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_food_types, container, false);
         View footer = inflater.inflate(R.layout.footer_add, null);
 
-        adapter = new CustomFoodTypeAdapter(EditFoodTypesFragment.this.getContext(), fTypes);
+        adapter = new ListAdapterFoodType(FragmentEditFoodTypes.this.getContext(), fTypes, checked);
         final ListView listView = (ListView) view.findViewById(R.id.lstTypes);
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
@@ -52,7 +58,7 @@ public class EditFoodTypesFragment extends Fragment {
         foot.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditFoodTypesFragment.this.getContext());
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(FragmentEditFoodTypes.this.getContext());
                 View mView = getActivity().getLayoutInflater().inflate(R.layout.dialog_new_food_type, null);
                 final EditText newFoodType = (EditText) mView.findViewById(R.id.txtNewFoodType);
                 Button saveFoodType = (Button) mView.findViewById(R.id.btnNewFoodType);
@@ -66,6 +72,7 @@ public class EditFoodTypesFragment extends Fragment {
                     public void onClick(View view){
                         String newFood = newFoodType.getText().toString();
                         fTypes.add(newFood);
+                        checked.add(newFood);
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -76,16 +83,16 @@ public class EditFoodTypesFragment extends Fragment {
         acctInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                AccountInfoFragment accountInfoFragment = new AccountInfoFragment();
+                FragmentAccountInfo fragmentAccountInfo = new FragmentAccountInfo();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.fragment_container, accountInfoFragment).commit();
+                manager.beginTransaction().replace(R.id.fragment_container, fragmentAccountInfo).commit();
             }
         });
 
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Toast.makeText(EditFoodTypesFragment.this.getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FragmentEditFoodTypes.this.getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
             }
         });
 

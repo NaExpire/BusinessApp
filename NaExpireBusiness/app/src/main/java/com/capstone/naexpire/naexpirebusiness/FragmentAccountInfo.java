@@ -1,7 +1,6 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,13 +10,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AccountInfoFragment extends Fragment {
+public class FragmentAccountInfo extends Fragment {
 
 
-    public AccountInfoFragment() {
+    public FragmentAccountInfo() {
         // Required empty public constructor
     }
 
@@ -28,16 +24,16 @@ public class AccountInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account_info, container, false);
 
-        AccountInfoFragment.this.getActivity().setTitle("Account Information"); //set activity title
+        FragmentAccountInfo.this.getActivity().setTitle("Account Information"); //set activity title
 
         Button foodTypes = (Button) view.findViewById(R.id.btnFoodInfo);
 
         foodTypes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditFoodTypesFragment editFoodTypesFragment = new EditFoodTypesFragment();
+                FragmentEditFoodTypes fragmentEditFoodTypes = new FragmentEditFoodTypes();
                 FragmentManager manager = getActivity().getSupportFragmentManager();
-                manager.beginTransaction().replace(R.id.fragment_container, editFoodTypesFragment).commit();
+                manager.beginTransaction().replace(R.id.fragment_container, fragmentEditFoodTypes).commit();
             }
         });
 

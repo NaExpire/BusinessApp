@@ -2,8 +2,6 @@ package com.capstone.naexpire.naexpirebusiness;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -12,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -35,7 +32,7 @@ public class NavDrawer extends AppCompatActivity
         //String[] ar = allInfo.split(",");
 
         //Set the fragment initially
-        MenuFragment menuFragment = new MenuFragment();
+        FragmentMenu fragmentMenu = new FragmentMenu();
         FragmentManager manager = getSupportFragmentManager();
 
         //send string to fragment
@@ -43,7 +40,7 @@ public class NavDrawer extends AppCompatActivity
         //bundle.putString("restrauntData", allInfo);
         //menuFragment.setArguments(bundle);
 
-        manager.beginTransaction().replace(R.id.fragment_container, menuFragment).commit();
+        manager.beginTransaction().replace(R.id.fragment_container, fragmentMenu).commit();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,31 +80,31 @@ public class NavDrawer extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_storeMenu) {
-            MenuFragment menuFragment = new MenuFragment();
+            FragmentMenu fragmentMenu = new FragmentMenu();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container, menuFragment).commit();
+            manager.beginTransaction().replace(R.id.fragment_container, fragmentMenu).commit();
         } else if (id == R.id.nav_editMenu) {
-            EditMenuFragment editMenuFragment = new EditMenuFragment();
+            FragmentEditMenu fragmentEditMenu = new FragmentEditMenu();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container, editMenuFragment).commit();
+            manager.beginTransaction().replace(R.id.fragment_container, fragmentEditMenu).commit();
         } else if (id == R.id.nav_orderInbox) {
-            OrderInboxFragment orderInboxFragment = new OrderInboxFragment();
+            FragmentOrderInbox fragmentOrderInbox = new FragmentOrderInbox();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container, orderInboxFragment).commit();
+            manager.beginTransaction().replace(R.id.fragment_container, fragmentOrderInbox).commit();
         } else if (id == R.id.nav_orderHistory) {
-            OrderHistoryFragment orderHistoryFragment = new OrderHistoryFragment();
+            FragmentOrderHistory fragmentOrderHistory = new FragmentOrderHistory();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container, orderHistoryFragment).commit();
+            manager.beginTransaction().replace(R.id.fragment_container, fragmentOrderHistory).commit();
         } else if (id == R.id.nav_activeDiscounts) {
-            ActiveDiscountsFragment activeDiscountsFragment = new ActiveDiscountsFragment();
+            FragmentActiveDiscounts fragmentActiveDiscounts = new FragmentActiveDiscounts();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container, activeDiscountsFragment).commit();
+            manager.beginTransaction().replace(R.id.fragment_container, fragmentActiveDiscounts).commit();
         } else if (id == R.id.nav_accountInfo) {
-            AccountInfoFragment accountInfoFragment = new AccountInfoFragment();
+            FragmentAccountInfo fragmentAccountInfo = new FragmentAccountInfo();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container, accountInfoFragment).commit();
+            manager.beginTransaction().replace(R.id.fragment_container, fragmentAccountInfo).commit();
         } else if (id == R.id.nav_logout){
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, ActivityLogin.class);
             startActivity(intent);
         }
 

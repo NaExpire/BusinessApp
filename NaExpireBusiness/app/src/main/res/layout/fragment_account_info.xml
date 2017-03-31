@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    tools:context="com.capstone.naexpire.naexpirebusiness.AccountInfoFragment">
+    tools:context="com.capstone.naexpire.naexpirebusiness.FragmentAccountInfo">
 
     <TextView
         android:id="@+id/lblNothing"

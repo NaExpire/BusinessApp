@@ -11,21 +11,20 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 
-public class EditMenuFragment extends Fragment {
+public class FragmentEditMenu extends Fragment {
 
-    CustomEditMenuAdapter adapter;
+    ListAdapterEditMenu adapter;
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<String> price = new ArrayList<String>();
     ArrayList<String> description = new ArrayList<String>();
 
 
-    public EditMenuFragment() {
+    public FragmentEditMenu() {
         // Required empty public constructor
     }
 
@@ -47,19 +46,19 @@ public class EditMenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_edit_menu, container, false);
         View footer = inflater.inflate(R.layout.footer_add, null);
 
-        EditMenuFragment.this.getActivity().setTitle("Edit Menu"); //set activity title
+        FragmentEditMenu.this.getActivity().setTitle("Edit Menu"); //set activity title
 
         Button save = (Button) view.findViewById(R.id.btnEditMenu);
         Button foot = (Button) footer.findViewById(R.id.btnFooterNew);
 
-        adapter = new CustomEditMenuAdapter(EditMenuFragment.this.getContext(), name, price, description);
+        adapter = new ListAdapterEditMenu(FragmentEditMenu.this.getContext(), name, price, description);
         final ListView listView = (ListView) view.findViewById(R.id.lstEditMenu);
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(EditMenuFragment.this.getContext());
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FragmentEditMenu.this.getContext());
                 View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_menu, null);
                 final EditText newItemName = (EditText) dialogView.findViewById(R.id.txtItemName);
                 final EditText newItemPrice = (EditText) dialogView.findViewById(R.id.txtPrice);
@@ -92,7 +91,7 @@ public class EditMenuFragment extends Fragment {
         foot.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(EditMenuFragment.this.getContext());
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(FragmentEditMenu.this.getContext());
                 View mView = getActivity().getLayoutInflater().inflate(R.layout.dialog_menu, null);
                 final EditText newItemName = (EditText) mView.findViewById(R.id.txtItemName);
                 final EditText newItemPrice = (EditText) mView.findViewById(R.id.txtPrice);
@@ -119,7 +118,7 @@ public class EditMenuFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Toast.makeText(EditMenuFragment.this.getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FragmentEditMenu.this.getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
             }
         });
 

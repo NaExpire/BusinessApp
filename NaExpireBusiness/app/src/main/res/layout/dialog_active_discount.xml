@@ -45,14 +45,4 @@
         android:textColor="@android:color/background_light"
         android:background="@color/colorAccent"/>
 
-    <Button
-        android:id="@+id/btnActiveDelete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnActiveSave"
-        android:layout_marginTop="5sp"
-        android:text="Delete Discount"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorAccent"/>
-
 </RelativeLayout>

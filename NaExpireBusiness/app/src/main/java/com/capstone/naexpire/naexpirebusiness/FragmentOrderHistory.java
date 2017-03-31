@@ -15,14 +15,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
-public class OrderHistoryFragment extends Fragment {
+public class FragmentOrderHistory extends Fragment {
 
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<String> date = new ArrayList<String>();
     ArrayList<String> items = new ArrayList<String>();
-    CustomMenuAdapter adapter;
+    ListAdapterMenu adapter;
 
-    public OrderHistoryFragment() {
+    public FragmentOrderHistory() {
         // Required empty public constructor
     }
 
@@ -42,15 +42,15 @@ public class OrderHistoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_order_history, container, false);
 
-        OrderHistoryFragment.this.getActivity().setTitle("Order History"); //set activity title
+        FragmentOrderHistory.this.getActivity().setTitle("Order History"); //set activity title
 
-        adapter = new CustomMenuAdapter(OrderHistoryFragment.this.getContext(), name, date, items);
+        adapter = new ListAdapterMenu(FragmentOrderHistory.this.getContext());
         final ListView listView = (ListView) view.findViewById(R.id.lstOrderHistory);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(OrderHistoryFragment.this.getContext());
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FragmentOrderHistory.this.getContext());
                 View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_order_inbox, null);
                 final TextView orderID = (TextView) dialogView.findViewById(R.id.lblOrderInfo);
                 final TextView custName = (TextView) dialogView.findViewById(R.id.lblCustName);

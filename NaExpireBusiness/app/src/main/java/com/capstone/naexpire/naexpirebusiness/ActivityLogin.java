@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,16 +14,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
-public class MainActivity extends AppCompatActivity {
+public class ActivityLogin extends AppCompatActivity {
 
     EditText username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         username = (EditText) findViewById(R.id.txtUsername);
         password = (EditText) findViewById(R.id.txtPassword);
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickRegister(View view) {
-        Intent intent = new Intent(this, RegRestrauntInfo.class);
+        Intent intent = new Intent(this, ActivityRegRestrauntInfo.class);
         startActivity(intent);
         //String y = readFromFile(this, password.getText().toString());
         //Toast.makeText(this, y, Toast.LENGTH_SHORT).show();

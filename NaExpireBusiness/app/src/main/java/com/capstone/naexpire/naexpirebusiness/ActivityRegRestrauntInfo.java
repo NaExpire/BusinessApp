@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegRestrauntInfo extends AppCompatActivity {
+public class ActivityRegRestrauntInfo extends AppCompatActivity {
 
     EditText name, address, phone, description, username, email, pphone, password, cPassword;
 
@@ -49,7 +49,7 @@ public class RegRestrauntInfo extends AppCompatActivity {
             //rInfo is Rest. Name, Address, Rest. Phone, Description, Username, Email,
             //Personal Phone, Password
             String[] rInfo = {n, a, p, d, u, e, pp, pass};
-            Intent intent = new Intent(this, RegFoodTypes.class);
+            Intent intent = new Intent(this, ActivityRegFoodTypes.class);
             intent.putExtra("restInfo", rInfo);
             startActivity(intent);
         }
