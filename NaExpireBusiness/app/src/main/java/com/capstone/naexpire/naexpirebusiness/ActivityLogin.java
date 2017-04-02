@@ -2,6 +2,7 @@ package com.capstone.naexpire.naexpirebusiness;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +10,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ActivityLogin extends AppCompatActivity {
 
@@ -38,6 +44,8 @@ public class ActivityLogin extends AppCompatActivity {
             //validate login credentials
             ///
 
+            //new ActivityLogin.HttpAsyncTask().execute("http://138.197.33.88/api/business/login/");
+
             Intent intent = new Intent(this, NavDrawer.class);
             startActivity(intent);
         }
@@ -57,33 +65,68 @@ public class ActivityLogin extends AppCompatActivity {
         //Toast.makeText(this, y, Toast.LENGTH_SHORT).show();
     }
 
-    private String readFromFile(Context context, String n) {
+    /*private class HttpAsyncTask extends AsyncTask<String,String,String> {
+        @Override
+        protected String doInBackground(String... urls){
+            String line = null;
+            try {
+                URL requestURL = new URL(urls[0]);
 
-        String ret = "";
+                HttpURLConnection connection = (HttpURLConnection) requestURL.openConnection();
 
-        try {
-            InputStream inputStream = context.openFileInput(n+".txt");
+                connection.setDoOutput(true);
+                connection.setChunkedStreamingMode(0);
 
-            if ( inputStream != null ) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("charset", "utf-8");
+                connection.setUseCaches(false);
 
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
+                String outputString = toJsonString();
+                connection.setRequestProperty("Content-Length", "" + outputString.getBytes().length);
+                connection.setRequestProperty("Content-Type", "application/json");
+
+                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                writer.write(outputString);
+                writer.flush();
+                writer.close();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+
+
+
+                while((line = reader.readLine()) != null){
+                    sb.append(line+ "\n");
                 }
-
-                inputStream.close();
-                ret = stringBuilder.toString();
+                android.util.Log.w(this.getClass().getSimpleName(),"POST Response: "+sb.toString());
+                connection.disconnect();
             }
-        }
-        catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
+            catch (Exception ex){
+                Toast.makeText(getBaseContext(), "error", Toast.LENGTH_SHORT).show();
+            }
+
+            return line;
         }
 
-        return ret;
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(getBaseContext(), "Data Sent!", Toast.LENGTH_LONG).show();
+        }
     }
+
+    public String toJsonString() {//creates a new JSON string from stored movie data
+        String returnJ = "";
+        try{
+            JSONObject js = new JSONObject();
+            js.put("username", username.getText().toString());
+            js.put("password", password.getText().toString());
+            returnJ = js.toString();
+            android.util.Log.w(this.getClass().getSimpleName(),returnJ);
+        }
+        catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),
+                    "error converting to/from json");
+        }
+        return returnJ;
+    }*/
 }
