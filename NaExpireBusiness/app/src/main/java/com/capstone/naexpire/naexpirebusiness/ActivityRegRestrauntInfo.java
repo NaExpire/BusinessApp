@@ -129,7 +129,7 @@ public class ActivityRegRestrauntInfo extends AppCompatActivity {
             }*/
 
 
-            new HttpAsyncTask().execute("http://138.197.33.88/api/business/register/");
+            //new HttpAsyncTask().execute("http://138.197.33.88/api/business/register/");
 
             Intent intent = new Intent(this, ActivityRegFoodTypes.class);
             //intent.putExtra("restInfo", rInfo);

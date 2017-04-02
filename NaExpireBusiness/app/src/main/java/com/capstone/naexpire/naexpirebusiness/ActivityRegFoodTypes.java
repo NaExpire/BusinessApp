@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -89,9 +90,41 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
     }*/
 
     public void clickFoodTypesNext(View View){
-        Intent intent = new Intent(this, ActivityRegCreateMenu.class);
-        intent.putExtra("foodTypes", checked);
-        intent.putExtra("restInfo", rInfo);
-        startActivity(intent);
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegFoodTypes.this);
+        View mView = getLayoutInflater().inflate(R.layout.dialog_skip_menu, null);
+        Button yes = (Button) mView.findViewById(R.id.btnCreateMenuYes);
+        Button later = (Button) mView.findViewById(R.id.btnCreateMenuLater);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        yes.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(getBaseContext(), ActivityRegCreateMenu.class);
+                startActivity(intent);
+
+                dialog.dismiss();
+            }
+        });
+
+        later.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                //send registration info to database
+
+                Toast.makeText(getBaseContext(), "Account Created", Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getBaseContext(), ActivityLogin.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+
+                dialog.dismiss();
+            }
+        });
+
+
     }
 }

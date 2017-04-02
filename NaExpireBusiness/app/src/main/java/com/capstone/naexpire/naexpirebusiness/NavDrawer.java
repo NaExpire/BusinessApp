@@ -105,6 +105,7 @@ public class NavDrawer extends AppCompatActivity
             manager.beginTransaction().replace(R.id.fragment_container, fragmentAccountInfo).commit();
         } else if (id == R.id.nav_logout){
             Intent intent = new Intent(this, ActivityLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
 

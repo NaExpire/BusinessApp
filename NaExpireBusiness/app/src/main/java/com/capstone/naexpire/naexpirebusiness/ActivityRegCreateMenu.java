@@ -26,9 +26,9 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_create_menu);
 
-        Intent intent = getIntent();
-        rInfo = intent.getStringArrayExtra("restInfo");
-        foodTypes = getIntent().getExtras().getStringArrayList("foodTypes");
+        //Intent intent = getIntent();
+        //rInfo = intent.getStringArrayExtra("restInfo");
+        //foodTypes = getIntent().getExtras().getStringArrayList("foodTypes");
 
         setTitle("Register"); //set activity title
 
@@ -122,9 +122,12 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
 
     public void clickFinishRegistration(View view){
 
-        //send restraunt info to server
+        //send registration info to database
+
+        Toast.makeText(this, "Account Created", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, ActivityLogin.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }
