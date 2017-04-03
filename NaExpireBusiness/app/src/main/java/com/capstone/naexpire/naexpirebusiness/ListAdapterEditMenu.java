@@ -54,11 +54,11 @@ public class ListAdapterEditMenu extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent){
         Holder holder = new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.list_edit_menu, null);
-        holder.nm=(TextView) rowView.findViewById(R.id.txtEditFoodName);
-        holder.pr=(TextView) rowView.findViewById(R.id.txtEditFoodPrice);
-        holder.ds=(TextView) rowView.findViewById(R.id.txtEditFoodDescription);
-        holder.bt=(ImageButton) rowView.findViewById(R.id.imgbtnEditMenu);
+        rowView = inflater.inflate(R.layout.list_menu, null);
+        holder.nm=(TextView) rowView.findViewById(R.id.txtFoodName);
+        holder.pr=(TextView) rowView.findViewById(R.id.txtFoodPrice);
+        holder.ds=(TextView) rowView.findViewById(R.id.txtFoodDescription);
+        holder.bt=(ImageButton) rowView.findViewById(R.id.imgbtnClear);
 
         holder.nm.setText(names.get(position));
         holder.pr.setText(prices.get(position));

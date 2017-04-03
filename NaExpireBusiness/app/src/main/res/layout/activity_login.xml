@@ -7,7 +7,9 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:padding="15dp"
+    android:paddingTop="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     tools:context="com.capstone.naexpire.naexpirebusiness.ActivityLogin">
 
     <TextView
@@ -39,28 +41,45 @@
         android:hint="@string/password"
         android:inputType="textPassword" />
 
+    <TextView
+        android:id="@+id/lblLoginNothing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtPassword"
+        android:layout_centerHorizontal="true"/>
+
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/txtPassword"
+        android:layout_toLeftOf="@id/lblLoginNothing"
         android:text="@string/login"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"
         android:onClick="clickLogin" />
-
-    <Button
-        android:id="@+id/btnForgot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnLogin"
-        android:text="@string/forgot"
-        android:onClick="clickForgot" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btnForgot"
-        android:onClick="clickRegister"
-        android:text="@string/register" />
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/txtPassword"
+        android:layout_toRightOf="@id/lblLoginNothing"
+        android:text="@string/register"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"
+        android:onClick="clickRegister"/>
+
+    <Button
+        android:id="@+id/btnForgot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/forgot"
+        android:textSize="10dp"
+        android:background="@android:color/transparent"
+        android:onClick="clickForgot" />
 
 </RelativeLayout>
