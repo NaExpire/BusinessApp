@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <ImageView
+        android:id="@+id/imgGrabBag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@mipmap/ic_restaurant_menu_black_24dp"/>
+
+    <TextView
+        android:id="@+id/lblGrabDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/imgGrabBag"
+        android:layout_centerHorizontal="true"
+        android:text="@string/grab_bag_descrip"
+        android:textSize="18dp"/>
+
+    <Button
+        android:id="@+id/btnGrabOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/lblGrabDescription"
+        android:layout_centerHorizontal="true"
+        android:text="Got it"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"/>
+</RelativeLayout>

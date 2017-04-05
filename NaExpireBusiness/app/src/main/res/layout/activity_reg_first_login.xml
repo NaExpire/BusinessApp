@@ -122,23 +122,27 @@
                 android:id="@+id/lblStartTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_below="@id/lblPickupTime"
                 android:textAlignment="center"
+                android:layout_alignBaseline="@id/lblTo"
                 android:layout_toLeftOf="@id/lblTo"
-                android:text="X:XXPM"
-                android:textStyle="bold"/>
+                android:text="7:00 PM"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:onClick="clickStartTime"
+                android:clickable="true"/>
 
             <TextView
                 android:id="@+id/lblEndTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_below="@id/lblPickupTime"
+                android:layout_alignBaseline="@id/lblTo"
                 android:textAlignment="center"
                 android:layout_toRightOf="@id/lblTo"
-                android:text="Y:YYPM"
-                android:textStyle="bold"/>
+                android:text="8:00 PM"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:onClick="clickEndTime"
+                android:clickable="true"/>
 
             <Button
                 android:id="@+id/btnRegTwoNext"

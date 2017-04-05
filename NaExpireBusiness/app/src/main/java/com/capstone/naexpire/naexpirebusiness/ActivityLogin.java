@@ -37,7 +37,7 @@ public class ActivityLogin extends AppCompatActivity {
             //startActivity(intent);
 
             //if last-login != NULL
-            Intent intent = new Intent(this, ActivityRegFirstLogin.class);
+            Intent intent = new Intent(this, NavDrawer.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }

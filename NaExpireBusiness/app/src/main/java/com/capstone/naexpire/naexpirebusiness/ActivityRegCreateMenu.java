@@ -124,7 +124,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
 
         //send registration info to database
 
-        Toast.makeText(this, "Account Created", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, ActivityLogin.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

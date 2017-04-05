@@ -81,19 +81,6 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
         });
     }
 
-    /*
-    public void clickNewFood(View view){
-        EditText newFood = (EditText) findViewById(R.id.txtNewFood);
-        String nFood = newFood.getText().toString();
-        if(nFood.length() != 0){ //if food type string is not empty
-            list.add(nFood); //add the food type to the arraylist
-            adapter.notifyDataSetChanged(); //redraw the list on the screen
-            newFood.setText("");
-            Toast toast = Toast.makeText(getApplicationContext(), nFood+" added", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }*/
-
     public void clickFoodTypesNext(View View){
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegFoodTypes.this);
@@ -108,7 +95,7 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
         yes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(getBaseContext(), ActivityRegCreateMenu.class);
+                Intent intent = new Intent(getBaseContext(), ActivityRegGrabBag.class);
                 startActivity(intent);
 
                 dialog.dismiss();
@@ -120,9 +107,9 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
             public void onClick(View view){
                 //send registration info to database
 
-                Toast.makeText(getBaseContext(), "Account Created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Registration Complete", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(getBaseContext(), ActivityLogin.class);
+                Intent intent = new Intent(getBaseContext(), NavDrawer.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 

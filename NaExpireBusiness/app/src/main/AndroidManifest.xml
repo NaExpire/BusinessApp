@@ -26,7 +26,8 @@
             android:name=".NavDrawer"
             android:label="@string/title_activity_nav_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ActivityRegFirstLogin"></activity>
+        <activity android:name=".ActivityRegFirstLogin" />
+        <activity android:name=".ActivityRegGrabBag"></activity>
     </application>
 
 </manifest>
