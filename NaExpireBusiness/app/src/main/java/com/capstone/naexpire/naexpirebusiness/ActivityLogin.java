@@ -1,25 +1,11 @@
 package com.capstone.naexpire.naexpirebusiness;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class ActivityLogin extends AppCompatActivity {
 
@@ -46,7 +32,13 @@ public class ActivityLogin extends AppCompatActivity {
 
             //new ActivityLogin.HttpAsyncTask().execute("http://138.197.33.88/api/business/login/");
 
-            Intent intent = new Intent(this, NavDrawer.class);
+            //if last-login == NULL
+            //Intent intent = new Intent(this, ActivityRegFirstLogin.class);
+            //startActivity(intent);
+
+            //if last-login != NULL
+            Intent intent = new Intent(this, ActivityRegFirstLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
     }
@@ -59,7 +51,7 @@ public class ActivityLogin extends AppCompatActivity {
     }
 
     public void clickRegister(View view) {
-        Intent intent = new Intent(this, ActivityRegRestrauntInfo.class);
+        Intent intent = new Intent(this, ActivityRegister.class);
         startActivity(intent);
         //String y = readFromFile(this, password.getText().toString());
         //Toast.makeText(this, y, Toast.LENGTH_SHORT).show();

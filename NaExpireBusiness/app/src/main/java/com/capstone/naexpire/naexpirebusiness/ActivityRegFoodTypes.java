@@ -65,11 +65,16 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
                     @Override
                     public void onClick(View view){
                         String newFood = newFoodType.getText().toString();
-                        checked = adapter.getChecked();
-                        fTypes.add(newFood);
-                        checked.add(newFood);
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
+                        if(!newFood.isEmpty()){
+                            checked = adapter.getChecked();
+                            fTypes.add(newFood);
+                            checked.add(newFood);
+                            adapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                        }
+                        else
+                            Toast.makeText(ActivityRegFoodTypes.this,
+                                    "food type name cannot be blank", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
