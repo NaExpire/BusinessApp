@@ -17,7 +17,7 @@
     <string name="newmenuitem">New Menu Item</string>
     <string name="finish">Finish</string>
     <string name="title_activity_nav_drawer">NavDrawer</string>
-    <string name="grab_bag_descrip">\tA Grab-Bag Meal is a meal created from an assortment of leftover ingredients. The meal may include any or all of the listed ingredients (and possibly extras not listed). Given the uncertainty of this meal\'s actual contents day-to-day, it is aimed primarily at repeat customers that already know and like your restaurant.\n\tWhen choosing ingredients to list, try to choose the ones most likely to appear in the day\'s dish.</string>
+    <string name="grab_bag_descrip">\tA Grab-Bag Meal is a meal created from an assortment of leftover ingredients. The meal may include any or all of the listed ingredients. Given the uncertainty of this meal\'s actual contents day-to-day, it is aimed primarily at repeat customers that already know and like your restaurant.\n\tWhen choosing ingredients to list, try to choose the ones most likely to appear in the Grab-Bag Meal.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

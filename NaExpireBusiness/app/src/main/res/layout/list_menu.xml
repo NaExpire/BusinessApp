@@ -5,26 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/imgbtnClear"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        app:srcCompat="@mipmap/ic_clear_black_24dp"
-        android:background="@android:color/transparent"/>
+    <ImageView
+        android:id="@+id/imgFoodPic"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
+        android:id="@+id/rlFood"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:layout_height="50dp"
+        android:layout_alignBottom="@id/imgFoodPic"
+        android:background="@color/colorListShade">
 
         <TextView
             android:id="@+id/txtFoodName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="8dp"
             android:text="Item Name"
+            android:textColor="@android:color/background_light"
             android:textStyle="bold"
             android:textSize="15dp"/>
 
@@ -36,6 +37,7 @@
             android:layout_marginLeft="5dp"
             android:layout_alignBaseline="@id/txtFoodName"
             android:text="Price"
+            android:textColor="@android:color/background_light"
             android:textSize="13dp"/>
 
         <TextView
@@ -45,7 +47,17 @@
             android:paddingLeft="10dp"
             android:layout_below="@id/txtFoodName"
             android:text="Description"
+            android:textColor="@android:color/background_light"
             android:textSize="10dp"/>
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/imgbtnClear"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@mipmap/ic_clear_black_24dp"
+        android:background="@android:color/transparent"/>
 
 </RelativeLayout>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -7,9 +9,10 @@
     android:padding="5dp">
 
     <TextView
-        android:layout_gravity="center"
+        android:id="@+id/lblNewMenuItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:layout_marginTop="5sp"
         android:textSize="25sp"
@@ -19,6 +22,7 @@
         android:id="@+id/txtItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/lblNewMenuItem"
         android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Item Name"
@@ -28,6 +32,7 @@
         android:id="@+id/txtPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/txtItemName"
         android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="numberDecimal"
@@ -37,16 +42,36 @@
         android:id="@+id/txtDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/txtPrice"
         android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="Description"
         android:inputType="textCapSentences" />
 
+    <ImageView
+        android:id="@+id/imgMenuFood"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/txtDescription"
+        android:layout_marginTop="5dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@mipmap/ic_photo_black_24dp" />
+
+    <Button
+        android:id="@+id/btnMenuChooseImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/imgMenuFood"
+        android:layout_toRightOf="@id/imgMenuFood"
+        android:text="Choose Image"/>
+
     <Button
         android:id="@+id/btnSaveItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/imgMenuFood"
         android:text="Save"
         android:textColor="@android:color/background_light"
         android:background="@color/colorAccent"/>
-</LinearLayout>
+</RelativeLayout>

@@ -71,10 +71,15 @@ public class FragmentEditFoodTypes extends Fragment {
                     @Override
                     public void onClick(View view){
                         String newFood = newFoodType.getText().toString();
-                        fTypes.add(newFood);
-                        checked.add(newFood);
-                        adapter.notifyDataSetChanged();
-                        dialog.dismiss();
+                        if(!newFood.isEmpty()){
+                            fTypes.add(newFood);
+                            checked.add(newFood);
+                            adapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                        }
+                        else
+                            Toast.makeText(FragmentEditFoodTypes.this.getContext(),
+                                    "food type name cannot be blank", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
