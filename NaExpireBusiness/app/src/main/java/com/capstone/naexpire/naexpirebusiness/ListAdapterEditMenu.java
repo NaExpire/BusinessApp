@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 /**
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 
 public class ListAdapterEditMenu extends BaseAdapter {
     private ArrayList<String> names, prices, descriptions;
-    private ArrayList<Uri> images;
+    private ArrayList<String> images;
     private Context context;
 
     private static LayoutInflater inflater = null;
@@ -33,7 +35,7 @@ public class ListAdapterEditMenu extends BaseAdapter {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public void newItem(String name, String price, String description, Uri image){
+    public void newItem(String name, String price, String description, String image){
         names.add(name);
         prices.add(price);
         descriptions.add(description);
@@ -41,7 +43,7 @@ public class ListAdapterEditMenu extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void setItem(int position, String name, String price, String description, Uri image){
+    public void setItem(int position, String name, String price, String description, String image){
         names.set(position, name);
         prices.set(position, price);
         descriptions.set(position, description);
@@ -52,7 +54,7 @@ public class ListAdapterEditMenu extends BaseAdapter {
     public String getName(int position){ return names.get(position); }
     public String getPrice(int position){ return prices.get(position); }
     public String getDescription(int position){ return descriptions.get(position); }
-    public Uri getImage(int position){ return images.get(position); }
+    public String getImage(int position){ return images.get(position); }
 
     @Override
     public int getCount(){
@@ -89,7 +91,9 @@ public class ListAdapterEditMenu extends BaseAdapter {
         holder.nm.setText(names.get(position));
         holder.pr.setText(prices.get(position));
         holder.ds.setText(descriptions.get(position));
-        holder.im.setImageURI(images.get(position));
+        //holder.im.setImageURI(images.get(position));
+
+        Glide.with(context).load(images.get(position)).into(holder.im);
 
         holder.bt.setOnClickListener(new View.OnClickListener(){
             @Override

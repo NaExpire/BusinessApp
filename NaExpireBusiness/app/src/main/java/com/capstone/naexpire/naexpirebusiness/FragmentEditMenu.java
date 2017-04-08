@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.net.URI;
 import java.util.ArrayList;
 
@@ -25,11 +27,11 @@ public class FragmentEditMenu extends Fragment {
 
     ListAdapterEditMenu adapter;
     ImageView newItemImage;
-    Uri foodImage;
+    String foodImage;
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<String> price = new ArrayList<String>();
     ArrayList<String> description = new ArrayList<String>();
-    ArrayList<Uri> image = new ArrayList<Uri>();
+    ArrayList<String> image = new ArrayList<String>();
 
 
     public FragmentEditMenu() {
@@ -64,9 +66,9 @@ public class FragmentEditMenu extends Fragment {
         description.add("Taco with beef");
         description.add("Taco with chicken");
         description.add("Burger with cheese");
-        image.add(Uri.parse("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos"));
-        image.add(Uri.parse("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos2"));
-        image.add(Uri.parse("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/burger"));
+        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
+        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos2");
+        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/burger");
 
         for(int i = 0; i < name.size(); i++){
             adapter.newItem(name.get(i),price.get(i),description.get(i), image.get(i));
@@ -90,7 +92,7 @@ public class FragmentEditMenu extends Fragment {
                 newItemName.setText(adapter.getName(position));
                 newItemPrice.setText(adapter.getPrice(position));
                 newItemDesc.setText(adapter.getDescription(position));
-                newItemImage.setImageURI(foodImage);
+                //newItemImage.setImageURI(foodImage);
 
                 dialogBuilder.setView(dialogView);
                 final AlertDialog dialog = dialogBuilder.create();
@@ -133,7 +135,7 @@ public class FragmentEditMenu extends Fragment {
                 Button chooseImage = (Button) mView.findViewById(R.id.btnMenuChooseImage);
                 Button saveNewItem = (Button) mView.findViewById(R.id.btnSaveItem);
 
-                foodImage = Uri.parse("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
+                foodImage = ("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
 
                 mBuilder.setView(mView);
                 final AlertDialog dialog = mBuilder.create();
@@ -179,8 +181,9 @@ public class FragmentEditMenu extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 
         if (requestCode == 3645 && resultData != null) {
-            foodImage = resultData.getData();
-            newItemImage.setImageURI(foodImage);
+            foodImage = resultData.getData().toString();
+            //newItemImage.setImageURI(foodImage);
+            Glide.with(this).load(foodImage).into(newItemImage);
             newItemImage.getLayoutParams().height = 300;
             newItemImage.getLayoutParams().width = 300;
         }
