@@ -4,6 +4,9 @@ Goal
 Requirments
 1. Android Developer Studio
 
+Dependencies
+1. Glide API (will be automatically compiled when app is run)
+
 Installation
 1. Standard install of Android Developer studio
 2. Open Existing Project > NaExpireBusiness
