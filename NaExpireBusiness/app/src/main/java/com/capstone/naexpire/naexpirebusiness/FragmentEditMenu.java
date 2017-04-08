@@ -2,11 +2,9 @@ package com.capstone.naexpire.naexpirebusiness;
 
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,7 +90,7 @@ public class FragmentEditMenu extends Fragment {
                 newItemName.setText(adapter.getName(position));
                 newItemPrice.setText(adapter.getPrice(position));
                 newItemDesc.setText(adapter.getDescription(position));
-                //newItemImage.setImageURI(foodImage);
+                Glide.with(FragmentEditMenu.this.getContext()).load(foodImage).into(newItemImage);
 
                 dialogBuilder.setView(dialogView);
                 final AlertDialog dialog = dialogBuilder.create();

@@ -34,6 +34,6 @@
         android:layout_above="@id/btnFinish"
         android:layout_below="@id/lblMenuLabel"
         android:divider="@null"
-        android:dividerHeight="0dp"/>
+        android:dividerHeight="5dp"/>
 
 </RelativeLayout>

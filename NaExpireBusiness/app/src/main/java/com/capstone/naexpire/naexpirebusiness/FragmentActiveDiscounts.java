@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,10 +19,11 @@ import java.util.ArrayList;
 
 public class FragmentActiveDiscounts extends Fragment {
 
-    ListAdapterMenu adapter;
+    ListAdapterEditMenu adapter;
     ArrayList<String> item = new ArrayList<String>();
     ArrayList<String> price = new ArrayList<String>();
     ArrayList<String> quantity = new ArrayList<String>();
+    ArrayList<String> image = new ArrayList<String>();
 
     public FragmentActiveDiscounts() {
         // Required empty public constructor
@@ -36,19 +38,21 @@ public class FragmentActiveDiscounts extends Fragment {
 
         FragmentActiveDiscounts.this.getActivity().setTitle("Active Discounts"); //set activity title
 
-        adapter = new ListAdapterMenu(FragmentActiveDiscounts.this.getContext());
+        adapter = new ListAdapterEditMenu(FragmentActiveDiscounts.this.getContext());
         final ListView listView = (ListView) view.findViewById(R.id.lstActiveDiscounts);
         listView.setAdapter(adapter);
 
         //fill with dummy data
         item.add("Beef Taco");
-        item.add("Shrimp Taco");
+        item.add("Chicken Taco");
         price.add("$3.00");
         price.add("$3.50");
         quantity.add("x4");
         quantity.add("x2");
+        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
+        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos2");
         for(int i = 0; i < item.size(); i++){
-            adapter.newItem(item.get(i), price.get(i), quantity.get(i));
+            adapter.newItem(item.get(i), price.get(i), quantity.get(i), image.get(i));
         }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -61,7 +65,7 @@ public class FragmentActiveDiscounts extends Fragment {
                 Button save = (Button) dialogView.findViewById(R.id.btnActiveSave);
 
                 header.setText(adapter.getName(position) + " Discount");
-                itemQuantity.setText(adapter.getDescrip(position).substring(1));
+                itemQuantity.setText(adapter.getDescription(position).substring(1));
                 itemPrice.setText(adapter.getPrice(position).substring(1));
                 final String holdName = adapter.getName(position);
 
@@ -74,7 +78,9 @@ public class FragmentActiveDiscounts extends Fragment {
                 save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        adapter.editItem(position, holdName, "$"+itemPrice.getText().toString(),"x"+itemQuantity.getText().toString());
+                        if(itemQuantity.getText().toString().equals("0")) adapter.deleteItem(position);
+                        else adapter.setItem(position, holdName, "$"+itemPrice.getText().toString(),
+                                "x"+itemQuantity.getText().toString(), adapter.getImage(position));
                         dialog.dismiss();
                     }
                 });

@@ -6,12 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 public class ListAdapterMenu extends BaseAdapter {
     ArrayList<String> names, prices, descriptions;
+    private ArrayList<String> images;
     Context context;
 
     private static LayoutInflater inflater = null;
@@ -20,6 +24,7 @@ public class ListAdapterMenu extends BaseAdapter {
         names = new ArrayList<>();
         prices = new ArrayList<>();
         descriptions = new ArrayList<>();
+        images = new ArrayList<>();
         context = c;
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -42,23 +47,27 @@ public class ListAdapterMenu extends BaseAdapter {
 
     public String getName(int position){ return names.get(position); }
     public String getPrice(int position){ return prices.get(position); }
-    public String getDescrip(int position){ return descriptions.get(position); }
-    public void editItem(int position, String n, String p, String d){
-        names.set(position, n);
-        prices.set(position, p);
-        descriptions.set(position, d);
+    public String getDescription(int position){ return descriptions.get(position); }
+    public String getImage(int position){ return images.get(position); }
+
+    public void setItem(int position, String name, String price, String description, String image){
+        names.set(position, name);
+        prices.set(position, price);
+        descriptions.set(position, description);
+        images.set(position, image);
         notifyDataSetChanged();
     }
-    public void newItem(String n, String p, String d){
-        names.add(n);
-        prices.add(p);
-        descriptions.add(d);
+    public void newItem(String name, String price, String description, String image){
+        names.add(name);
+        prices.add(price);
+        descriptions.add(description);
+        images.add(image);
         notifyDataSetChanged();
     }
 
     public class Holder{
         TextView nm, pr, ds;
-        ImageButton ex;
+        ImageView im;
     }
 
     @Override
@@ -66,24 +75,15 @@ public class ListAdapterMenu extends BaseAdapter {
         Holder holder = new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.list_menu, null);
-        holder.nm=(TextView) rowView.findViewById(R.id.txtFoodName);
-        holder.pr=(TextView) rowView.findViewById(R.id.txtFoodPrice);
-        holder.ds=(TextView) rowView.findViewById(R.id.txtFoodDescription);
-        holder.ex = (ImageButton) rowView.findViewById(R.id.imgbtnClear);
+        holder.nm=(TextView) rowView.findViewById(R.id.txtMenuName);
+        holder.pr=(TextView) rowView.findViewById(R.id.txtMenuPrice);
+        holder.ds=(TextView) rowView.findViewById(R.id.txtMenuDescription);
+        holder.im=(ImageView) rowView.findViewById(R.id.imgMenuPic);
 
         holder.nm.setText(names.get(position));
         holder.pr.setText(prices.get(position));
         holder.ds.setText(descriptions.get(position));
-
-        holder.ex.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                names.remove(position);
-                prices.remove(position);
-                descriptions.remove(position);
-                notifyDataSetChanged();
-            }
-        });
+        Glide.with(context).load(images.get(position)).into(holder.im);
 
         return rowView;
     }

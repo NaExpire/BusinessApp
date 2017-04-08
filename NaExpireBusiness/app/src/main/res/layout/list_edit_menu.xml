@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imgMenuPic"
+        android:id="@+id/imgFoodPic"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:scaleType="centerCrop" />
 
     <RelativeLayout
-        android:id="@+id/rlMenu"
+        android:id="@+id/rlFood"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignBottom="@id/imgMenuPic"
+        android:layout_alignBottom="@id/imgFoodPic"
         android:background="@color/colorListShade">
 
         <TextView
-            android:id="@+id/txtMenuName"
+            android:id="@+id/txtFoodName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -29,25 +30,34 @@
             android:textSize="15dp"/>
 
         <TextView
-            android:id="@+id/txtMenuPrice"
+            android:id="@+id/txtFoodPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/txtMenuName"
+            android:layout_toRightOf="@id/txtFoodName"
             android:layout_marginLeft="5dp"
-            android:layout_alignBaseline="@id/txtMenuName"
+            android:layout_alignBaseline="@id/txtFoodName"
             android:text="Price"
             android:textColor="@android:color/background_light"
             android:textSize="13dp"/>
 
         <TextView
-            android:id="@+id/txtMenuDescription"
+            android:id="@+id/txtFoodDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:layout_below="@id/txtMenuName"
+            android:layout_below="@id/txtFoodName"
             android:text="Description"
             android:textColor="@android:color/background_light"
             android:textSize="10dp"/>
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/imgbtnClear"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@mipmap/ic_clear_black_24dp"
+        android:background="@android:color/transparent"/>
 
 </RelativeLayout>

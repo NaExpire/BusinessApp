@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,6 +20,14 @@ import java.util.ArrayList;
 
 
 public class FragmentMenu extends Fragment {
+
+    ListAdapterMenu adapter;
+    ImageView newItemImage;
+    String foodImage;
+    ArrayList<String> name = new ArrayList<String>();
+    ArrayList<String> price = new ArrayList<String>();
+    ArrayList<String> description = new ArrayList<String>();
+    ArrayList<String> image = new ArrayList<String>();
 
     public FragmentMenu() {
         // Required empty public constructor
@@ -31,25 +40,6 @@ public class FragmentMenu extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_menu, container, false);
 
-        //get passed string
-        String rInfo = "";
-        //Bundle bundle = this.getArguments();
-        //if(bundle !=null){ rInfo = bundle.getString("restrauntData", ""); }
-        rInfo = "Mexican,Cajun,yyyyyy,Beef Taco,1.23,Taco with beef," +
-                "Chicken Taco,2.34,Taco with chicken,Shrimp Taco,3.45,Taco with shrimp";
-        String[] ar = rInfo.split(",");
-        ArrayList<String> arr = new ArrayList<String>();
-
-        //place menu item info in arraylist arr to be loaded into listview
-        Boolean found = false;
-        for(int i = 0; i < ar.length;i++){
-            if(found){
-                arr.add(ar[i]+" - $"+ ar[i+1]+" | "+ar[i+2]);
-                i+=2;
-            }
-            if(ar[i].equals("yyyyyy")) found = true;
-        }
-
         FragmentMenu.this.getActivity().setTitle("Menu"); //set activity title
 
         //spinner to select filter method for menu items
@@ -60,9 +50,27 @@ public class FragmentMenu extends Fragment {
         spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spAdapter);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(FragmentMenu.this.getContext(), android.R.layout.simple_list_item_1, arr);
+        adapter = new ListAdapterMenu(FragmentMenu.this.getContext());
         final ListView listView = (ListView) view.findViewById(R.id.lstRestrauntMenu);
         listView.setAdapter(adapter);
+
+        //test data
+        name.add("Beef Taco");
+        name.add("Chicken Taco");
+        name.add("Cheeseburger");
+        price.add("$1.23");
+        price.add("$2.34");
+        price.add("$3.45");
+        description.add("Taco with beef");
+        description.add("Taco with chicken");
+        description.add("Burger with cheese");
+        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
+        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos2");
+        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/burger");
+
+        for(int i = 0; i < name.size(); i++){
+            adapter.newItem(name.get(i),price.get(i),description.get(i), image.get(i));
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){

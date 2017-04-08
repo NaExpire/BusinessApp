@@ -1,8 +1,6 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +53,13 @@ public class ListAdapterEditMenu extends BaseAdapter {
     public String getPrice(int position){ return prices.get(position); }
     public String getDescription(int position){ return descriptions.get(position); }
     public String getImage(int position){ return images.get(position); }
+    public void deleteItem(int position){
+        names.remove(position);
+        prices.remove(position);
+        descriptions.remove(position);
+        images.remove(position);
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getCount(){
@@ -81,7 +86,7 @@ public class ListAdapterEditMenu extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent){
         Holder holder = new Holder();
         View rowView;
-        rowView = inflater.inflate(R.layout.list_menu, null);
+        rowView = inflater.inflate(R.layout.list_edit_menu, null);
         holder.nm=(TextView) rowView.findViewById(R.id.txtFoodName);
         holder.pr=(TextView) rowView.findViewById(R.id.txtFoodPrice);
         holder.ds=(TextView) rowView.findViewById(R.id.txtFoodDescription);
@@ -91,8 +96,6 @@ public class ListAdapterEditMenu extends BaseAdapter {
         holder.nm.setText(names.get(position));
         holder.pr.setText(prices.get(position));
         holder.ds.setText(descriptions.get(position));
-        //holder.im.setImageURI(images.get(position));
-
         Glide.with(context).load(images.get(position)).into(holder.im);
 
         holder.bt.setOnClickListener(new View.OnClickListener(){

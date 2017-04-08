@@ -10,31 +10,30 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 public class ActivityRegCreateMenu extends AppCompatActivity {
 
-    ArrayList<String> foodTypes = new ArrayList<String>(); //chosen food types from previous activity
-    ListAdapterMenu adapter;
-    String[] rInfo = new String[5]; //restaurant information
+    ListAdapterEditMenu adapter;
+    ImageView newItemImage;
+    String foodImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_create_menu);
 
-        //Intent intent = getIntent();
-        //rInfo = intent.getStringArrayExtra("restInfo");
-        //foodTypes = getIntent().getExtras().getStringArrayList("foodTypes");
-
         setTitle("Register"); //set activity title
 
         View footer =  ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_add, null);
 
-        adapter = new ListAdapterMenu(this);
+        adapter = new ListAdapterEditMenu(this);
         final ListView listView = (ListView) findViewById(R.id.lstMenu);
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
@@ -46,31 +45,37 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
             public void onClick(View view){
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegCreateMenu.this);
                 View mView = getLayoutInflater().inflate(R.layout.dialog_menu, null);
-                final EditText mName = (EditText) mView.findViewById(R.id.txtItemName);
-                final EditText mPrice = (EditText) mView.findViewById(R.id.txtPrice);
-                final EditText mDescription = (EditText) mView.findViewById(R.id.txtDescription);
-                Button mSave = (Button) mView.findViewById(R.id.btnSaveItem);
+                final EditText newItemName = (EditText) mView.findViewById(R.id.txtItemName);
+                final EditText newItemPrice = (EditText) mView.findViewById(R.id.txtPrice);
+                final EditText newItemDesc = (EditText) mView.findViewById(R.id.txtDescription);
+                newItemImage = (ImageView) mView.findViewById(R.id.imgMenuFood);
+                Button chooseImage = (Button) mView.findViewById(R.id.btnMenuChooseImage);
+                Button saveNewItem = (Button) mView.findViewById(R.id.btnSaveItem);
+
+                foodImage = ("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
 
                 mBuilder.setView(mView);
                 final AlertDialog dialog = mBuilder.create();
                 dialog.show();
 
-                mSave.setOnClickListener(new View.OnClickListener(){
+                chooseImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
-                        if(mName.getText().toString().isEmpty() ||
-                                mPrice.getText().toString().isEmpty() ||
-                                mDescription.getText().toString().isEmpty()){
-                            Toast.makeText(ActivityRegCreateMenu.this, "Fill all Fields",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            String n = mName.getText().toString();
-                            String p = "$" + Double.parseDouble(mPrice.getText().toString());
-                            String d = mDescription.getText().toString();
-                            adapter.newItem(n, p, d);
-                            dialog.dismiss();
-                        }
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, 3645);
+                    }
+                });
+
+                saveNewItem.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        adapter.newItem(newItemName.getText().toString(),
+                                "$"+newItemPrice.getText().toString(),
+                                newItemDesc.getText().toString(),
+                                foodImage);
+                        dialog.dismiss();
                     }
                 });
             }
@@ -78,42 +83,45 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                String n = adapter.getName(position);
-                String p = adapter.getPrice(position);
-                String d = adapter.getDescrip(position);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ActivityRegCreateMenu.this);
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_menu, null);
+                final EditText newItemName = (EditText) dialogView.findViewById(R.id.txtItemName);
+                final EditText newItemPrice = (EditText) dialogView.findViewById(R.id.txtPrice);
+                final EditText newItemDesc = (EditText) dialogView.findViewById(R.id.txtDescription);
+                newItemImage = (ImageView) dialogView.findViewById(R.id.imgMenuFood);
+                Button chooseImage = (Button) dialogView.findViewById(R.id.btnMenuChooseImage);
+                Button saveNewItem = (Button) dialogView.findViewById(R.id.btnSaveItem);
+
+                foodImage = adapter.getImage(position);
+
                 final int spot = position;
 
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegCreateMenu.this);
-                View mView = getLayoutInflater().inflate(R.layout.dialog_menu, null);
-                final EditText mName = (EditText) mView.findViewById(R.id.txtItemName);
-                final EditText mPrice = (EditText) mView.findViewById(R.id.txtPrice);
-                final EditText mDescription = (EditText) mView.findViewById(R.id.txtDescription);
-                Button mSave = (Button) mView.findViewById(R.id.btnSaveItem);
+                newItemName.setText(adapter.getName(position));
+                newItemPrice.setText(adapter.getPrice(position).substring(1));
+                newItemDesc.setText(adapter.getDescription(position));
+                Glide.with(getBaseContext()).load(foodImage).into(newItemImage);
 
-                mName.setText(n);
-                mPrice.setText(p.substring(1));
-                mDescription.setText(d);
-
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
+                dialogBuilder.setView(dialogView);
+                final AlertDialog dialog = dialogBuilder.create();
                 dialog.show();
 
-                mSave.setOnClickListener(new View.OnClickListener(){
+                chooseImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
-                        if(mName.getText().toString().isEmpty() ||
-                                mPrice.getText().toString().isEmpty() ||
-                                mDescription.getText().toString().isEmpty()){
-                            Toast.makeText(ActivityRegCreateMenu.this, "Fill all Fields",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            String n = mName.getText().toString();
-                            String p = "$"+Double.parseDouble(mPrice.getText().toString());
-                            String d = mDescription.getText().toString();
-                            adapter.editItem(position, n, p, d);
-                            dialog.dismiss();
-                        }
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.addCategory(Intent.CATEGORY_OPENABLE);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, 3645);
+                    }
+                });
+
+                saveNewItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        adapter.setItem(spot, newItemName.getText().toString(),
+                                "$"+newItemPrice.getText().toString(),newItemDesc.getText().toString(),
+                                foodImage);
+                        dialog.dismiss();
                     }
                 });
             }
@@ -129,5 +137,16 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
         Intent intent = new Intent(this, ActivityLogin.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+
+        if (requestCode == 3645 && resultData != null) {
+            foodImage = resultData.getData().toString();
+            Glide.with(this).load(foodImage).into(newItemImage);
+            newItemImage.getLayoutParams().height = 300;
+            newItemImage.getLayoutParams().width = 300;
+        }
     }
 }
