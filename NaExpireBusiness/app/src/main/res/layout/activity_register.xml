@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtRegEmail"
         android:hint="Last Name"
-        android:inputType="text" />
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/txtRegFirstName"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtRegLastName"
         android:hint="First Name"
-        android:inputType="text" />
+        android:inputType="textCapWords" />
 
     <EditText
         android:id="@+id/txtRegRestName"

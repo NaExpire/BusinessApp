@@ -72,18 +72,16 @@ public class FragmentOrderHistory extends Fragment {
                 final TextView timePlaced = (TextView) dialogView.findViewById(R.id.lblTimePlaced);
                 final TextView total = (TextView) dialogView.findViewById(R.id.lblOrderTotal);
                 final TextView orderItems = (TextView) dialogView.findViewById(R.id.lblItems);
-                Button okay = (Button) dialogView.findViewById(R.id.btnFulfilled);
+                Button okay = (Button) dialogView.findViewById(R.id.btnDismiss);
 
                 datePlaced.setText("Date Placed");
                 okay.setText("Okay");
 
-                String[] s = adapter.getItem(position);
-
-                orderID.setText("Order #" + s[0]);
-                custName.setText(s[1]);
-                timePlaced.setText(s[2]);
-                total.setText(s[3]);
-                orderItems.setText(s[4]);
+                orderID.setText("Order #" + adapter.getOrderId(position));
+                custName.setText(adapter.getCustName(position));
+                timePlaced.setText(adapter.getTime(position));
+                total.setText(adapter.getTotal(position));
+                orderItems.setText(adapter.getFood(position));
 
                 dialogBuilder.setView(dialogView);
                 final AlertDialog dialog = dialogBuilder.create();

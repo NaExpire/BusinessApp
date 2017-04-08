@@ -13,11 +13,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class FragmentOrderInbox extends Fragment {
 
+    ArrayList<String> orderId = new ArrayList<String>();
     ArrayList<String> name = new ArrayList<String>();
+    ArrayList<String> timePlaced = new ArrayList<String>();
     ArrayList<String> total = new ArrayList<String>();
     ArrayList<String> items = new ArrayList<String>();
     ListAdapterOrderInbox adapter;
@@ -41,15 +44,20 @@ public class FragmentOrderInbox extends Fragment {
         listView.setAdapter(adapter);
 
         //test data
+        Random rnd = new Random();
+        orderId.add(""+(100000 + rnd.nextInt(900000)));
+        orderId.add(""+(100000 + rnd.nextInt(900000)));
         name.add("Jerry");
         name.add("Tom");
+        timePlaced.add("3:24pm");
+        timePlaced.add("4:56pm");
         total.add("$17.54");
         total.add("$13.55");
         items.add("Beef Taco, Chicken Taco");
         items.add("Shrimp Taco, Beef Taco, Chicken Taco, Fries");
 
         for(int i = 0; i<name.size(); i++){
-            adapter.newOrder(items.get(i), name.get(i), total.get(i));
+            adapter.newOrder(orderId.get(i), name.get(i), timePlaced.get(i), total.get(i), items.get(i));
         }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -61,25 +69,22 @@ public class FragmentOrderInbox extends Fragment {
                 final TextView timePlaced = (TextView) dialogView.findViewById(R.id.lblTimePlaced);
                 final TextView total = (TextView) dialogView.findViewById(R.id.lblOrderTotal);
                 final TextView orderItems = (TextView) dialogView.findViewById(R.id.lblItems);
-                Button fulfilled = (Button) dialogView.findViewById(R.id.btnFulfilled);
+                Button dismiss = (Button) dialogView.findViewById(R.id.btnDismiss);
 
 
-                String[] s = adapter.getItem(position);
-
-                orderID.setText("Order #" + s[0]);
-                custName.setText(s[1]);
-                timePlaced.setText(s[2]);
-                total.setText(s[3]);
-                orderItems.setText(s[4]);
+                orderID.setText("Order #" + adapter.getOrderId(position));
+                custName.setText(adapter.getCustName(position));
+                timePlaced.setText(adapter.getTime(position));
+                total.setText(adapter.getTotal(position));
+                orderItems.setText(adapter.getFood(position));
 
                 dialogBuilder.setView(dialogView);
                 final AlertDialog dialog = dialogBuilder.create();
                 dialog.show();
 
-                fulfilled.setOnClickListener(new View.OnClickListener() {
+                dismiss.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        adapter.fulfilled(position);
                         dialog.dismiss();
                     }
                 });

@@ -16,8 +16,10 @@ public class ListAdapterOrderInbox extends BaseAdapter {
     private static LayoutInflater inflater = null;
 
     public ListAdapterOrderInbox(Context c){
+        orderId = new ArrayList<>();
         foods = new ArrayList<>();
         custName = new ArrayList<>();
+        timePlaced = new ArrayList<>();
         total = new ArrayList<>();
         context = c;
 
@@ -30,20 +32,28 @@ public class ListAdapterOrderInbox extends BaseAdapter {
     }
 
     @Override
-    public String[] getItem(int position){
-        String[] s = {"123456", custName.get(position), "9:45pm 2/12/17", total.get(position), foods.get(position)};
-        return s;
-    }
+    public Object getItem(int position){ return position; }
 
     @Override
     public long getItemId(int position){
         return position;
     }
 
-    public void newOrder(String f, String n, String t){
-        foods.add(f);
-        custName.add(n);
-        total.add(t);
+    public String getOrderId(int position) { return orderId.get(position); }
+    public String getFood(int position) {
+        String f = foods.get(position).replaceAll(", ", "\n");
+        return f;
+    }
+    public String getCustName(int position) { return custName.get(position); }
+    public String getTime(int position) { return timePlaced.get(position); }
+    public String getTotal(int position) { return total.get(position); }
+
+    public void newOrder(String id, String name, String time, String price, String food){
+        orderId.add(id);
+        custName.add(name);
+        timePlaced.add(time);
+        total.add(price);
+        foods.add(food);
         notifyDataSetChanged();
     }
 
@@ -55,7 +65,7 @@ public class ListAdapterOrderInbox extends BaseAdapter {
     }
 
     public class Holder{
-        TextView fd, cn, tl;
+        TextView cn, t, fd;
     }
 
     @Override
@@ -65,11 +75,11 @@ public class ListAdapterOrderInbox extends BaseAdapter {
         rowView = inflater.inflate(R.layout.list_order_inbox, null);
         holder.fd=(TextView) rowView.findViewById(R.id.txtInboxFoods);
         holder.cn=(TextView) rowView.findViewById(R.id.txtInboxCustName);
-        holder.tl=(TextView) rowView.findViewById(R.id.txtInboxTotal);
+        holder.t=(TextView) rowView.findViewById(R.id.txtInboxTotal);
 
         holder.fd.setText(foods.get(position));
         holder.cn.setText(custName.get(position));
-        holder.tl.setText(total.get(position));
+        holder.t.setText(total.get(position));
 
         return rowView;
     }

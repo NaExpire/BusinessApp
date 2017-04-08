@@ -83,13 +83,13 @@
         android:layout_alignBaseline="@id/lblItemsLabel"/>
 
     <Button
-        android:id="@+id/btnFulfilled"
+        android:id="@+id/btnDismiss"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:layout_below="@id/lblItems"
-        android:text="Fulfilled"
+        android:text="Dismiss"
         android:textColor="@android:color/background_light"
         android:background="@color/colorAccent"/>
 

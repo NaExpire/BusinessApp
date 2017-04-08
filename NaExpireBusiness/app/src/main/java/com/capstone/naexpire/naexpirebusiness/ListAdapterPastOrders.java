@@ -32,15 +32,21 @@ public class ListAdapterPastOrders extends BaseAdapter {
     }
 
     @Override
-    public String[] getItem(int position){
-        String[] s = {orderId.get(position), custName.get(position), timePlaced.get(position), total.get(position), foods.get(position)};
-        return s;
-    }
+    public Object getItem(int position){ return position; }
 
     @Override
     public long getItemId(int position){
         return position;
     }
+
+    public String getOrderId(int position) { return orderId.get(position); }
+    public String getFood(int position) {
+        String f = foods.get(position).replaceAll(", ", "\n");
+        return f;
+    }
+    public String getCustName(int position) { return custName.get(position); }
+    public String getTime(int position) { return timePlaced.get(position); }
+    public String getTotal(int position) { return total.get(position); }
 
     public void newOrder(String o, String n, String ti, String t, String f){
         orderId.add(o);
