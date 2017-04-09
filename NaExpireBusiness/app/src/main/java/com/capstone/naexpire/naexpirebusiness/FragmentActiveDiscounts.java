@@ -1,6 +1,7 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -62,12 +65,15 @@ public class FragmentActiveDiscounts extends Fragment {
                 final TextView header = (TextView) dialogView.findViewById(R.id.lblActiveDiscount);
                 final EditText itemQuantity = (EditText) dialogView.findViewById(R.id.txtActiveQuantity);
                 final EditText itemPrice = (EditText) dialogView.findViewById(R.id.txtActiveDiscountPrice);
+                ImageView image = (ImageView) dialogView.findViewById(R.id.imgDiscountPic);
                 Button save = (Button) dialogView.findViewById(R.id.btnActiveSave);
 
-                header.setText(adapter.getName(position) + " Discount");
                 itemQuantity.setText(adapter.getDescription(position).substring(1));
                 itemPrice.setText(adapter.getPrice(position).substring(1));
                 final String holdName = adapter.getName(position);
+
+                header.setText(adapter.getName(position)+" Discount");
+                Glide.with(FragmentActiveDiscounts.this.getContext()).load(adapter.getImage(position)).into(image);
 
                 final int spot = position;
 

@@ -1,6 +1,7 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -14,7 +15,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -90,9 +94,14 @@ public class FragmentMenu extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 AlertDialog.Builder dBuilder = new AlertDialog.Builder(FragmentMenu.this.getContext());
                 View dView = getActivity().getLayoutInflater().inflate(R.layout.dialog_discount, null);
+                ImageView image = (ImageView) dView.findViewById(R.id.imgDiscountPic);
+                final TextView name = (TextView) dView.findViewById(R.id.lblDiscount);
                 final EditText quantity = (EditText) dView.findViewById(R.id.txtQuantity);
                 final EditText dPrice = (EditText) dView.findViewById(R.id.txtDiscountPrice);
                 Button saveDiscount = (Button) dView.findViewById(R.id.btnNewDiscount);
+
+                name.setText("New "+adapter.getName(position)+" Discount");
+                Glide.with(FragmentMenu.this.getContext()).load(adapter.getImage(position)).into(image);
 
                 dBuilder.setView(dView);
                 final AlertDialog dialog = dBuilder.create();
