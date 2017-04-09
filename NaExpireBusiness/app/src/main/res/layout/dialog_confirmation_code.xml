@@ -27,8 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lblConfirmDetail"
-        android:inputType="text"
-        android:text="Confirmation Code" />
+        android:inputType="number"
+        android:hint="Confirmation Code" />
 
     <Button
         android:id="@+id/btnConfirm"

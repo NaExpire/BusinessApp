@@ -53,21 +53,6 @@ public class ActivityLogin extends AppCompatActivity {
         else {
             new ActivityLogin.HttpAsyncTask().execute("http://138.197.33.88/api/business/login/");
         }
-
-        if(loginStatus.equals("first")){ //correct credentials, first login
-            final EditText code = (EditText) dialogView.findViewById(R.id.txtConfirmCode);
-            Button submit = (Button) dialogView.findViewById(R.id.btnConfirm);
-
-            dialog.show();
-
-            submit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    confirmationCode = code.getText().toString();
-                    new ActivityLogin.ConfirmCode().execute("http://138.197.33.88/api/business/register/confirm/");
-                }
-            });
-        }
     }
 
     public void clickForgot(View view) {
@@ -117,6 +102,23 @@ public class ActivityLogin extends AppCompatActivity {
                 if(HttpResult == HttpURLConnection.HTTP_FORBIDDEN){
                     //first login ever
                     loginStatus = "first";
+                    BufferedReader br = new BufferedReader(new InputStreamReader(
+                            connection.getInputStream(), "utf-8"
+                    ));
+                    while((line = br.readLine()) != null){
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+
+                    try{
+                        JSONObject obj = new JSONObject(sb.toString());
+                        userData = obj.getString("sessionID");
+                    }catch (Exception e){}
+
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+sb.toString());
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "session: "+userData);
                 }
                 else if(HttpResult == HttpURLConnection.HTTP_OK){
                     BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -127,10 +129,15 @@ public class ActivityLogin extends AppCompatActivity {
                     }
                     br.close();
 
-                    loginStatus = sb.toString();
+                    try{
+                        JSONObject obj = new JSONObject(sb.toString());
+                        loginStatus = obj.getString("sessionID");
+                    }catch (Exception e){}
 
                     android.util.Log.w(this.getClass().getSimpleName(),
                             "Response Message: "+sb.toString());
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Session ID: "+loginStatus);
                 }
                 else{
                     android.util.Log.w(this.getClass().getSimpleName(),
@@ -157,7 +164,25 @@ public class ActivityLogin extends AppCompatActivity {
             else if(result.equals("nope")){ //incorrect login attempt
                 Toast.makeText(ActivityLogin.this, "Email or Password Incorrect", Toast.LENGTH_SHORT).show();
             }
+            else if(loginStatus.equals("first")){ //correct credentials, first login
+                next();
+            }
         }
+    }
+
+    public void next(){
+        final EditText code = (EditText) dialogView.findViewById(R.id.txtConfirmCode);
+        Button submit = (Button) dialogView.findViewById(R.id.btnConfirm);
+
+        dialog.show();
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                confirmationCode = code.getText().toString();
+                new ActivityLogin.ConfirmCode().execute("http://138.197.33.88/api/business/register/confirm/");
+            }
+        });
     }
 
     private class ConfirmCode extends AsyncTask<String,String,String> {
@@ -199,7 +224,7 @@ public class ActivityLogin extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if (result.equals("correct")){ //correct code
                 //putextra loginStatus
-                Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
+                Intent intent = new Intent(ActivityLogin.this.getBaseContext(), ActivityRegFirstLogin.class);
                 intent.putExtra("userData", userData);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
@@ -215,7 +240,7 @@ public class ActivityLogin extends AppCompatActivity {
         String returnJ = "";
         try{
             JSONObject js = new JSONObject();
-            js.put("username", email);
+            js.put("email", email);
             js.put("password", password);
             returnJ = js.toString();
             android.util.Log.w(this.getClass().getSimpleName(),returnJ);
@@ -232,7 +257,7 @@ public class ActivityLogin extends AppCompatActivity {
         try{
             JSONObject js = new JSONObject();
             js.put("emailAddress", email);
-            js.put("confirmationCode", password);
+            js.put("confirmationCode", confirmationCode);
             returnJ = js.toString();
             android.util.Log.w(this.getClass().getSimpleName(),returnJ);
         }

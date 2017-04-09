@@ -134,7 +134,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
 
         Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, ActivityLogin.class);
+        Intent intent = new Intent(this, NavDrawer.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
