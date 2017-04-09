@@ -11,20 +11,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class ListAdapterMenu extends BaseAdapter {
-    ArrayList<String> names, prices, descriptions;
-    private ArrayList<String> images;
+    ArrayList<MenuItem> menu;
     Context context;
 
     private static LayoutInflater inflater = null;
 
     public ListAdapterMenu(Context c){
-        names = new ArrayList<>();
-        prices = new ArrayList<>();
-        descriptions = new ArrayList<>();
-        images = new ArrayList<>();
+        menu = new ArrayList<>();
         context = c;
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -32,7 +28,7 @@ public class ListAdapterMenu extends BaseAdapter {
 
     @Override
     public int getCount(){
-        return names.size();
+        return menu.size();
     }
 
     @Override
@@ -45,29 +41,55 @@ public class ListAdapterMenu extends BaseAdapter {
         return position;
     }
 
-    public String getName(int position){ return names.get(position); }
-    public String getPrice(int position){ return prices.get(position); }
-    public String getDescription(int position){ return descriptions.get(position); }
-    public String getImage(int position){ return images.get(position); }
+    public String getName(int position){ return menu.get(position).getName(); }
+    public String getPrice(int position){ return "$"+menu.get(position).getPrice(); }
+    public String getDescription(int position){ return menu.get(position).getDescription(); }
+    public String getImage(int position){ return menu.get(position).getImage(); }
 
-    public void setItem(int position, String name, String price, String description, String image){
-        names.set(position, name);
-        prices.set(position, price);
-        descriptions.set(position, description);
-        images.set(position, image);
+    public void setItem(int position, String name, Double price, String description, String image){
+        menu.get(position).getName();
+        menu.get(position).getPrice();
+        menu.get(position).getDescription();
+        menu.get(position).getImage();
         notifyDataSetChanged();
     }
-    public void newItem(String name, String price, String description, String image){
-        names.add(name);
-        prices.add(price);
-        descriptions.add(description);
-        images.add(image);
+    public void newItem(String name, Double price, String description, String image){
+        menu.add(new MenuItem(name, price, description, image));
         notifyDataSetChanged();
     }
 
     public class Holder{
         TextView nm, pr, ds;
         ImageView im;
+    }
+
+    public void sortMenu(int sortBy){
+        switch (sortBy){
+            case 0: //alphabetical
+                Collections.sort(menu, new Comparator<MenuItem>(){
+                    public int compare( MenuItem o1, MenuItem o2){
+                        return o1.getName().compareTo(o2.getName());
+                    }
+                });
+                notifyDataSetChanged();
+                break;
+            case 1: //high to low
+                Collections.sort(menu, new Comparator<MenuItem>(){
+                    public int compare( MenuItem o1, MenuItem o2){
+                        return -1*o1.getPrice().compareTo(o2.getPrice());
+                    }
+                });
+                notifyDataSetChanged();
+                break;
+            case 2: //low to high
+                Collections.sort(menu, new Comparator<MenuItem>(){
+                    public int compare( MenuItem o1, MenuItem o2){
+                        return o1.getPrice().compareTo(o2.getPrice());
+                    }
+                });
+                notifyDataSetChanged();
+                break;
+        }
     }
 
     @Override
@@ -80,11 +102,39 @@ public class ListAdapterMenu extends BaseAdapter {
         holder.ds=(TextView) rowView.findViewById(R.id.txtMenuDescription);
         holder.im=(ImageView) rowView.findViewById(R.id.imgMenuPic);
 
-        holder.nm.setText(names.get(position));
-        holder.pr.setText(prices.get(position));
-        holder.ds.setText(descriptions.get(position));
-        Glide.with(context).load(images.get(position)).into(holder.im);
+        holder.nm.setText(menu.get(position).getName());
+        holder.pr.setText("$"+menu.get(position).getPrice());
+        holder.ds.setText(menu.get(position).getDescription());
+        Glide.with(context).load(menu.get(position).getImage()).into(holder.im);
 
         return rowView;
+    }
+
+    public class MenuItem{
+        private String name, description, image;
+        private double price;
+
+        MenuItem(){
+            name = "";
+            price = 0.00;
+            description = "";
+            image = "";
+        }
+
+        MenuItem(String n, Double p, String d, String i){
+            name = n;
+            price  = p;
+            description = d;
+            image = i;
+        }
+        String getName(){return name;}
+        Double getPrice(){return price;}
+        String getDescription(){return description;}
+        String getImage(){return image;}
+
+        void setName(String n){name = n;}
+        void setPrice(Double p){price = p;}
+        void setDescription(String d){description = d;}
+        void setImage(String i){image = i;}
     }
 }
