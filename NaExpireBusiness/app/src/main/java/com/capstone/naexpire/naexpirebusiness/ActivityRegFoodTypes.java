@@ -18,16 +18,12 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
 
     ArrayList<String> fTypes = new ArrayList<String>(); //list of all food types
     ArrayList<String> checked = new ArrayList<String>(); //list of currently selected food types
-    String[] rInfo = new String[5];
     ListAdapterFoodType adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_food_types);
-
-        Intent intent = getIntent();
-        rInfo = intent.getStringArrayExtra("restInfo");
 
         setTitle("Register"); //set activity title
 

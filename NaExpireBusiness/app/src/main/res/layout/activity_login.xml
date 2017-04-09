@@ -22,7 +22,7 @@
         android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/txtUsername"
+        android:id="@+id/txtLoginEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -32,10 +32,10 @@
         android:inputType="textEmailAddress" />
 
     <EditText
-        android:id="@+id/txtPassword"
+        android:id="@+id/txtLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtUsername"
+        android:layout_below="@id/txtLoginEmail"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword" />
@@ -44,7 +44,7 @@
         android:id="@+id/lblLoginNothing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtPassword"
+        android:layout_below="@id/txtLoginPassword"
         android:layout_centerHorizontal="true"/>
 
     <Button
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_below="@id/txtPassword"
+        android:layout_below="@id/txtLoginPassword"
         android:layout_toLeftOf="@id/lblLoginNothing"
         android:text="@string/login"
         android:textColor="@color/colorAccent"
@@ -64,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_below="@id/txtPassword"
+        android:layout_below="@id/txtLoginPassword"
         android:layout_toRightOf="@id/lblLoginNothing"
         android:text="@string/register"
         android:textColor="@color/colorAccent"
