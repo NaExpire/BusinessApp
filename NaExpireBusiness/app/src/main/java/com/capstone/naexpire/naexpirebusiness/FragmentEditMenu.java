@@ -50,8 +50,6 @@ public class FragmentEditMenu extends Fragment {
 
         FragmentEditMenu.this.getActivity().setTitle("Edit Menu"); //set activity title
 
-        dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
-
         Button save = (Button) view.findViewById(R.id.btnEditMenu);
         Button foot = (Button) footer.findViewById(R.id.btnFooterNew);
 
@@ -60,6 +58,7 @@ public class FragmentEditMenu extends Fragment {
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
 
+        dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor result = db.rawQuery("SELECT name, price, description, image FROM menu", null);
@@ -73,7 +72,7 @@ public class FragmentEditMenu extends Fragment {
         db.close();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FragmentEditMenu.this.getContext());
                 View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_menu, null);
                 final EditText newItemName = (EditText) dialogView.findViewById(R.id.txtItemName);
@@ -91,8 +90,6 @@ public class FragmentEditMenu extends Fragment {
                 newItemPrice.setText(adapter.getPrice(position));
                 newItemDesc.setText(adapter.getDescription(position));
                 Glide.with(FragmentEditMenu.this.getContext()).load(foodImage).into(newItemImage);
-
-                final String oldName = newItemName.getText().toString();
 
                 dialogBuilder.setView(dialogView);
                 final AlertDialog dialog = dialogBuilder.create();
@@ -122,7 +119,7 @@ public class FragmentEditMenu extends Fragment {
                         v.put("description", newItemDesc.getText().toString());
                         v.put("image", foodImage);
 
-                        String[] selectionArgs = {oldName};
+                        String[] selectionArgs = {adapter.getName(position)};
 
                         db.update("menu", v, "name = ?", selectionArgs);
                         db.close();
@@ -221,6 +218,15 @@ public class FragmentEditMenu extends Fragment {
         db.delete("menu", "name = ?", selectionArgs);
 
         db.close();
+
+        DatabaseHelperActiveDiscounts dbActiveHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
+        SQLiteDatabase dbActive = dbActiveHelper.getWritableDatabase();
+
+        dbActive.delete("activeDiscounts", "name = ?", selectionArgs);
+
+        dbActive.close();
+        dbActiveHelper.close();
+
         Toast.makeText(FragmentEditMenu.this.getContext(), name + " deleted", Toast.LENGTH_SHORT).show();
     }
 

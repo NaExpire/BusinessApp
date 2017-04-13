@@ -1,6 +1,9 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -21,8 +25,9 @@ import java.util.ArrayList;
 
 
 public class FragmentActiveDiscounts extends Fragment {
+    DatabaseHelperActiveDiscounts dbHelper = null;
 
-    ListAdapterEditMenu adapter;
+    ListAdapterActiveDiscounts adapter;
     ArrayList<String> item = new ArrayList<String>();
     ArrayList<String> price = new ArrayList<String>();
     ArrayList<String> quantity = new ArrayList<String>();
@@ -41,12 +46,25 @@ public class FragmentActiveDiscounts extends Fragment {
 
         FragmentActiveDiscounts.this.getActivity().setTitle("Active Discounts"); //set activity title
 
-        adapter = new ListAdapterEditMenu(FragmentActiveDiscounts.this.getContext(), FragmentActiveDiscounts.this);
+        adapter = new ListAdapterActiveDiscounts(FragmentActiveDiscounts.this.getContext(), FragmentActiveDiscounts.this);
         final ListView listView = (ListView) view.findViewById(R.id.lstActiveDiscounts);
         listView.setAdapter(adapter);
 
+        dbHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor result = db.rawQuery("SELECT name, price, quantity, image FROM activeDiscounts", null);
+
+        while (result.moveToNext()) {
+            adapter.newItem(result.getString(0), result.getString(1), result.getString(2),
+                    result.getString(3));
+        }
+
+        result.close();
+        db.close();
+
         //fill with dummy data
-        item.add("Beef Taco");
+        /*item.add("Beef Taco");
         item.add("Chicken Taco");
         price.add("$3.00");
         price.add("$3.50");
@@ -56,7 +74,7 @@ public class FragmentActiveDiscounts extends Fragment {
         image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos2");
         for(int i = 0; i < item.size(); i++){
             adapter.newItem(item.get(i), price.get(i), quantity.get(i), image.get(i));
-        }
+        }*/
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
@@ -68,9 +86,8 @@ public class FragmentActiveDiscounts extends Fragment {
                 ImageView image = (ImageView) dialogView.findViewById(R.id.imgDiscountPic);
                 Button save = (Button) dialogView.findViewById(R.id.btnActiveSave);
 
-                itemQuantity.setText(adapter.getDescription(position).substring(1));
-                itemPrice.setText(adapter.getPrice(position).substring(1));
-                final String holdName = adapter.getName(position);
+                itemQuantity.setText(adapter.getDescription(position));
+                itemPrice.setText(adapter.getPrice(position));
 
                 header.setText(adapter.getName(position)+" Discount");
                 Glide.with(FragmentActiveDiscounts.this.getContext()).load(adapter.getImage(position)).into(image);
@@ -85,8 +102,21 @@ public class FragmentActiveDiscounts extends Fragment {
                     @Override
                     public void onClick(View view) {
                         if(itemQuantity.getText().toString().equals("0")) adapter.deleteItem(position);
-                        else adapter.setItem(position, holdName, "$"+itemPrice.getText().toString(),
-                                "x"+itemQuantity.getText().toString(), adapter.getImage(position));
+                        else{
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                            ContentValues v = new ContentValues();
+                            v.put("price", itemPrice.getText().toString());
+                            v.put("quantity", itemQuantity.getText().toString());
+
+                            String[] selectionArgs = {adapter.getName(position)};
+
+                            db.update("activeDiscounts", v, "name = ?", selectionArgs);
+                            db.close();
+
+                            adapter.setItem(position, adapter.getName(position), itemPrice.getText().toString(),
+                                    itemQuantity.getText().toString(), adapter.getImage(position));
+                        }
                         dialog.dismiss();
                     }
                 });
@@ -94,6 +124,16 @@ public class FragmentActiveDiscounts extends Fragment {
         });
 
         return view;
+    }
+
+    public void delete(String name){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] selectionArgs = {name};
+
+        db.delete("activeDiscounts", "name = ?", selectionArgs);
+
+        db.close();
+        Toast.makeText(FragmentActiveDiscounts.this.getContext(), name + " discount deleted", Toast.LENGTH_SHORT).show();
     }
 
 }

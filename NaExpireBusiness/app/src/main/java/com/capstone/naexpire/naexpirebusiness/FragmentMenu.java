@@ -1,6 +1,7 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
 public class FragmentMenu extends Fragment {
 
     private DatabaseHelperMenu dbHelper = null;
-    private SQLiteDatabase db = null;
+    private DatabaseHelperActiveDiscounts dbDiscountsHelper = null;
     private Cursor current = null;
 
     ListAdapterMenu adapter;
@@ -55,7 +56,7 @@ public class FragmentMenu extends Fragment {
 
         if (current==null) {
             dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
-            //task=new LoadCursorTask().execute();
+            dbDiscountsHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
         }
 
         //spinner to select filter method for menu items
@@ -70,7 +71,7 @@ public class FragmentMenu extends Fragment {
         final ListView listView = (ListView) view.findViewById(R.id.lstRestrauntMenu);
         listView.setAdapter(adapter);
 
-        db = dbHelper.getReadableDatabase();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor result = db.rawQuery("SELECT id, name, price, description, image FROM menu", null);
 
@@ -113,6 +114,8 @@ public class FragmentMenu extends Fragment {
                 final EditText dPrice = (EditText) dView.findViewById(R.id.txtDiscountPrice);
                 Button saveDiscount = (Button) dView.findViewById(R.id.btnNewDiscount);
 
+                final int spot = position;
+
                 name.setText("New "+adapter.getName(position)+" Discount");
                 Glide.with(FragmentMenu.this.getContext()).load(adapter.getImage(position)).into(image);
 
@@ -130,6 +133,19 @@ public class FragmentMenu extends Fragment {
                             Toast.makeText(FragmentMenu.this.getActivity(),"Fill All Fields", Toast.LENGTH_SHORT).show();
                         }
                         else{
+                            SQLiteDatabase db = dbDiscountsHelper.getWritableDatabase();
+
+                            ContentValues values = new ContentValues();
+
+                            values.put("id", "1");
+                            values.put("name", adapter.getName(spot));
+                            values.put("price", p);
+                            values.put("quantity", q);
+                            values.put("image", adapter.getImage(spot));
+                            db.insert("activeDiscounts", null, values);
+
+                            db.close();
+
                             Toast.makeText(FragmentMenu.this.getActivity(),"Discount Created", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
@@ -143,6 +159,7 @@ public class FragmentMenu extends Fragment {
     @Override
     public void onDestroy() {
         dbHelper.close();
+        dbDiscountsHelper.close();
         super.onDestroy();
     }
 }

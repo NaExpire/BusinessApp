@@ -1,8 +1,6 @@
 package com.capstone.naexpire.naexpirebusiness;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +14,11 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 /**
- * Created by graemedrucker on 3/23/17.
+ * Created by graemedrucker on 4/13/17.
  */
 
-public class ListAdapterEditMenu extends BaseAdapter {
-    private FragmentEditMenu frag;
+public class ListAdapterActiveDiscounts extends BaseAdapter {
+    private FragmentActiveDiscounts frag;
 
     private ArrayList<String> names, prices, descriptions;
     private ArrayList<String> images;
@@ -28,7 +26,7 @@ public class ListAdapterEditMenu extends BaseAdapter {
 
     private static LayoutInflater inflater = null;
 
-    public ListAdapterEditMenu(Context c, FragmentEditMenu fragm){
+    public ListAdapterActiveDiscounts(Context c, FragmentActiveDiscounts fragm){
         frag = fragm;
 
         names = new ArrayList<>();
@@ -102,14 +100,13 @@ public class ListAdapterEditMenu extends BaseAdapter {
 
         holder.nm.setText(names.get(position));
         holder.pr.setText("$"+prices.get(position));
-        holder.ds.setText(descriptions.get(position));
+        holder.ds.setText("x"+descriptions.get(position));
         Glide.with(context).load(images.get(position)).into(holder.im);
 
         holder.bt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 deleteItem(position);
-                notifyDataSetChanged();
             }
         });
 
