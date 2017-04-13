@@ -41,7 +41,7 @@ public class FragmentActiveDiscounts extends Fragment {
 
         FragmentActiveDiscounts.this.getActivity().setTitle("Active Discounts"); //set activity title
 
-        adapter = new ListAdapterEditMenu(FragmentActiveDiscounts.this.getContext());
+        adapter = new ListAdapterEditMenu(FragmentActiveDiscounts.this.getContext(), FragmentActiveDiscounts.this);
         final ListView listView = (ListView) view.findViewById(R.id.lstActiveDiscounts);
         listView.setAdapter(adapter);
 

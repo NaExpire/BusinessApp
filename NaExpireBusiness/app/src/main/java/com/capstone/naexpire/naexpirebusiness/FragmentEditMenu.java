@@ -1,7 +1,10 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 
 
 public class FragmentEditMenu extends Fragment {
+    DatabaseHelperMenu dbHelper = null;
 
     ListAdapterEditMenu adapter;
     ImageView newItemImage;
@@ -46,31 +50,27 @@ public class FragmentEditMenu extends Fragment {
 
         FragmentEditMenu.this.getActivity().setTitle("Edit Menu"); //set activity title
 
+        dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
+
         Button save = (Button) view.findViewById(R.id.btnEditMenu);
         Button foot = (Button) footer.findViewById(R.id.btnFooterNew);
 
-        adapter = new ListAdapterEditMenu(FragmentEditMenu.this.getContext());
+        adapter = new ListAdapterEditMenu(FragmentEditMenu.this.getContext(), FragmentEditMenu.this);
         final ListView listView = (ListView) view.findViewById(R.id.lstEditMenu);
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
 
-        //test data
-        name.add("Beef Taco");
-        name.add("Chicken Taco");
-        name.add("Cheeseburger");
-        price.add("$1.23");
-        price.add("$2.34");
-        price.add("$3.45");
-        description.add("Taco with beef");
-        description.add("Taco with chicken");
-        description.add("Burger with cheese");
-        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
-        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos2");
-        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/burger");
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        for(int i = 0; i < name.size(); i++){
-            adapter.newItem(name.get(i),price.get(i),description.get(i), image.get(i));
+        Cursor result = db.rawQuery("SELECT name, price, description, image FROM menu", null);
+
+        while (result.moveToNext()) {
+            adapter.newItem(result.getString(0), result.getString(1), result.getString(2),
+                    result.getString(3));
         }
+
+        result.close();
+        db.close();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
@@ -92,6 +92,8 @@ public class FragmentEditMenu extends Fragment {
                 newItemDesc.setText(adapter.getDescription(position));
                 Glide.with(FragmentEditMenu.this.getContext()).load(foodImage).into(newItemImage);
 
+                final String oldName = newItemName.getText().toString();
+
                 dialogBuilder.setView(dialogView);
                 final AlertDialog dialog = dialogBuilder.create();
                 dialog.show();
@@ -109,9 +111,22 @@ public class FragmentEditMenu extends Fragment {
                 saveNewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        name.set(spot, newItemName.getText().toString());
-                        price.set(spot, newItemPrice.getText().toString());
-                        description.set(spot, newItemDesc.getText().toString());
+
+                        //String holdNew = newItemName.getText().toString();
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                        ContentValues v = new ContentValues();
+                        v.put("id", "1");
+                        v.put("name", newItemName.getText().toString());
+                        v.put("price", newItemPrice.getText().toString());
+                        v.put("description", newItemDesc.getText().toString());
+                        v.put("image", foodImage);
+
+                        String[] selectionArgs = {oldName};
+
+                        db.update("menu", v, "name = ?", selectionArgs);
+                        db.close();
+
                         adapter.setItem(spot, newItemName.getText().toString(),
                                 newItemPrice.getText().toString(),newItemDesc.getText().toString(),
                                 foodImage);
@@ -152,11 +167,23 @@ public class FragmentEditMenu extends Fragment {
                 saveNewItem.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
-                        name.add(newItemName.getText().toString());
-                        price.add("$"+newItemPrice.getText().toString());
-                        description.add(newItemDesc.getText().toString());
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                        ContentValues values = new ContentValues();
+
+                        values.put("id", "1");
+                        values.put("name", newItemName.getText().toString());
+                        values.put("price", newItemPrice.getText().toString());
+                        values.put("description", newItemDesc.getText().toString());
+                        values.put("image", foodImage);
+                        db.insert("menu", null, values);
+
+                        db.close();
+                        //name.add(newItemName.getText().toString());
+                        //price.add("$"+newItemPrice.getText().toString());
+                        //description.add(newItemDesc.getText().toString());
                         adapter.newItem(newItemName.getText().toString(),
-                                "$"+newItemPrice.getText().toString(),
+                                newItemPrice.getText().toString(),
                                 newItemDesc.getText().toString(),
                                 foodImage);
                         dialog.dismiss();
@@ -187,4 +214,19 @@ public class FragmentEditMenu extends Fragment {
         }
     }
 
+    public void delete(String name){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] selectionArgs = {name};
+
+        db.delete("menu", "name = ?", selectionArgs);
+
+        db.close();
+        Toast.makeText(FragmentEditMenu.this.getContext(), name + " deleted", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
+    }
 }

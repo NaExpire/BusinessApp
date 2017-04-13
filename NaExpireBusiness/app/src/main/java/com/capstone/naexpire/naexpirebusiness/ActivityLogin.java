@@ -1,6 +1,8 @@
 package com.capstone.naexpire.naexpirebusiness;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -48,11 +50,17 @@ public class ActivityLogin extends AppCompatActivity {
     public void clickLogin(View view) {
         email = txtemail.getText().toString();
         password = txtpassword.getText().toString();
-        if (email.isEmpty() || password.isEmpty()) Toast.makeText(this, "Enter Username & Password",
+
+        Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
+        //intent.putExtra("userData", userData);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+        /*if (email.isEmpty() || password.isEmpty()) Toast.makeText(this, "Enter Username & Password",
                 Toast.LENGTH_LONG).show();
         else {
             new ActivityLogin.HttpAsyncTask().execute("http://138.197.33.88/api/business/login/");
-        }
+        }*/
     }
 
     public void clickForgot(View view) {
@@ -189,6 +197,8 @@ public class ActivityLogin extends AppCompatActivity {
         @Override
         protected String doInBackground(String... urls){
             String confirmStatus = "wrong";
+            String line = null;
+            StringBuilder sb = new StringBuilder();
             HttpURLConnection connection = null;
 
             try {
@@ -211,7 +221,30 @@ public class ActivityLogin extends AppCompatActivity {
 
                 int HttpResult = connection.getResponseCode();
                 android.util.Log.w(this.getClass().getSimpleName(), "Response Code: "+HttpResult);
-                if(HttpResult == HttpURLConnection.HTTP_OK) confirmStatus = "correct";
+                if(HttpResult == HttpURLConnection.HTTP_OK){
+                    confirmStatus = "false";
+                    BufferedReader br = new BufferedReader(new InputStreamReader(
+                            connection.getInputStream(), "utf-8"
+                    ));
+                    while((line = br.readLine()) != null){
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+
+                    try{
+                        JSONObject obj = new JSONObject(sb.toString());
+                        confirmStatus = obj.getString("ok");
+                    }catch (Exception e){}
+
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+sb.toString());
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Session ID: "+loginStatus);
+                }
+                else{
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+connection.getResponseMessage());
+                }
             }
             catch (MalformedURLException ex){ ex.printStackTrace(); }
             catch (IOException e){ e.printStackTrace(); }
@@ -222,10 +255,10 @@ public class ActivityLogin extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if (result.equals("correct")){ //correct code
+            if (result.equals("true")){ //correct code
                 //putextra loginStatus
                 Intent intent = new Intent(ActivityLogin.this.getBaseContext(), ActivityRegFirstLogin.class);
-                intent.putExtra("userData", userData);
+                //intent.putExtra("userData", userData);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 dialog.dismiss();

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONObject;
+
 import java.util.*;
 
 public class ListAdapterMenu extends BaseAdapter {
@@ -45,6 +47,7 @@ public class ListAdapterMenu extends BaseAdapter {
     public String getPrice(int position){ return "$"+menu.get(position).getPrice(); }
     public String getDescription(int position){ return menu.get(position).getDescription(); }
     public String getImage(int position){ return menu.get(position).getImage(); }
+    public String getJson(int position) {return menu.get(position).getJson();}
 
     public void setItem(int position, String name, Double price, String description, String image){
         menu.get(position).getName();
@@ -53,8 +56,8 @@ public class ListAdapterMenu extends BaseAdapter {
         menu.get(position).getImage();
         notifyDataSetChanged();
     }
-    public void newItem(String name, Double price, String description, String image){
-        menu.add(new MenuItem(name, price, description, image));
+    public void newItem(int id, String name, Double price, String description, String image){
+        menu.add(new MenuItem(id, name, price, description, image));
         notifyDataSetChanged();
     }
 
@@ -113,28 +116,51 @@ public class ListAdapterMenu extends BaseAdapter {
     public class MenuItem{
         private String name, description, image;
         private double price;
+        private int id;
 
         MenuItem(){
+            id = 0;
             name = "";
             price = 0.00;
             description = "";
             image = "";
         }
 
-        MenuItem(String n, Double p, String d, String i){
+        MenuItem(int i, String n, Double p, String d, String im){
+            id = i;
             name = n;
             price  = p;
             description = d;
-            image = i;
+            image = im;
         }
         String getName(){return name;}
         Double getPrice(){return price;}
         String getDescription(){return description;}
         String getImage(){return image;}
+        String getJson(){return toJsonString(id, name, description, image, price);}
 
         void setName(String n){name = n;}
         void setPrice(Double p){price = p;}
         void setDescription(String d){description = d;}
         void setImage(String i){image = i;}
+    }
+
+    public String toJsonString(int id, String name, String description, String image, double price) {
+        String returnJ = "";
+        try{
+            JSONObject js = new JSONObject();
+            js.put("id", id);
+            js.put("name", name);
+            js.put("description", description);
+            js.put("image", image);
+            js.put("price", price);
+            returnJ = js.toString();
+            android.util.Log.w(this.getClass().getSimpleName(),returnJ);
+        }
+        catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),
+                    "error converting to/from json");
+        }
+        return returnJ;
     }
 }

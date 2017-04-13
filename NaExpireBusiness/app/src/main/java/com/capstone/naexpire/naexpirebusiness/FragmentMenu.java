@@ -1,6 +1,8 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,9 +27,14 @@ import java.util.ArrayList;
 
 public class FragmentMenu extends Fragment {
 
+    private DatabaseHelperMenu dbHelper = null;
+    private SQLiteDatabase db = null;
+    private Cursor current = null;
+
     ListAdapterMenu adapter;
     ImageView newItemImage;
     String foodImage;
+    ArrayList<Integer> itemId = new ArrayList<Integer>();
     ArrayList<String> name = new ArrayList<String>();
     ArrayList<Double> price = new ArrayList<Double>();
     ArrayList<String> description = new ArrayList<String>();
@@ -46,6 +53,11 @@ public class FragmentMenu extends Fragment {
 
         FragmentMenu.this.getActivity().setTitle("Menu"); //set activity title
 
+        if (current==null) {
+            dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
+            //task=new LoadCursorTask().execute();
+        }
+
         //spinner to select filter method for menu items
         Spinner spinner = (Spinner) view.findViewById(R.id.spnFilter);
         ArrayAdapter<CharSequence> spAdapter = ArrayAdapter.createFromResource(
@@ -58,22 +70,23 @@ public class FragmentMenu extends Fragment {
         final ListView listView = (ListView) view.findViewById(R.id.lstRestrauntMenu);
         listView.setAdapter(adapter);
 
-        //test data
-        name.add("Beef Taco");
-        name.add("Chicken Taco");
-        name.add("Cheeseburger");
-        price.add(1.23);
-        price.add(2.34);
-        price.add(3.45);
-        description.add("Taco with beef");
-        description.add("Taco with chicken");
-        description.add("Burger with cheese");
-        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
-        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos2");
-        image.add("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/burger");
+        db = dbHelper.getReadableDatabase();
+
+        Cursor result = db.rawQuery("SELECT id, name, price, description, image FROM menu", null);
+
+        while(result.moveToNext()){
+            itemId.add(Integer.parseInt(result.getString(0)));
+            name.add(result.getString(1));
+            price.add(Double.parseDouble(result.getString(2)));
+            description.add(result.getString(3));
+            image.add(result.getString(4));
+        }
+
+        db.close();
+        result.close();
 
         for(int i = 0; i < name.size(); i++){
-            adapter.newItem(name.get(i),price.get(i),description.get(i), image.get(i));
+            adapter.newItem(itemId.get(i), name.get(i),price.get(i),description.get(i), image.get(i));
         }
         adapter.sortMenu(spinner.getSelectedItemPosition());
 
@@ -126,5 +139,10 @@ public class FragmentMenu extends Fragment {
         });
 
         return view;
+    }
+    @Override
+    public void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
     }
 }

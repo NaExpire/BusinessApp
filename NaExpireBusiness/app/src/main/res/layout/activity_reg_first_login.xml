@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRegAddressOne"
-                android:hint="Address Line 2"
+                android:hint="Address Line 2 (optional)"
                 android:inputType="textPostalAddress"/>
 
             <EditText

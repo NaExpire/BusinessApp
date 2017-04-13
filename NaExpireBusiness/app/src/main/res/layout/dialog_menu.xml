@@ -48,29 +48,37 @@
         android:hint="Description"
         android:inputType="textCapSentences" />
 
-    <ImageView
-        android:id="@+id/imgMenuFood"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@id/txtDescription"
-        android:layout_marginTop="5dp"
-        android:scaleType="centerCrop"
-        app:srcCompat="@mipmap/ic_photo_black_24dp" />
-
-    <Button
-        android:id="@+id/btnMenuChooseImage"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rlDialogMenu"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imgMenuFood"
-        android:layout_toRightOf="@id/imgMenuFood"
-        android:text="Choose Image"/>
+        android:layout_below="@id/txtDescription">
+
+        <ImageView
+            android:id="@+id/imgMenuFood"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@mipmap/ic_photo_black_24dp" />
+
+        <Button
+            android:id="@+id/btnMenuChooseImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:layout_toRightOf="@id/imgMenuFood"
+            android:text="Choose Image"/>
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnSaveItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/imgMenuFood"
+        android:layout_below="@id/rlDialogMenu"
         android:text="Save"
         android:textColor="@android:color/background_light"
         android:background="@color/colorAccent"/>

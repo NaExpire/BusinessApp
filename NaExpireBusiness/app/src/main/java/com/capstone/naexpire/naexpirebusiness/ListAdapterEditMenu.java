@@ -1,6 +1,8 @@
 package com.capstone.naexpire.naexpirebusiness;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,13 +20,17 @@ import java.util.ArrayList;
  */
 
 public class ListAdapterEditMenu extends BaseAdapter {
+    private FragmentEditMenu frag;
+
     private ArrayList<String> names, prices, descriptions;
     private ArrayList<String> images;
     private Context context;
 
     private static LayoutInflater inflater = null;
 
-    public ListAdapterEditMenu(Context c){
+    public ListAdapterEditMenu(Context c, FragmentEditMenu fragm){
+        frag = fragm;
+
         names = new ArrayList<>();
         prices = new ArrayList<>();
         descriptions = new ArrayList<>();
@@ -83,7 +89,7 @@ public class ListAdapterEditMenu extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, final ViewGroup parent){
         Holder holder = new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.list_edit_menu, null);
@@ -94,13 +100,14 @@ public class ListAdapterEditMenu extends BaseAdapter {
         holder.bt=(ImageButton) rowView.findViewById(R.id.imgbtnClear);
 
         holder.nm.setText(names.get(position));
-        holder.pr.setText(prices.get(position));
+        holder.pr.setText("$"+prices.get(position));
         holder.ds.setText(descriptions.get(position));
         Glide.with(context).load(images.get(position)).into(holder.im);
 
         holder.bt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                frag.delete(names.get(position));
                 names.remove(position);
                 prices.remove(position);
                 descriptions.remove(position);

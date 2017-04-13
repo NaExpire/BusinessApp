@@ -33,7 +33,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
 
         View footer =  ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_add, null);
 
-        adapter = new ListAdapterEditMenu(this);
+        //adapter = new ListAdapterEditMenu(this);
         final ListView listView = (ListView) findViewById(R.id.lstMenu);
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
