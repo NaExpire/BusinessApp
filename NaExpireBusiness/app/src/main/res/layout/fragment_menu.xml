@@ -17,6 +17,7 @@
             android:id="@+id/txtFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:layout_centerVertical="true"
             android:text="Filter by:"
             android:textSize="16dp"/>

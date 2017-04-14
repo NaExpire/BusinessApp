@@ -1,6 +1,9 @@
 package com.capstone.naexpire.naexpirebusiness;
 
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,8 +22,10 @@ import java.util.ArrayList;
 
 public class FragmentEditFoodTypes extends Fragment {
 
+    DatabaseHelperFoods dbHelper = null;
+
     ListAdapterFoodType adapter;
-    ArrayList<String> fTypes = new ArrayList<String>();
+    ArrayList<String> foods = new ArrayList<String>();
     ArrayList<String> checked = new ArrayList<String>();
 
 
@@ -32,21 +38,46 @@ public class FragmentEditFoodTypes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //test data
-        fTypes.add("Mexican");
-        fTypes.add("Italian");
-        fTypes.add("Indian");
-        fTypes.add("Cajun");
-        fTypes.add("Thai");
-        fTypes.add("Greek");
-        checked.add("Italian");
-        checked.add("Thai");
+        //base food types that the app starts with
+        foods.add("Mexican");
+        foods.add("Italian");
+        foods.add("Indian");
+        foods.add("Cajun");
+        foods.add("Thai");
+        foods.add("Greek");
+
+        /*f
+        //initial setup for testing
+        dbHelper = new DatabaseHelperFoods(getActivity().getApplicationContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues value = new ContentValues();
+        for(int i = 0; i < fTypes.size(); i++){
+            value.put("name", fTypes.get(i));
+            value.put("checked", "no");
+            db.insert("foods", null, value);
+        }
+        fTypes.clear();
+        checked.clear();
+        db.close();*/
+
+        //get checked foods from db
+        dbHelper = new DatabaseHelperFoods(getActivity().getApplicationContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT checked FROM foods", null);
+
+        while(result.moveToNext()){
+            checked.add(result.getString(0));
+        }
+        db.close();
+
+        updateFoods();
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_food_types, container, false);
         View footer = inflater.inflate(R.layout.footer_add, null);
 
-        adapter = new ListAdapterFoodType(FragmentEditFoodTypes.this.getContext(), fTypes, checked);
+        adapter = new ListAdapterFoodType(FragmentEditFoodTypes.this.getContext(), foods, checked);
         final ListView listView = (ListView) view.findViewById(R.id.lstTypes);
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
@@ -72,7 +103,7 @@ public class FragmentEditFoodTypes extends Fragment {
                     public void onClick(View view){
                         String newFood = newFoodType.getText().toString();
                         if(!newFood.isEmpty()){
-                            fTypes.add(newFood);
+                            foods.add(newFood);
                             checked.add(newFood);
                             adapter.notifyDataSetChanged();
                             dialog.dismiss();
@@ -97,6 +128,18 @@ public class FragmentEditFoodTypes extends Fragment {
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                checked = adapter.getChecked();
+
+                dbHelper = new DatabaseHelperFoods(getActivity().getApplicationContext());
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.delete("foods", null, null);
+
+                ContentValues value = new ContentValues();
+                for(int i = 0; i < checked.size(); i++){
+                    value.put("checked", checked.get(i));
+                    db.insert("foods", null, value);
+                }
+                db.close();
                 Toast.makeText(FragmentEditFoodTypes.this.getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
             }
         });
@@ -104,4 +147,19 @@ public class FragmentEditFoodTypes extends Fragment {
         return view;
     }
 
+    public void updateFoods(){
+        for(int i = 0; i < checked.size(); i++){
+            boolean found = false;
+            for(int j = 0; j < foods.size(); j++){
+                if((checked.get(i).equals(foods.get(j)))) found = true;
+            }
+            if(!found) foods.add(checked.get(i));
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
+    }
 }
