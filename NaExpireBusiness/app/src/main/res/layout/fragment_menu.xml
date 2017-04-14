@@ -3,29 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingBottom="5dp"
     tools:context="com.capstone.naexpire.naexpirebusiness.FragmentMenu">
 
-    <TextView
-        android:id="@+id/txtFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Filter by:"/>
-
-    <Spinner
-        android:id="@+id/spnFilter"
+    <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_toRightOf="@id/txtFilter"/>
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/txtFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Filter by:"
+            android:textSize="16dp"/>
+
+        <Spinner
+            android:id="@+id/spnFilter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/txtFilter"/>
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/lstRestrauntMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/spnFilter"
+        android:layout_below="@id/rl"
         android:layout_centerHorizontal="true"
         android:divider="@null"
         android:dividerHeight="5dp"/>

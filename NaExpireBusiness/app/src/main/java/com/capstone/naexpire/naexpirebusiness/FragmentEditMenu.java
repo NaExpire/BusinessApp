@@ -30,10 +30,6 @@ public class FragmentEditMenu extends Fragment {
     ListAdapterEditMenu adapter;
     ImageView newItemImage;
     String foodImage;
-    ArrayList<String> name = new ArrayList<String>();
-    ArrayList<String> price = new ArrayList<String>();
-    ArrayList<String> description = new ArrayList<String>();
-    ArrayList<String> image = new ArrayList<String>();
 
 
     public FragmentEditMenu() {
@@ -71,6 +67,7 @@ public class FragmentEditMenu extends Fragment {
         result.close();
         db.close();
 
+        //item in the list tapped to edit
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FragmentEditMenu.this.getContext());
@@ -105,6 +102,7 @@ public class FragmentEditMenu extends Fragment {
                     }
                 });
 
+                //press button to save edits
                 saveNewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -123,6 +121,19 @@ public class FragmentEditMenu extends Fragment {
 
                         db.update("menu", v, "name = ?", selectionArgs);
                         db.close();
+
+                        DatabaseHelperActiveDiscounts dbActiveHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
+                        SQLiteDatabase dbActive = dbActiveHelper.getWritableDatabase();
+
+                        ContentValues vals = new ContentValues();
+                        vals.put("name", newItemName.getText().toString());
+
+                        selectionArgs[0] = adapter.getName(position);
+
+                        dbActive.update("activeDiscounts", vals, "name = ?", selectionArgs);
+
+                        dbActive.close();
+                        dbActiveHelper.close();
 
                         adapter.setItem(spot, newItemName.getText().toString(),
                                 newItemPrice.getText().toString(),newItemDesc.getText().toString(),
@@ -176,9 +187,7 @@ public class FragmentEditMenu extends Fragment {
                         db.insert("menu", null, values);
 
                         db.close();
-                        //name.add(newItemName.getText().toString());
-                        //price.add("$"+newItemPrice.getText().toString());
-                        //description.add(newItemDesc.getText().toString());
+
                         adapter.newItem(newItemName.getText().toString(),
                                 newItemPrice.getText().toString(),
                                 newItemDesc.getText().toString(),
