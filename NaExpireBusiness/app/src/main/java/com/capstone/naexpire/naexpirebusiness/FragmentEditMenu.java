@@ -20,10 +20,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
-import java.net.URI;
-import java.util.ArrayList;
-
-
 public class FragmentEditMenu extends Fragment {
     DatabaseHelperMenu dbHelper = null;
 
