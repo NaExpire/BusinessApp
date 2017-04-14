@@ -1,6 +1,8 @@
 package com.capstone.naexpire.naexpirebusiness;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
@@ -17,9 +19,9 @@ import android.widget.TextView;
 public class NavDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    //test data
-    String ownerName = "Seb";
-    String restName = "Chicken on a Stick";
+    private SharedPreferences sharedPref;
+
+    private TextView owner, rest;
 
     NavigationView navigationView = null;
     Toolbar toolbar = null;
@@ -28,18 +30,12 @@ public class NavDrawer extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
 
-        //Intent intent = getIntent();
-        //allInfo = intent.getStringExtra("data");
-        //String[] ar = allInfo.split(",");
-
         //Set the fragment initially
         FragmentMenu fragmentMenu = new FragmentMenu();
         FragmentManager manager = getSupportFragmentManager();
 
-        //send string to fragment
-        //Bundle bundle = new Bundle();
-        //bundle.putString("restrauntData", allInfo);
-        //menuFragment.setArguments(bundle);
+        sharedPref = getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
+                Context.MODE_PRIVATE);
 
         manager.beginTransaction().replace(R.id.fragment_container, fragmentMenu).commit();
 
@@ -52,16 +48,22 @@ public class NavDrawer extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        updateDetails();
+    }
+
+    public void updateDetails(){
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
 
-        TextView owner = (TextView) header.findViewById(R.id.lblNavOwner);
-        TextView rest = (TextView) header.findViewById(R.id.lblNavRest);
+        owner = (TextView) header.findViewById(R.id.lblNavOwner);
+        rest = (TextView) header.findViewById(R.id.lblNavRest);
 
-        owner.setText(ownerName);
-        rest.setText(restName);
+        String fullName = sharedPref.getString("firstName", "Shmeggle") +
+                " "+ sharedPref.getString("lastName", "TeaBoot");
+        owner.setText(fullName);
+        rest.setText(sharedPref.getString("restaurantName", ""));
     }
 
     @Override

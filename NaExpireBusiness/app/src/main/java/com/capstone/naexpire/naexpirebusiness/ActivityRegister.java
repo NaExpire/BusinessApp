@@ -1,6 +1,8 @@
 package com.capstone.naexpire.naexpirebusiness;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,8 +28,10 @@ import java.util.regex.Pattern;
 
 public class ActivityRegister extends AppCompatActivity {
 
-    EditText txtFirstName, txtLastName, txtrestName, txtemail, txtpassword, txtcPassword;
-    String firstName, lastName, email, password, confirmPass, restaurantName;
+    private SharedPreferences sharedPref;
+
+    private EditText txtFirstName, txtLastName, txtrestName, txtemail, txtpassword, txtcPassword;
+    private String firstName, lastName, email, password, confirmPass, restaurantName;
 
 
     @Override
@@ -42,6 +46,9 @@ public class ActivityRegister extends AppCompatActivity {
         txtemail = (EditText) findViewById(R.id.txtRegEmail);
         txtpassword = (EditText) findViewById(R.id.txtRegPassword);
         txtcPassword = (EditText) findViewById(R.id.txtRegConfirmPass);
+
+        sharedPref = getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
+                Context.MODE_PRIVATE);
     }
 
     public void clickNext(View view){
@@ -60,7 +67,17 @@ public class ActivityRegister extends AppCompatActivity {
 
         if(ready && same && valid){ //if all fields are filled and passwords match
 
-            new HttpAsyncTask().execute("http://138.197.33.88/api/business/register/");
+            //new HttpAsyncTask().execute("http://138.197.33.88/api/business/register/");
+
+            //put values in shared preferences
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("fromRegister", 1);
+            editor.putString("firstName", firstName);
+            editor.putString("lastName", lastName);
+            editor.putString("restaurantName", restaurantName);
+            editor.putString("email", email);
+            editor.putString("password", password); //needs to be encrypted
+            editor.commit();
 
             Intent intent = new Intent(getBaseContext(), ActivityLogin.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

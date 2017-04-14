@@ -25,6 +25,8 @@ import java.net.URL;
 
 public class ActivityLogin extends AppCompatActivity {
 
+    private SharedPreferences sharedPref;
+
     EditText txtemail, txtpassword;
     String email, password, confirmationCode, loginStatus, userData;
     AlertDialog.Builder dialogBuilder;
@@ -39,6 +41,18 @@ public class ActivityLogin extends AppCompatActivity {
         txtemail = (EditText) findViewById(R.id.txtLoginEmail);
         txtpassword = (EditText) findViewById(R.id.txtLoginPassword);
         loginStatus = "nope";
+
+        sharedPref = getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
+                Context.MODE_PRIVATE);
+
+        if(1 == sharedPref.getInt("fromRegister", 0)){
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("fromRegister", 0); //set that the user didn't just come from register
+            editor.commit();
+
+            txtemail.setText(sharedPref.getString("email", ""));
+            txtpassword.setText(sharedPref.getString("password", ""));
+        }
 
         dialogBuilder = new AlertDialog.Builder(this);
         dialogView = getLayoutInflater().inflate(R.layout.dialog_confirmation_code, null);
