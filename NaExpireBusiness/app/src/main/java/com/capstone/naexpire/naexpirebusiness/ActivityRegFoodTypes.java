@@ -1,7 +1,9 @@
 package com.capstone.naexpire.naexpirebusiness;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,8 +17,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class ActivityRegFoodTypes extends AppCompatActivity {
+    DatabaseHelperFoods dbHelper = null;
 
-    ArrayList<String> fTypes = new ArrayList<String>(); //list of all food types
+    ArrayList<String> foods = new ArrayList<String>(); //list of all food types
     ArrayList<String> checked = new ArrayList<String>(); //list of currently selected food types
     ListAdapterFoodType adapter;
 
@@ -27,18 +30,18 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
 
         setTitle("Register"); //set activity title
 
-        //initial food types for testing
-        fTypes.add("Mexican");
-        fTypes.add("Italian");
-        fTypes.add("Indian");
-        fTypes.add("Cajun");
-        fTypes.add("Thai");
-        fTypes.add("Greek");
+        //base food types that the app starts with
+        foods.add("Mexican");
+        foods.add("Italian");
+        foods.add("Indian");
+        foods.add("Cajun");
+        foods.add("Thai");
+        foods.add("Greek");
 
         View footer =  ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_add, null);
 
         //set layout & data for the list's adapter
-        adapter = new ListAdapterFoodType(this, fTypes, checked);
+        adapter = new ListAdapterFoodType(this, foods, checked);
         final ListView listView = (ListView) findViewById(R.id.lstFoodType);
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
@@ -63,7 +66,7 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
                         String newFood = newFoodType.getText().toString();
                         if(!newFood.isEmpty()){
                             checked = adapter.getChecked();
-                            fTypes.add(newFood);
+                            foods.add(newFood);
                             checked.add(newFood);
                             adapter.notifyDataSetChanged();
                             dialog.dismiss();
@@ -78,41 +81,23 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
     }
 
     public void clickFoodTypesNext(View View){
+        //send registration info to database
 
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegFoodTypes.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialog_skip_menu, null);
-        Button yes = (Button) mView.findViewById(R.id.btnCreateMenuYes);
-        Button later = (Button) mView.findViewById(R.id.btnCreateMenuLater);
+        //to local database
+        checked = adapter.getChecked();
 
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
+        dbHelper = new DatabaseHelperFoods(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete("foods", null, null);
 
-        yes.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(getBaseContext(), ActivityRegGrabBag.class);
-                startActivity(intent);
+        ContentValues value = new ContentValues();
+        for(int i = 0; i < checked.size(); i++){
+            value.put("checked", checked.get(i));
+            db.insert("foods", null, value);
+        }
+        db.close();
 
-                dialog.dismiss();
-            }
-        });
-
-        later.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                //send registration info to database
-
-                Toast.makeText(getBaseContext(), "Registration Complete", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(getBaseContext(), NavDrawer.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
-                dialog.dismiss();
-            }
-        });
-
-
+        Intent intent = new Intent(getBaseContext(), ActivityRegChoose.class);
+        startActivity(intent);
     }
 }

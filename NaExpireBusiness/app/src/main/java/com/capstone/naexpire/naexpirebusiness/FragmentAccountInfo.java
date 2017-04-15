@@ -48,7 +48,7 @@ public class FragmentAccountInfo extends Fragment {
         sharedPref = getActivity().getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
                 Context.MODE_PRIVATE);
         restName.setText(sharedPref.getString("restaurantName", ""));
-        restAddr.setText(sharedPref.getString("restaurantAddress", ""));
+        restAddr.setText(sharedPref.getString("addressLine1", ""));
         restPhone.setText(sharedPref.getString("restaurantPhone", ""));
         restDesc.setText(sharedPref.getString("restaurantDescription", ""));
         usn.setText(sharedPref.getString("username", ""));

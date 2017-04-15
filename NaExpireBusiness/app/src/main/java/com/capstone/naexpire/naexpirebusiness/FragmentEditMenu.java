@@ -21,11 +21,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 public class FragmentEditMenu extends Fragment {
-    DatabaseHelperMenu dbHelper = null;
+    private DatabaseHelperMenu dbHelper = null;
 
-    ListAdapterEditMenu adapter;
-    ImageView newItemImage;
-    String foodImage;
+    private ListAdapterEditMenu adapter;
+    private ImageView newItemImage;
+    private String foodImage;
 
 
     public FragmentEditMenu() {
@@ -82,6 +82,8 @@ public class FragmentEditMenu extends Fragment {
                 newItemName.setText(adapter.getName(position));
                 newItemPrice.setText(adapter.getPrice(position));
                 newItemDesc.setText(adapter.getDescription(position));
+                newItemImage.getLayoutParams().height = 300;
+                newItemImage.getLayoutParams().width = 300;
                 Glide.with(FragmentEditMenu.this.getContext()).load(foodImage).into(newItemImage);
 
                 dialogBuilder.setView(dialogView);

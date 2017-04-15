@@ -1,7 +1,11 @@
 package com.capstone.naexpire.naexpirebusiness;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,8 +23,10 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class ActivityRegCreateMenu extends AppCompatActivity {
+    private DatabaseHelperMenu dbHelper = null;
+    private SharedPreferences sharedPref;
 
-    ListAdapterEditMenu adapter;
+    ListAdapterCreateMenu adapter;
     ImageView newItemImage;
     String foodImage;
 
@@ -33,10 +39,26 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
 
         View footer =  ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer_add, null);
 
-        //adapter = new ListAdapterEditMenu(this);
+        adapter = new ListAdapterCreateMenu(this, ActivityRegCreateMenu.this);
         final ListView listView = (ListView) findViewById(R.id.lstMenu);
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
+
+        sharedPref = getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
+                Context.MODE_PRIVATE);
+        dbHelper = new DatabaseHelperMenu(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor result = db.rawQuery("SELECT name, price, description, image FROM menu", null);
+
+        while (result.moveToNext()) { //only add non grab-bag items
+            if(!(result.getString(0)).equals(sharedPref.getString("restaurantName", "")+" Grab-Bag Meal"))
+                adapter.newItem(result.getString(0), result.getString(1), result.getString(2),
+                        result.getString(3));
+        }
+
+        result.close();
+        db.close();
 
         Button foot = (Button) footer.findViewById(R.id.btnFooterNew);
 
@@ -71,8 +93,21 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
                 saveNewItem.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                        ContentValues values = new ContentValues();
+
+                        values.put("id", "1");
+                        values.put("name", newItemName.getText().toString());
+                        values.put("price", newItemPrice.getText().toString());
+                        values.put("description", newItemDesc.getText().toString());
+                        values.put("image", foodImage);
+                        db.insert("menu", null, values);
+
+                        db.close();
+
                         adapter.newItem(newItemName.getText().toString(),
-                                "$"+newItemPrice.getText().toString(),
+                                newItemPrice.getText().toString(),
                                 newItemDesc.getText().toString(),
                                 foodImage);
                         dialog.dismiss();
@@ -118,8 +153,23 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
                 saveNewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        //String holdNew = newItemName.getText().toString();
+                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                        ContentValues v = new ContentValues();
+                        v.put("id", "1");
+                        v.put("name", newItemName.getText().toString());
+                        v.put("price", newItemPrice.getText().toString());
+                        v.put("description", newItemDesc.getText().toString());
+                        v.put("image", foodImage);
+
+                        String[] selectionArgs = {adapter.getName(position)};
+
+                        db.update("menu", v, "name = ?", selectionArgs);
+                        db.close();
+
                         adapter.setItem(spot, newItemName.getText().toString(),
-                                "$"+newItemPrice.getText().toString(),newItemDesc.getText().toString(),
+                                newItemPrice.getText().toString(),newItemDesc.getText().toString(),
                                 foodImage);
                         dialog.dismiss();
                     }
@@ -131,11 +181,11 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
     public void clickFinishRegistration(View view){
 
         //send registration info to database
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("madeMenu", 1);
+        editor.commit();
 
-        Toast.makeText(this, "Registration Complete", Toast.LENGTH_SHORT).show();
-
-        Intent intent = new Intent(this, NavDrawer.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = new Intent(this, ActivityRegChoose.class);
         startActivity(intent);
     }
 
@@ -148,5 +198,22 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
             newItemImage.getLayoutParams().height = 300;
             newItemImage.getLayoutParams().width = 300;
         }
+    }
+
+    public void delete(String name){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] selectionArgs = {name};
+
+        db.delete("menu", "name = ?", selectionArgs);
+
+        db.close();
+
+        Toast.makeText(this, name + " deleted", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        dbHelper.close();
+        super.onDestroy();
     }
 }

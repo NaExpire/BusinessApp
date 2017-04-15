@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -15,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
-        android:text="Would you like to set a Grab-Bag Meal?"
+        android:text="Describe your Grab-Bag Meal"
         android:textSize="20dp"
         android:textStyle="bold"/>
 
@@ -48,26 +49,40 @@
         android:hint="Price"
         android:inputType="numberDecimal"/>
 
-    <Button
-        android:id="@+id/btnGrabNo"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rlChooseImage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/txtGrabPrice"
-        android:layout_alignParentLeft="true"
-        android:text="Skip"
-        android:textColor="@color/colorAccent"
-        android:background="@android:color/transparent"
-        android:onClick="clickGrabSkip"/>
+        android:layout_below="@id/txtGrabPrice">
+
+        <ImageView
+            android:id="@+id/imgFoodPicture"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@mipmap/ic_photo_black_24dp" />
+
+        <Button
+            android:id="@+id/btnMenuChooseImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:layout_toRightOf="@id/imgFoodPicture"
+            android:text="Choose Image"
+            android:onClick="clickChooseImage"/>
+
+    </RelativeLayout>
 
     <Button
         android:id="@+id/btnGrabNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/txtGrabPrice"
+        android:layout_below="@id/rlChooseImage"
         android:layout_alignParentRight="true"
-        android:text="Next"
+        android:text="Save"
         android:textColor="@color/colorAccent"
         android:background="@android:color/transparent"
         android:onClick="clickGrabNext"/>

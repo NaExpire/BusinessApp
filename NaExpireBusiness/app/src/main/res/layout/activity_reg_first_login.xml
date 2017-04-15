@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:padding="5dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     tools:context="com.capstone.naexpire.naexpirebusiness.ActivityRegFirstLogin">
 
     <TextView
@@ -27,19 +29,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/imgPhone"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@mipmap/ic_phone_black_24dp" />
+
             <EditText
                 android:id="@+id/txtRegPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@id/imgPhone"
                 android:hint="Restaurant Phone #"
                 android:inputType="phone"/>
+
+            <ImageView
+                android:id="@+id/imgPlace"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/txtRegPhone"
+                app:srcCompat="@mipmap/ic_place_black_24dp" />
 
             <EditText
                 android:id="@+id/txtRegAddressOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRegPhone"
+                android:layout_toRightOf="@id/imgPlace"
+                android:layout_marginLeft="16dp"
                 android:hint="Address Line 1"
                 android:inputType="textPostalAddress"/>
 
@@ -48,6 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRegAddressOne"
+                android:layout_toRightOf="@id/imgPlace"
+                android:layout_marginLeft="16dp"
                 android:hint="Address Line 2 (optional)"
                 android:inputType="textPostalAddress"/>
 
@@ -68,87 +91,30 @@
                 android:layout_below="@id/txtRegAddressTwo"
                 android:layout_toLeftOf="@id/txtRegZip"/>
 
+            <ImageView
+                android:id="@+id/imgCity"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/txtRegAddressTwo"
+                app:srcCompat="@mipmap/ic_location_city_black_24dp" />
+
             <EditText
                 android:id="@+id/txtRegCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRegAddressTwo"
                 android:layout_toLeftOf="@id/spnState"
+                android:layout_toRightOf="@id/imgCity"
+                android:layout_marginLeft="16dp"
                 android:hint="City"
                 android:inputType="textCapWords"/>
-
-            <TextView
-                android:id="@+id/lblDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtRegCity"
-                android:layout_marginTop="50dp"
-                android:layout_centerHorizontal="true"
-                android:text="Describe your restaurant"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
-
-            <EditText
-                android:id="@+id/txtRegDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_below="@id/lblDescription"
-                android:hint="My restaurant is..."
-                android:inputType="textCapSentences|textMultiLine"
-                android:maxLength="140"/>
-
-            <TextView
-                android:id="@+id/lblPickupTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_below="@id/txtRegDescription"
-                android:layout_centerHorizontal="true"
-                android:text="When can customers pick up orders?"
-                android:textSize="20dp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/lblTo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_below="@id/lblPickupTime"
-                android:layout_centerHorizontal="true"
-                android:text="to" />
-
-            <TextView
-                android:id="@+id/lblStartTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:layout_alignBaseline="@id/lblTo"
-                android:layout_toLeftOf="@id/lblTo"
-                android:text="7:00 PM"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                android:onClick="clickStartTime"
-                android:clickable="true"/>
-
-            <TextView
-                android:id="@+id/lblEndTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@id/lblTo"
-                android:textAlignment="center"
-                android:layout_toRightOf="@id/lblTo"
-                android:text="8:00 PM"
-                android:textSize="16dp"
-                android:textStyle="bold"
-                android:onClick="clickEndTime"
-                android:clickable="true"/>
 
             <Button
                 android:id="@+id/btnRegTwoNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/lblEndTime"
+                android:layout_below="@id/txtRegZip"
                 android:layout_marginTop="20dp"
                 android:layout_alignParentRight="true"
                 android:text="Next"

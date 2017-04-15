@@ -51,10 +51,11 @@
                 android:id="@+id/txtRestName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/lblRestName"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_below="@id/lblRestName"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textCapWords" />
 
             <TextView
                 android:id="@+id/lblRestAddr"
@@ -74,7 +75,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_below="@id/lblRestAddr"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textPostalAddress"/>
 
             <TextView
                 android:id="@+id/lblRestPhone"
@@ -94,7 +96,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_below="@id/lblRestPhone"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="phone"/>
 
             <TextView
                 android:id="@+id/lblRestDesc"
@@ -114,7 +117,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_below="@id/lblRestDesc"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textCapSentences"/>
 
             <TextView
                 android:id="@+id/lblUsn"
@@ -134,7 +138,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_below="@id/lblUsn"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="text"/>
 
             <TextView
                 android:id="@+id/lblEm"
@@ -154,7 +159,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_below="@id/lblEm"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textEmailAddress"/>
 
             <TextView
                 android:id="@+id/lblPPhone"
@@ -174,7 +180,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_below="@id/lblPPhone"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="phone"/>
 
             <TextView
                 android:id="@+id/lblNewPass"
@@ -194,7 +201,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_below="@id/lblNewPass"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"/>
 
             <TextView
                 android:id="@+id/lblCNewPass"
@@ -214,7 +222,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_below="@id/lblCNewPass"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"/>
 
             <Button
                 android:id="@+id/btnSaveAcctEdits"
