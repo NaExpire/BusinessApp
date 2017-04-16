@@ -116,7 +116,7 @@ public class FragmentMenu extends Fragment {
 
                 final int spot = position;
 
-                name.setText("New "+adapter.getName(position)+" Discount");
+                name.setText(adapter.getName(position)+" Deal");
                 Glide.with(FragmentMenu.this.getContext()).load(adapter.getImage(position)).into(image);
 
                 dBuilder.setView(dView);
@@ -146,7 +146,7 @@ public class FragmentMenu extends Fragment {
 
                             db.close();
 
-                            Toast.makeText(FragmentMenu.this.getActivity(),"Discount Created", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FragmentMenu.this.getActivity(),"Deal Created", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                     }

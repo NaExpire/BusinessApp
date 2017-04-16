@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/imgDiscountPic"
         android:layout_centerHorizontal="true"
-        android:text="Discount"
+        android:text="Deal"
         android:textStyle="bold"
         android:layout_marginTop="5sp"
         android:textSize="25sp"/>
@@ -42,7 +42,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="5sp"
         android:layout_toRightOf="@id/txtActiveQuantity"
-        android:hint="Discounted Price"
+        android:hint="Deal Price"
         android:inputType="numberDecimal" />
 
     <Button

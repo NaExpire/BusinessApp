@@ -133,7 +133,7 @@ public class FragmentActiveDiscounts extends Fragment {
         db.delete("activeDiscounts", "name = ?", selectionArgs);
 
         db.close();
-        Toast.makeText(FragmentActiveDiscounts.this.getContext(), name + " discount deleted", Toast.LENGTH_SHORT).show();
+        Toast.makeText(FragmentActiveDiscounts.this.getContext(), name + " deal deleted", Toast.LENGTH_SHORT).show();
     }
 
 }
