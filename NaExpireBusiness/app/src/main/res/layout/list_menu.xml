@@ -1,32 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/txtFoodName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Item Name"
-        android:textStyle="bold"
-        android:textSize="15dp"/>
+    <ImageView
+        android:id="@+id/imgMenuPic"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/txtFoodPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/txtFoodName"
-        android:layout_marginLeft="5dp"
-        android:layout_alignBaseline="@id/txtFoodName"
-        android:text="Price"
-        android:textSize="13dp"/>
+    <RelativeLayout
+        android:id="@+id/rlMenu"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignBottom="@id/imgMenuPic"
+        android:background="@color/colorListShade">
 
-    <TextView
-        android:id="@+id/txtFoodDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtFoodName"
-        android:text="Description"
-        android:textSize="10dp"/>
+        <TextView
+            android:id="@+id/txtMenuName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="8dp"
+            android:text="Item Name"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:id="@+id/txtMenuPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txtMenuName"
+            android:layout_marginLeft="5dp"
+            android:layout_alignBaseline="@id/txtMenuName"
+            android:text="Price"
+            android:textColor="@android:color/background_light"
+            android:textSize="13dp"/>
+
+        <TextView
+            android:id="@+id/txtMenuDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_below="@id/txtMenuName"
+            android:text="Description"
+            android:textColor="@android:color/background_light"
+            android:textSize="10dp"/>
+    </RelativeLayout>
+
 </RelativeLayout>

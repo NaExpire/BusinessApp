@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.capstone.naexpire.naexpirebusiness">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,20 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ActivityLogin">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegRestrauntInfo" />
-        <activity android:name=".RegFoodTypes" />
-        <activity android:name=".RegCreateMenu" />
+        <activity android:name=".ActivityRegister" />
+        <activity android:name=".ActivityRegFoodTypes" />
+        <activity android:name=".ActivityRegCreateMenu" />
         <activity
             android:name=".NavDrawer"
             android:label="@string/title_activity_nav_drawer"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ActivityRegFirstLogin" />
+        <activity android:name=".ActivityRegGrabBag" />
+        <activity android:name=".ActivityRegChoose"></activity>
     </application>
 
 </manifest>

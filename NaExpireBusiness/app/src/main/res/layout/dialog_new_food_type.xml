@@ -22,7 +22,7 @@
         android:layout_marginTop="5dp"
         android:ems="10"
         android:inputType="textCapWords"
-        android:hint="Food Type" />
+        android:hint="New Food Type" />
 
     <Button
         android:id="@+id/btnNewFoodType"

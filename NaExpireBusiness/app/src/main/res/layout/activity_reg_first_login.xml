@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    tools:context="com.capstone.naexpire.naexpirebusiness.ActivityRegFirstLogin">
+
+    <TextView
+        android:id="@+id/lblMoreInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="We need some more informaiton..."
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/lblMoreInfo">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgPhone"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@mipmap/ic_phone_black_24dp" />
+
+            <EditText
+                android:id="@+id/txtRegPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@id/imgPhone"
+                android:hint="Restaurant Phone #"
+                android:inputType="phone"/>
+
+            <ImageView
+                android:id="@+id/imgPlace"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/txtRegPhone"
+                app:srcCompat="@mipmap/ic_place_black_24dp" />
+
+            <EditText
+                android:id="@+id/txtRegAddressOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRegPhone"
+                android:layout_toRightOf="@id/imgPlace"
+                android:layout_marginLeft="16dp"
+                android:hint="Address Line 1"
+                android:inputType="textPostalAddress"/>
+
+            <EditText
+                android:id="@+id/txtRegAddressTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRegAddressOne"
+                android:layout_toRightOf="@id/imgPlace"
+                android:layout_marginLeft="16dp"
+                android:hint="Address Line 2 (optional)"
+                android:inputType="textPostalAddress"/>
+
+            <EditText
+                android:id="@+id/txtRegZip"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRegAddressTwo"
+                android:layout_alignParentRight="true"
+                android:hint="Zip"
+                android:inputType="number"/>
+
+            <Spinner
+                android:id="@+id/spnState"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/txtRegAddressTwo"
+                android:layout_toLeftOf="@id/txtRegZip"/>
+
+            <ImageView
+                android:id="@+id/imgCity"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/txtRegAddressTwo"
+                app:srcCompat="@mipmap/ic_location_city_black_24dp" />
+
+            <EditText
+                android:id="@+id/txtRegCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRegAddressTwo"
+                android:layout_toLeftOf="@id/spnState"
+                android:layout_toRightOf="@id/imgCity"
+                android:layout_marginLeft="16dp"
+                android:hint="City"
+                android:inputType="textCapWords"/>
+
+            <Button
+                android:id="@+id/btnRegTwoNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRegZip"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentRight="true"
+                android:text="Next"
+                android:textColor="@color/colorAccent"
+                android:background="@android:color/transparent"
+                android:onClick="clickRegisterNext"/>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

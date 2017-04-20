@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
-    tools:context="com.capstone.naexpire.naexpirebusiness.EditMenuFragment">
+    tools:context="com.capstone.naexpire.naexpirebusiness.FragmentEditMenu">
 
     <Button
         android:id="@+id/btnEditMenu"
@@ -22,6 +22,6 @@
         android:layout_alignParentTop="true"
         android:layout_above="@id/btnEditMenu"
         android:divider="@null"
-        android:dividerHeight="0dp"/>
+        android:dividerHeight="5dp"/>
 
 </RelativeLayout>

@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
-    tools:context="com.capstone.naexpire.naexpirebusiness.AccountInfoFragment">
+    tools:context="com.capstone.naexpire.naexpirebusiness.FragmentAccountInfo">
 
     <TextView
         android:id="@+id/lblNothing"
@@ -43,6 +42,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="Restaurant Name"
                 android:textStyle="bold"/>
 
@@ -51,7 +52,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/lblRestName"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:inputType="textCapWords" />
 
             <TextView
                 android:id="@+id/lblRestAddr"
@@ -59,6 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRestName"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="Restaurant Address"
                 android:textStyle="bold"/>
 
@@ -66,8 +72,11 @@
                 android:id="@+id/txtRestAddr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/lblRestAddr"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textPostalAddress"/>
 
             <TextView
                 android:id="@+id/lblRestPhone"
@@ -75,6 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRestAddr"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="Restaurant Phone"
                 android:textStyle="bold"/>
 
@@ -82,8 +93,11 @@
                 android:id="@+id/txtRestPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/lblRestPhone"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="phone"/>
 
             <TextView
                 android:id="@+id/lblRestDesc"
@@ -91,6 +105,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRestPhone"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="Restaurant Description"
                 android:textStyle="bold"/>
 
@@ -98,8 +114,11 @@
                 android:id="@+id/txtRestDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/lblRestDesc"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textCapSentences"/>
 
             <TextView
                 android:id="@+id/lblUsn"
@@ -107,6 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRestDesc"
                 android:layout_marginTop="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="Username"
                 android:textStyle="bold"/>
 
@@ -114,13 +135,18 @@
                 android:id="@+id/txtUsn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/lblUsn"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="text"/>
 
             <TextView
                 android:id="@+id/lblEm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/txtUsn"
                 android:layout_marginTop="5dp"
                 android:text="Email"
@@ -130,13 +156,18 @@
                 android:id="@+id/txtEm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/lblEm"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textEmailAddress"/>
 
             <TextView
                 android:id="@+id/lblPPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/txtEm"
                 android:layout_marginTop="5dp"
                 android:text="Personal Phone"
@@ -146,13 +177,18 @@
                 android:id="@+id/txtPPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/lblPPhone"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="phone"/>
 
             <TextView
                 android:id="@+id/lblNewPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/txtPPhone"
                 android:layout_marginTop="5dp"
                 android:text="New Password"
@@ -162,8 +198,11 @@
                 android:id="@+id/txtNewPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/lblNewPass"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"/>
 
             <TextView
                 android:id="@+id/lblCNewPass"
@@ -171,6 +210,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtNewPass"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:text="Confirm New Password"
                 android:textStyle="bold"/>
 
@@ -178,15 +219,20 @@
                 android:id="@+id/txtCNewPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_below="@id/lblCNewPass"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"/>
 
             <Button
                 android:id="@+id/btnSaveAcctEdits"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtCNewPass"
-                android:text="Save Changes"/>
+                android:text="Save Changes"
+                android:textColor="@android:color/background_light"
+                android:background="@color/colorAccent"/>
         </LinearLayout>
     </ScrollView>
 

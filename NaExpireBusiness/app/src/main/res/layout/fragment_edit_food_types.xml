@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
-    tools:context="com.capstone.naexpire.naexpirebusiness.EditFoodTypesFragment">
+    tools:context="com.capstone.naexpire.naexpirebusiness.FragmentEditFoodTypes">
 
     <TextView
         android:id="@+id/lblnothing"
@@ -35,13 +34,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Save Changes"/>
+        android:text="Save Changes"
+        android:textColor="@android:color/background_light"
+        android:background="@color/colorAccent"/>
 
     <ListView
         android:id="@+id/lstTypes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_below="@id/btnacctInfo"
         android:layout_above="@id/btnSaveFoods"
         android:divider="@null"
