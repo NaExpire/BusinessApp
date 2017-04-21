@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,29 +9,27 @@
     android:paddingTop="15dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:background="@drawable/splash_image"
     tools:context="com.capstone.naexpire.naexpirebusiness.ActivityLogin">
 
-    <ImageView
-        android:id="@+id/splashlogo"
+    <TextView
+        android:id="@+id/lblLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/logo" />
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="Login"
+        android:textSize="24dp"
+        android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/txtLoginEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/splashlogo"
+        android:layout_below="@id/lblLogin"
         android:ems="10"
         android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:backgroundTint="#fff"
-        android:textColorHint="#fff"/>
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/txtLoginPassword"
@@ -41,9 +38,7 @@
         android:layout_below="@id/txtLoginEmail"
         android:ems="10"
         android:hint="@string/password"
-        android:inputType="textPassword"
-        android:backgroundTint="#fff"
-        android:textColorHint="#fff"/>
+        android:inputType="textPassword" />
 
     <TextView
         android:id="@+id/lblLoginNothing"
@@ -60,7 +55,7 @@
         android:layout_below="@id/txtLoginPassword"
         android:layout_toLeftOf="@id/lblLoginNothing"
         android:text="@string/login"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
         android:background="@android:color/transparent"
         android:onClick="clickLogin" />
 
@@ -72,7 +67,7 @@
         android:layout_below="@id/txtLoginPassword"
         android:layout_toRightOf="@id/lblLoginNothing"
         android:text="@string/register"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
         android:background="@android:color/transparent"
         android:onClick="clickRegister"/>
 
@@ -84,7 +79,6 @@
         android:text="@string/forgot"
         android:textSize="10dp"
         android:background="@android:color/transparent"
-        android:onClick="clickForgot"
-        android:textColor="@color/colorAccent"/>
+        android:onClick="clickForgot" />
 
 </RelativeLayout>
