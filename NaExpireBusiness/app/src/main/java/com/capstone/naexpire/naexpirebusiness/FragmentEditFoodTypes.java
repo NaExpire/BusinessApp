@@ -40,11 +40,23 @@ public class FragmentEditFoodTypes extends Fragment {
 
         //base food types that the app starts with
         foods.add("Mexican");
-        foods.add("Italian");
-        foods.add("Indian");
         foods.add("Cajun");
+        foods.add("Vietnamese");
+        foods.add("Chinese");
+        foods.add("Mediterranean");
+        foods.add("Japanese");
+        foods.add("Indian");
+        foods.add("Korean");
+        foods.add("Italian");
         foods.add("Thai");
         foods.add("Greek");
+        foods.add("Lebanese");
+        foods.add("Moroccan");
+        foods.add("French");
+        foods.add("Spanish");
+        foods.add("German");
+        foods.add("Turkish");
+        foods.add("Caribbean");
 
         /*f
         //initial setup for testing

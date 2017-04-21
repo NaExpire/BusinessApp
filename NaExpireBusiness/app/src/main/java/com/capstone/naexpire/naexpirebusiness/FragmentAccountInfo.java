@@ -15,12 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class FragmentAccountInfo extends Fragment {
 
     private SharedPreferences sharedPref;
 
-    private EditText restName, restAddr, restPhone, restDesc, usn, email, personalPhone;
+    private EditText restName, restAddr, restPhone, restDesc, usn, email, personalPhone, pass, cPass;
 
     public FragmentAccountInfo() {
         // Required empty public constructor
@@ -42,6 +45,8 @@ public class FragmentAccountInfo extends Fragment {
         usn = (EditText) view.findViewById(R.id.txtUsn);
         email = (EditText) view.findViewById(R.id.txtEm);
         personalPhone = (EditText) view.findViewById(R.id.txtPPhone);
+        pass = (EditText) view.findViewById(R.id.txtNewPass);
+        cPass = (EditText) view.findViewById(R.id.txtCNewPass);
         Button foodTypes = (Button) view.findViewById(R.id.btnFoodInfo);
         Button save = (Button) view.findViewById(R.id.btnSaveAcctEdits);
 
@@ -75,6 +80,18 @@ public class FragmentAccountInfo extends Fragment {
                 editor.putString("username", usn.getText().toString());
                 editor.putString("email", email.getText().toString());
                 editor.putString("userPhone", personalPhone.getText().toString());
+                String enteredpass = pass.getText().toString();
+                String enteredcpass = cPass.getText().toString();
+                if(isValidPassword(enteredpass)){
+                    if(enteredcpass.equals(enteredpass)){
+                        editor.putString("password", enteredpass);
+                    }
+                    else Toast.makeText(FragmentAccountInfo.this.getContext(),
+                            "Passwords do not match.", Toast.LENGTH_SHORT).show();
+                }
+                else Toast.makeText(FragmentAccountInfo.this.getContext(),
+                        "Password must have at least:\n\t8 Characters\n\t1 Capital\n\t1 Number\n\t1 Special Character",
+                        Toast.LENGTH_SHORT).show();
                 editor.commit();
 
                 //update restaurant name in the navigation drawer
@@ -91,4 +108,15 @@ public class FragmentAccountInfo extends Fragment {
         return view;
     }
 
+    public static boolean isValidPassword(final String password) {
+
+        Pattern pattern;
+        Matcher matcher;
+        final String PASSWORD_PATTERN = "((?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,})";
+        pattern = Pattern.compile(PASSWORD_PATTERN);
+        matcher = pattern.matcher(password);
+
+        return matcher.matches();
+
+    }
 }

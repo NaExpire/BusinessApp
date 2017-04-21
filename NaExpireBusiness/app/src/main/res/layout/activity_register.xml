@@ -9,63 +9,74 @@
     android:padding="15dp"
     tools:context="com.capstone.naexpire.naexpirebusiness.ActivityRegister">
 
-    <EditText
-        android:id="@+id/txtRegEmail"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:inputType="textEmailAddress"
-        android:hint="Email"/>
+        android:layout_marginTop="50dp">
 
-    <EditText
-        android:id="@+id/txtRegLastName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/txtRegEmail"
-        android:hint="Last Name"
-        android:inputType="textCapWords" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/txtRegFirstName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/txtRegLastName"
-        android:hint="First Name"
-        android:inputType="textCapWords" />
+            <EditText
+                android:id="@+id/txtRegRestName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/restName"
+                android:inputType="textCapWords" />
 
-    <EditText
-        android:id="@+id/txtRegRestName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/txtRegFirstName"
-        android:hint="@string/restName"
-        android:inputType="textCapWords" />
+            <EditText
+                android:id="@+id/txtRegFirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRegRestName"
+                android:hint="First Name"
+                android:inputType="textCapWords" />
 
-    <EditText
-        android:id="@+id/txtRegPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:layout_below="@+id/txtRegEmail" />
+            <EditText
+                android:id="@+id/txtRegLastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtRegFirstName"
+                android:hint="Last Name"
+                android:inputType="textCapWords" />
 
-    <EditText
-        android:id="@+id/txtRegConfirmPass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/confirmPass"
-        android:inputType="textPassword"
-        android:layout_below="@+id/txtRegPassword" />
+            <EditText
+                android:id="@+id/txtRegEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:layout_below="@id/txtRegLastName"
+                android:hint="Email"/>
 
-    <Button
-        android:id="@+id/btnRegNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:onClick="clickNext"
-        android:text="Submit"
-        android:textColor="@color/colorAccent"
-        android:background="@android:color/transparent"
-        android:layout_below="@+id/txtRegConfirmPass" />
+            <EditText
+                android:id="@+id/txtRegPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:layout_below="@+id/txtRegEmail" />
+
+            <EditText
+                android:id="@+id/txtRegConfirmPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirmPass"
+                android:inputType="textPassword"
+                android:layout_below="@+id/txtRegPassword" />
+
+            <Button
+                android:id="@+id/btnRegNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:onClick="clickNext"
+                android:text="Submit"
+                android:textColor="@color/colorAccent"
+                android:background="@android:color/transparent"
+                android:layout_below="@+id/txtRegConfirmPass" />
+
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

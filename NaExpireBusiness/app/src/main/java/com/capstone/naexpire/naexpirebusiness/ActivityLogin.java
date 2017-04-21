@@ -27,11 +27,12 @@ public class ActivityLogin extends AppCompatActivity {
 
     private SharedPreferences sharedPref;
 
-    EditText txtemail, txtpassword;
-    String email, password, confirmationCode, loginStatus, userData;
-    AlertDialog.Builder dialogBuilder;
-    View dialogView;
-    AlertDialog dialog;
+    private EditText txtemail, txtpassword;
+    private String email, password, confirmationCode, loginStatus, userData;
+    private AlertDialog.Builder dialogBuilder;
+    private View dialogView;
+    private AlertDialog dialog;
+    private int first;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +42,13 @@ public class ActivityLogin extends AppCompatActivity {
         txtemail = (EditText) findViewById(R.id.txtLoginEmail);
         txtpassword = (EditText) findViewById(R.id.txtLoginPassword);
         loginStatus = "nope";
+        first = 0;
 
         sharedPref = getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
                 Context.MODE_PRIVATE);
 
         if(1 == sharedPref.getInt("fromRegister", 0)){
+            first = 1;
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt("fromRegister", 0); //set that the user didn't just come from register
             editor.commit();
@@ -65,10 +68,39 @@ public class ActivityLogin extends AppCompatActivity {
         email = txtemail.getText().toString();
         password = txtpassword.getText().toString();
 
-        Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
-        //intent.putExtra("userData", userData);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        if(!email.isEmpty() && !password.isEmpty()){
+            if(email.equals(sharedPref.getString("email", "")) &&
+                    password.equals(sharedPref.getString("password", ""))){
+                if(first == 1){
+                    first = 0;
+                    final EditText code = (EditText) dialogView.findViewById(R.id.txtConfirmCode);
+                    Button submit = (Button) dialogView.findViewById(R.id.btnConfirm);
+
+                    dialog.show();
+
+                    submit.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            confirmationCode = code.getText().toString();
+                            if(confirmationCode.equals("123")){
+                                Intent intent = new Intent(ActivityLogin.this.getBaseContext(), ActivityRegFirstLogin.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                dialog.dismiss();
+                            }
+                            else Toast.makeText(ActivityLogin.this, "Incorrect code.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else{
+                    Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }
+            else Toast.makeText(this, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
+        }
+        else Toast.makeText(this, "Fill all fields.", Toast.LENGTH_SHORT).show();
 
         /*if (email.isEmpty() || password.isEmpty()) Toast.makeText(this, "Enter Username & Password",
                 Toast.LENGTH_LONG).show();
