@@ -3,6 +3,7 @@ package com.capstone.naexpire.naexpirebusiness;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,27 @@ public class ActivityRegFirstLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg_first_login);
+
+        //reset foods for new register
+        DatabaseHelperFoods dbHelperFoods = new DatabaseHelperFoods(getApplicationContext());
+        SQLiteDatabase dbFoods = dbHelperFoods.getWritableDatabase();
+        dbFoods.delete("foods", null,null);
+        dbFoods.close();
+        dbHelperFoods.close();
+
+        //reset menu for new register
+        DatabaseHelperMenu dbHelperMenu = new DatabaseHelperMenu(getApplicationContext());
+        SQLiteDatabase dbMenu = dbHelperMenu.getWritableDatabase();
+        dbMenu.delete("menu", null,null);
+        dbMenu.close();
+        dbHelperMenu.close();
+
+        //reset foods for new register
+        DatabaseHelperActiveDiscounts dbHelperActive = new DatabaseHelperActiveDiscounts(getApplicationContext());
+        SQLiteDatabase dbActive = dbHelperActive.getWritableDatabase();
+        dbActive.delete("activeDiscounts", null,null);
+        dbActive.close();
+        dbHelperActive.close();
 
         phone = (EditText) findViewById(R.id.txtRegPhone);
         addressOne = (EditText) findViewById(R.id.txtRegAddressOne);

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/lblText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="Are you sure you want to delete this meal?"
+        android:textSize="16dp"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btnYes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/lblText"
+        android:text="Yes"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"/>
+
+    <Button
+        android:id="@+id/btnNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@id/btnYes"
+        android:layout_below="@+id/lblText"
+        android:text="No"
+        android:textColor="@color/colorAccent"
+        android:background="@android:color/transparent"/>
+</RelativeLayout>

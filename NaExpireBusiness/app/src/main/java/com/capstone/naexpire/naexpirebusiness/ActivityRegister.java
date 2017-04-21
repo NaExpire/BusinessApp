@@ -77,6 +77,7 @@ public class ActivityRegister extends AppCompatActivity {
             editor.putString("restaurantName", restaurantName);
             editor.putString("email", email);
             editor.putString("password", password); //needs to be encrypted
+            editor.putInt("madeGrabBag", 0);
             editor.commit();
 
             Intent intent = new Intent(getBaseContext(), ActivityLogin.class);

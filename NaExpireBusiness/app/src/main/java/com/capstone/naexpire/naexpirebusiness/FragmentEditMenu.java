@@ -218,23 +218,50 @@ public class FragmentEditMenu extends Fragment {
         }
     }
 
-    public void delete(String name){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String[] selectionArgs = {name};
+    private boolean deleteResult = false;
+    public void delete(String name, final int position){
 
-        db.delete("menu", "name = ?", selectionArgs);
+        final String n = name;
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(FragmentEditMenu.this.getContext());
+        View mView = getActivity().getLayoutInflater().inflate(R.layout.dialog_confirm_delete, null);
+        Button no = (Button) mView.findViewById(R.id.btnNo);
+        Button yes = (Button) mView.findViewById(R.id.btnYes);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
 
-        db.close();
+        no.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                deleteResult =  false;
+                dialog.dismiss();
+            }
+        });
 
-        DatabaseHelperActiveDiscounts dbActiveHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
-        SQLiteDatabase dbActive = dbActiveHelper.getWritableDatabase();
+        yes.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                String[] selectionArgs = {n};
 
-        dbActive.delete("activeDiscounts", "name = ?", selectionArgs);
+                db.delete("menu", "name = ?", selectionArgs);
 
-        dbActive.close();
-        dbActiveHelper.close();
+                db.close();
 
-        Toast.makeText(FragmentEditMenu.this.getContext(), name + " deleted", Toast.LENGTH_SHORT).show();
+                DatabaseHelperActiveDiscounts dbActiveHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
+                SQLiteDatabase dbActive = dbActiveHelper.getWritableDatabase();
+
+                dbActive.delete("activeDiscounts", "name = ?", selectionArgs);
+
+                dbActive.close();
+                dbActiveHelper.close();
+
+                adapter.deleteItem(position);
+                Toast.makeText(FragmentEditMenu.this.getContext(), n + " deleted", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+
     }
 
     @Override

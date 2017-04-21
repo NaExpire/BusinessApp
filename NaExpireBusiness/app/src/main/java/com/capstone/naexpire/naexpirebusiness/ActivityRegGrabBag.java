@@ -85,6 +85,8 @@ public class ActivityRegGrabBag extends AppCompatActivity {
         if(!ingredients.getText().toString().isEmpty() && !price.getText().toString().isEmpty()){
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+            Toast.makeText(this, sharedPref.getInt("madeGrabBag", 0)+"", Toast.LENGTH_SHORT).show();
+
             if(1 == sharedPref.getInt("madeGrabBag", 0)){
                 ContentValues v = new ContentValues();
                 v.put("price", price.getText().toString());
@@ -95,7 +97,6 @@ public class ActivityRegGrabBag extends AppCompatActivity {
 
                 db.update("menu", v, "name = ?", selectionArgs);
                 db.close();
-                Toast.makeText(this, "update", Toast.LENGTH_SHORT).show();
             }
             else{
                 ContentValues values = new ContentValues();

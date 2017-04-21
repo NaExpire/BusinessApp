@@ -60,7 +60,6 @@ public class ListAdapterEditMenu extends BaseAdapter {
     public String getDescription(int position){ return descriptions.get(position); }
     public String getImage(int position){ return images.get(position); }
     public void deleteItem(int position){
-        frag.delete(names.get(position));
         names.remove(position);
         prices.remove(position);
         descriptions.remove(position);
@@ -108,8 +107,7 @@ public class ListAdapterEditMenu extends BaseAdapter {
         holder.bt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                deleteItem(position);
-                notifyDataSetChanged();
+                frag.delete(names.get(position), position);
             }
         });
 
