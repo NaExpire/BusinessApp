@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/layRegister"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:padding="15dp"
+    android:paddingTop="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@drawable/splash_image"
     tools:context="com.capstone.naexpire.naexpirebusiness.ActivityRegister">
 
     <ScrollView
@@ -23,7 +28,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/restName"
-                android:inputType="textCapWords" />
+                android:inputType="textCapWords"
+                android:textColor="#fff"
+                android:backgroundTint="#fff"
+                android:textColorHint="#fff"/>
 
             <EditText
                 android:id="@+id/txtRegFirstName"
@@ -31,7 +39,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRegRestName"
                 android:hint="First Name"
-                android:inputType="textCapWords" />
+                android:inputType="textCapWords"
+                android:textColor="#fff"
+                android:backgroundTint="#fff"
+                android:textColorHint="#fff"/>
 
             <EditText
                 android:id="@+id/txtRegLastName"
@@ -39,7 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtRegFirstName"
                 android:hint="Last Name"
-                android:inputType="textCapWords" />
+                android:inputType="textCapWords"
+                android:textColor="#fff"
+                android:backgroundTint="#fff"
+                android:textColorHint="#fff"/>
 
             <EditText
                 android:id="@+id/txtRegEmail"
@@ -47,7 +61,10 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:layout_below="@id/txtRegLastName"
-                android:hint="Email"/>
+                android:hint="Email"
+                android:textColor="#fff"
+                android:backgroundTint="#fff"
+                android:textColorHint="#fff"/>
 
             <EditText
                 android:id="@+id/txtRegPassword"
@@ -55,7 +72,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:layout_below="@+id/txtRegEmail" />
+                android:layout_below="@+id/txtRegEmail"
+                android:textColor="#fff"
+                android:backgroundTint="#fff"
+                android:textColorHint="#fff"/>
 
             <EditText
                 android:id="@+id/txtRegConfirmPass"
@@ -63,7 +83,10 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/confirmPass"
                 android:inputType="textPassword"
-                android:layout_below="@+id/txtRegPassword" />
+                android:layout_below="@+id/txtRegPassword"
+                android:textColor="#fff"
+                android:backgroundTint="#fff"
+                android:textColorHint="#fff"/>
 
             <Button
                 android:id="@+id/btnRegNext"
@@ -72,7 +95,7 @@
                 android:layout_alignParentRight="true"
                 android:onClick="clickNext"
                 android:text="Submit"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/colorPrimary"
                 android:background="@android:color/transparent"
                 android:layout_below="@+id/txtRegConfirmPass" />
 

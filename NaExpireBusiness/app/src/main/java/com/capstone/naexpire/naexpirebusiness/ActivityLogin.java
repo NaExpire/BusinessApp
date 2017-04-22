@@ -7,9 +7,12 @@ import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +65,22 @@ public class ActivityLogin extends AppCompatActivity {
 
         dialogBuilder.setView(dialogView);
         dialog = dialogBuilder.create();
+
+        findViewById(R.id.layLogin).setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev)
+            {
+                hideKeyboard(view);
+                return false;
+            }
+        });
+    }
+
+    protected void hideKeyboard(View view)
+    {
+        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void clickLogin(View view) {
@@ -113,7 +132,7 @@ public class ActivityLogin extends AppCompatActivity {
         if(!txtemail.getText().toString().isEmpty()) {
             Toast.makeText(this, "A Recovery E-Mail Has Been Sent", Toast.LENGTH_LONG).show();
         }
-        else Toast.makeText(this, "Enter Username", Toast.LENGTH_LONG).show();
+        else Toast.makeText(this, "Enter Email", Toast.LENGTH_LONG).show();
     }
 
     public void clickRegister(View view) {

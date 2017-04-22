@@ -2,15 +2,17 @@ package com.capstone.naexpire.naexpirebusiness;
 
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -107,7 +109,7 @@ public class FragmentMenu extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 AlertDialog.Builder dBuilder = new AlertDialog.Builder(FragmentMenu.this.getContext());
-                View dView = getActivity().getLayoutInflater().inflate(R.layout.dialog_discount, null);
+                View dView = getActivity().getLayoutInflater().inflate(R.layout.dialog_deal, null);
                 ImageView image = (ImageView) dView.findViewById(R.id.imgDiscountPic);
                 final TextView name = (TextView) dView.findViewById(R.id.lblDiscount);
                 final EditText quantity = (EditText) dView.findViewById(R.id.txtQuantity);
@@ -122,6 +124,16 @@ public class FragmentMenu extends Fragment {
                 dBuilder.setView(dView);
                 final AlertDialog dialog = dBuilder.create();
                 dialog.show();
+
+                dView.findViewById(R.id.layDeal).setOnTouchListener(new View.OnTouchListener()
+                {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent ev)
+                    {
+                        hideKeyboard(view);
+                        return false;
+                    }
+                });
 
                 saveDiscount.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -156,6 +168,13 @@ public class FragmentMenu extends Fragment {
 
         return view;
     }
+
+    protected void hideKeyboard(View view)
+    {
+        InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
     @Override
     public void onDestroy() {
         dbHelper.close();

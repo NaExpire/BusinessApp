@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -49,6 +51,22 @@ public class ActivityRegister extends AppCompatActivity {
 
         sharedPref = getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
                 Context.MODE_PRIVATE);
+
+        findViewById(R.id.layRegister).setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent ev)
+            {
+                hideKeyboard(view);
+                return false;
+            }
+        });
+    }
+
+    protected void hideKeyboard(View view)
+    {
+        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void clickNext(View view){
@@ -67,7 +85,7 @@ public class ActivityRegister extends AppCompatActivity {
 
         if(ready && same && valid){ //if all fields are filled and passwords match
 
-            //new HttpAsyncTask().execute("http://138.197.33.88/api/business/register/");
+            new register().execute("http://138.197.33.88/api/business/register/");
 
             //put values in shared preferences
             SharedPreferences.Editor editor = sharedPref.edit();
@@ -89,7 +107,7 @@ public class ActivityRegister extends AppCompatActivity {
         else if(!same) Toast.makeText(this, "passwords do not match", Toast.LENGTH_LONG).show();
     }
 
-    private class HttpAsyncTask extends AsyncTask<String,String,String> {
+    private class register extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){
             String line = null;
@@ -98,12 +116,9 @@ public class ActivityRegister extends AppCompatActivity {
 
             try {
                 URL requestURL = new URL(urls[0]);
-
                 connection = (HttpURLConnection) requestURL.openConnection();
-
                 connection.setDoOutput(true);
                 connection.setChunkedStreamingMode(0);
-
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("charset", "utf-8");
                 connection.setUseCaches(false);
@@ -154,15 +169,15 @@ public class ActivityRegister extends AppCompatActivity {
             js.put("lastName", lastName);
             js.put("email", email);
             js.put("password", password);
-            js.put("personalPhoneNumber", "");
+            js.put("personalPhoneNumber", "0123456789");
             js.put("restaurantName", restaurantName);
-            js.put("addressLine1", "");
+            js.put("addressLine1", "123 Nowhere Ln");
             js.put("addressLine2", "");
-            js.put("city", "");
-            js.put("state", "");
-            js.put("zip", "12345");
-            js.put("businessPhoneNumber", "");
-            js.put("description", "");
+            js.put("city", "Fountain Hills");
+            js.put("state", "Az");
+            js.put("zip", "85268");
+            js.put("businessPhoneNumber", "9876543210");
+            js.put("description", "gosh this place is cool");
             returnJ = js.toString();
             android.util.Log.w(this.getClass().getSimpleName(),returnJ);
         }
