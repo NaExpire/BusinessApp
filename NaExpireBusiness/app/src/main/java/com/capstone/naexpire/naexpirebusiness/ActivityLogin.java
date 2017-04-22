@@ -267,7 +267,7 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 confirmationCode = code.getText().toString();
-                new ActivityLogin.ConfirmCode().execute("http://138.197.33.88/api/business/register/confirm/");
+                //new ActivityLogin.ConfirmCode().execute("http://138.197.33.88/api/business/register/confirm/");
             }
         });
     }
