@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -27,11 +28,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class NavDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences sharedPref;
+
+    private ArrayList<MenuItem> menu;
 
     private TextView owner, rest;
 
@@ -51,6 +55,8 @@ public class NavDrawer extends AppCompatActivity
 
         manager.beginTransaction().replace(R.id.fragment_container, fragmentMenu).commit();
 
+        menu = new ArrayList<MenuItem>();
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -59,11 +65,6 @@ public class NavDrawer extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        int rId = Integer.parseInt(sharedPref.getString("restaurantId", ""));
-        String uri = "http://138.197.33.88/api/business/restaurant/"+rId+"/";
-        android.util.Log.w(this.getClass().getSimpleName(), "http: "+uri);
-        new getRestaurant().execute(uri);
 
         updateDetails();
     }
@@ -149,76 +150,6 @@ public class NavDrawer extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private class getRestaurant extends AsyncTask<String,String,String> {
-        @Override
-        protected String doInBackground(String... urls){
-            String line = null;
-            StringBuilder sb = new StringBuilder();
-            HttpURLConnection connection = null;
-
-            try {
-                URL requestURL = new URL(urls[0]);
-                connection = (HttpURLConnection) requestURL.openConnection();
-                connection.setRequestMethod("GET");
-
-                int HttpResult = connection.getResponseCode();
-                android.util.Log.w(this.getClass().getSimpleName(), "Response Code: "+HttpResult);
-
-                if(HttpResult == HttpURLConnection.HTTP_OK){
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            connection.getInputStream(), "utf-8"
-                    ));
-                    while((line = br.readLine()) != null){
-                        sb.append(line + "\n");
-                    }
-                    br.close();
-
-                    /*try{
-                        JSONObject obj = new JSONObject(sb.toString());
-                        loginStatus = obj.getString("sessionID");
-                        restaurantId = obj.getString("restaurantID");
-                    }catch (Exception e){}*/
-
-                    android.util.Log.w(this.getClass().getSimpleName(),
-                            "Response Message: "+sb.toString());
-                }
-                else{
-                    android.util.Log.w(this.getClass().getSimpleName(),
-                            "Response Message: "+connection.getResponseMessage());
-                }
-            }
-            catch (MalformedURLException ex){ ex.printStackTrace(); }
-            catch (IOException e){ e.printStackTrace(); }
-            finally{ connection.disconnect(); }
-
-            return line;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            /*if (!result.equals("first") && !result.equals("nope")){ //not first login
-
-                //set current session id
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("sessionId", result);
-                editor.putString("restaurantId", restaurantId);
-                editor.commit();
-
-                //move to nav bar activity
-                Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-            else if(result.equals("nope")){ //incorrect login attempt
-                Toast.makeText(ActivityLogin.this, "Email or Password Incorrect", Toast.LENGTH_SHORT).show();
-            }
-            else if(loginStatus.equals("first")){ //correct credentials, first login
-                next();
-            }*/
-        }
     }
 
     private class logout extends AsyncTask<String,String,String> {

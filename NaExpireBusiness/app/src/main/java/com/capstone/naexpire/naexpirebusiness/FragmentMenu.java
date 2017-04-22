@@ -3,8 +3,10 @@ package com.capstone.naexpire.naexpirebusiness;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +27,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -33,15 +44,17 @@ public class FragmentMenu extends Fragment {
 
     private DatabaseHelperMenu dbHelper = null;
     private Cursor current = null;
+    private SharedPreferences sharedPref;
 
-    ListAdapterMenu adapter;
-    ImageView newItemImage;
-    String foodImage;
-    ArrayList<Integer> itemId = new ArrayList<Integer>();
-    ArrayList<String> name = new ArrayList<String>();
-    ArrayList<Double> price = new ArrayList<Double>();
-    ArrayList<String> description = new ArrayList<String>();
-    ArrayList<String> image = new ArrayList<String>();
+    private ListAdapterMenu adapter;
+    private Spinner spinner;
+    private ImageView newItemImage;
+    private String foodImage;
+    private ArrayList<Integer> itemId = new ArrayList<Integer>();
+    private ArrayList<String> name = new ArrayList<String>();
+    private ArrayList<Double> price = new ArrayList<Double>();
+    private ArrayList<String> description = new ArrayList<String>();
+    private ArrayList<String> image = new ArrayList<String>();
 
     public FragmentMenu() {
         // Required empty public constructor
@@ -51,15 +64,19 @@ public class FragmentMenu extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_menu, container, false);
+
+        sharedPref = getActivity().getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
+                Context.MODE_PRIVATE);
 
         FragmentMenu.this.getActivity().setTitle("Menu"); //set activity title
 
         dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
 
         //spinner to select filter method for menu items
-        Spinner spinner = (Spinner) view.findViewById(R.id.spnFilter);
+        spinner = (Spinner) view.findViewById(R.id.spnFilter);
         ArrayAdapter<CharSequence> spAdapter = ArrayAdapter.createFromResource(
                 FragmentMenu.this.getContext(),
                 R.array.filter_array, android.R.layout.simple_spinner_item);
@@ -93,6 +110,13 @@ public class FragmentMenu extends Fragment {
         result.close();
 
         adapter.sortMenu(spinner.getSelectedItemPosition());
+
+        if(adapter.getCount() == 0) {
+            int rId = Integer.parseInt(sharedPref.getString("restaurantId", ""));
+            String uri = "http://138.197.33.88/api/business/restaurant/"+rId+"/";
+            android.util.Log.w(this.getClass().getSimpleName(), "http: "+uri);
+            new getRestaurant().execute(uri);
+        }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -190,6 +214,134 @@ public class FragmentMenu extends Fragment {
         });
 
         return view;
+    }
+
+    private class getRestaurant extends AsyncTask<String,String,String> {
+        @Override
+        protected String doInBackground(String... urls){
+            ArrayList<MenuItem> menu = new ArrayList<>();
+            String line, name, description, image = null;
+            int id, quantity;
+            double price, deal;
+            StringBuilder sb = new StringBuilder();
+            HttpURLConnection connection = null;
+
+            try {
+                name = "";
+                URL requestURL = new URL(urls[0]);
+                connection = (HttpURLConnection) requestURL.openConnection();
+                connection.setRequestMethod("GET");
+
+                int HttpResult = connection.getResponseCode();
+                android.util.Log.w(this.getClass().getSimpleName(), "Response Code: "+HttpResult);
+
+                if(HttpResult == HttpURLConnection.HTTP_OK){
+                    BufferedReader br = new BufferedReader(new InputStreamReader(
+                            connection.getInputStream(), "utf-8"
+                    ));
+                    while((line = br.readLine()) != null){
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+
+                    JSONArray meals, deals;
+                    try{
+                        JSONObject obj = new JSONObject(sb.toString());
+                        meals = new JSONArray(obj.getString("meals")); //array of json meals
+                        deals = new JSONArray(obj.getString("deals")); //array of json deals
+                        for(int i = 0; i < meals.length(); i++){
+                            JSONObject tempObj = meals.getJSONObject(i);
+                            id = tempObj.getInt("id");
+                            name = tempObj.getString("name");
+                            description = tempObj.getString("description");
+                            //get restaurant id too
+                            price = tempObj.getDouble("price");
+                            //get menu type too
+                            image = "@drawable/logo.png";
+                            menu.add(new MenuItem(id, name, price, description, 0, 0.0, image));
+                        }
+                        for(int i = 0; i < deals.length(); i++){
+                            JSONObject tempObj = deals.getJSONObject(i);
+                            int mId = tempObj.getInt("mealID");
+                            quantity = tempObj.getInt("quantity");
+                            deal = tempObj.getDouble("dealPrice");
+                            for(int j = 0; j < menu.size(); j++){
+                                if(menu.get(j).getName().equals(name)){
+                                    menu.get(j).setQuantity(quantity);
+                                    menu.get(j).setDeal(deal);
+                                }
+                            }
+                        }
+                    }catch (Exception e){}
+
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+
+                    //0 id
+                    //1 name
+                    //2 price
+                    //3 description
+                    //4 quantity
+                    //5 deal
+                    //6 image
+
+                   for(int i = 0; i < menu.size(); i++){
+
+                        ContentValues values = new ContentValues();
+
+                        values.put("id", menu.get(i).getId());
+                        values.put("name", menu.get(i).getName());
+                        values.put("price", menu.get(i).getPrice());
+                        values.put("description", menu.get(i).getDescription());
+                        values.put("quantity", menu.get(i).getQuantity());
+                        values.put("deal", menu.get(i).getDeal());
+                        values.put("image", menu.get(i).getImage());
+                        db.insert("menu", null, values);
+                    }
+
+                    db.close();
+
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+sb.toString());
+                }
+                else{
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+connection.getResponseMessage());
+                }
+            }
+            catch (MalformedURLException ex){ ex.printStackTrace(); }
+            catch (IOException e){ e.printStackTrace(); }
+            finally{ connection.disconnect(); }
+
+            return "";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+            Cursor results = db.rawQuery("SELECT * FROM menu", null);
+
+            //0 id
+            //1 name
+            //2 price
+            //3 description
+            //4 quantity
+            //5 deal
+            //6 image
+
+            while(results.moveToNext()){
+                adapter.newItem(Integer.parseInt(results.getString(0)), results.getString(1),
+                        Double.parseDouble(results.getString(2)),results.getString(3),
+                        Integer.parseInt(results.getString(4)), Double.parseDouble(results.getString(5)),
+                        results.getString(6));
+            }
+
+            db.close();
+            results.close();
+
+            adapter.sortMenu(spinner.getSelectedItemPosition());
+        }
     }
 
     protected void hideKeyboard(View view)
