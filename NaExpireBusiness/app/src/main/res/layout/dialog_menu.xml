@@ -6,25 +6,28 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:padding="5dp">
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/lblNewMenuItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="Create New Menu Item"
         android:textStyle="bold"
-        android:layout_marginTop="5sp"
-        android:textSize="25sp"
-        android:text="Menu Item Info" />
+        android:textColor="#000"
+        android:textSize="20dp" />
 
     <EditText
         android:id="@+id/txtItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/lblNewMenuItem"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:ems="10"
         android:hint="Item Name"
         android:inputType="textCapWords" />
@@ -34,7 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtItemName"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:ems="10"
         android:inputType="numberDecimal"
         android:hint="Price"/>
@@ -44,7 +49,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtPrice"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:ems="10"
         android:hint="Description"
         android:inputType="textCapSentences" />
@@ -53,6 +60,9 @@
         android:id="@+id/rlDialogMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:layout_below="@id/txtDescription">
 
         <ImageView
@@ -60,7 +70,6 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_centerVertical="true"
-            android:layout_marginTop="5dp"
             android:scaleType="centerCrop"
             app:srcCompat="@mipmap/ic_photo_black_24dp" />
 
@@ -76,11 +85,27 @@
 
     <Button
         android:id="@+id/btnSaveItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/rlDialogMenu"
-        android:text="Save"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorAccent"/>
+        android:text="Create"
+        android:textColor="@color/colorPrimary"
+        android:background="@android:color/transparent"/>
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_below="@id/rlDialogMenu"
+        android:layout_toLeftOf="@id/btnSaveItem"
+        android:text="Cancel"
+        android:textColor="@color/colorPrimary"
+        android:background="@android:color/transparent"/>
 </RelativeLayout>

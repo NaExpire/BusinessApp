@@ -3,40 +3,38 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/lblText"
+        android:id="@+id/lblHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:text="Delete meal?"
+        android:text="Cannot Delete."
         android:textStyle="bold"
         android:textColor="#000"
         android:textSize="20dp"/>
 
-    <Button
-        android:id="@+id/btnYes"
+    <TextView
+        android:id="@+id/lblDetail"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/lblText"
-        android:text="Delete"
-        android:textColor="@color/colorPrimary"
-        android:background="@android:color/transparent"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_below="@id/lblHeader"
+        android:text="You need a minimum of 1 menu item."
+        android:textSize="16dp"/>
 
     <Button
-        android:id="@+id/btnNo"
+        android:id="@+id/btnOkay"
         android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@id/btnYes"
-        android:layout_below="@+id/lblText"
-        android:text="Keep"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@+id/lblDetail"
+        android:layout_alignParentRight="true"
+        android:text="ok"
         android:textColor="@color/colorPrimary"
         android:background="@android:color/transparent"/>
 </RelativeLayout>

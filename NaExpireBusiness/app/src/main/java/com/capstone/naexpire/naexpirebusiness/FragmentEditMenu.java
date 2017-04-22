@@ -4,6 +4,7 @@ package com.capstone.naexpire.naexpirebusiness;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,11 +20,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 public class FragmentEditMenu extends Fragment {
+    private SharedPreferences sharedPref;
     private DatabaseHelperMenu dbHelper = null;
 
     private ListAdapterEditMenu adapter;
@@ -42,6 +45,9 @@ public class FragmentEditMenu extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_menu, container, false);
         View footer = inflater.inflate(R.layout.footer_add, null);
+
+        sharedPref = getActivity().getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
+                Context.MODE_PRIVATE);
 
         FragmentEditMenu.this.getActivity().setTitle("Edit Menu"); //set activity title
 
@@ -71,13 +77,17 @@ public class FragmentEditMenu extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FragmentEditMenu.this.getContext());
                 View dialogView = getActivity().getLayoutInflater().inflate(R.layout.dialog_menu, null);
+                TextView header = (TextView) dialogView.findViewById(R.id.lblNewMenuItem);
                 final EditText newItemName = (EditText) dialogView.findViewById(R.id.txtItemName);
                 final EditText newItemPrice = (EditText) dialogView.findViewById(R.id.txtPrice);
                 final EditText newItemDesc = (EditText) dialogView.findViewById(R.id.txtDescription);
                 newItemImage = (ImageView) dialogView.findViewById(R.id.imgMenuFood);
                 Button chooseImage = (Button) dialogView.findViewById(R.id.btnMenuChooseImage);
                 Button saveNewItem = (Button) dialogView.findViewById(R.id.btnSaveItem);
+                Button cancel = (Button) dialogView.findViewById(R.id.btnCancel);
 
+                header.setText("Edit Menu Item");
+                saveNewItem.setText("Save");
                 foodImage = adapter.getImage(position);
 
                 final int spot = position;
@@ -93,6 +103,16 @@ public class FragmentEditMenu extends Fragment {
                 final AlertDialog dialog = dialogBuilder.create();
                 dialog.show();
 
+                dialogView.findViewById(R.id.layEditMenu).setOnTouchListener(new View.OnTouchListener()
+                {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent ev)
+                    {
+                        hideKeyboard(view);
+                        return false;
+                    }
+                });
+
                 chooseImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -103,16 +123,21 @@ public class FragmentEditMenu extends Fragment {
                     }
                 });
 
+                cancel.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        dialog.dismiss();
+                    }
+                });
+
                 //press button to save edits
                 saveNewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         //String holdNew = newItemName.getText().toString();
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                         ContentValues v = new ContentValues();
-                        v.put("id", "1");
                         v.put("name", newItemName.getText().toString());
                         v.put("price", newItemPrice.getText().toString());
                         v.put("description", newItemDesc.getText().toString());
@@ -156,6 +181,7 @@ public class FragmentEditMenu extends Fragment {
                 newItemImage = (ImageView) mView.findViewById(R.id.imgMenuFood);
                 Button chooseImage = (Button) mView.findViewById(R.id.btnMenuChooseImage);
                 Button saveNewItem = (Button) mView.findViewById(R.id.btnSaveItem);
+                Button cancel = (Button) mView.findViewById(R.id.btnCancel);
 
                 foodImage = ("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
 
@@ -163,7 +189,7 @@ public class FragmentEditMenu extends Fragment {
                 final AlertDialog dialog = mBuilder.create();
                 dialog.show();
 
-                mView.findViewById(R.id.layDeal).setOnTouchListener(new View.OnTouchListener()
+                mView.findViewById(R.id.layEditMenu).setOnTouchListener(new View.OnTouchListener()
                 {
                     @Override
                     public boolean onTouch(View view, MotionEvent ev)
@@ -183,14 +209,25 @@ public class FragmentEditMenu extends Fragment {
                     }
                 });
 
+                cancel.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        dialog.dismiss();
+                    }
+                });
+
                 saveNewItem.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
+                        int id = sharedPref.getInt("mealId", 0) + 1;
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt("mealId", id); //store a value to signify the user just finished registering
+                        editor.commit();
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                         ContentValues values = new ContentValues();
 
-                        values.put("id", "1");
+                        values.put("id", id);
                         values.put("name", newItemName.getText().toString());
                         values.put("price", newItemPrice.getText().toString());
                         values.put("description", newItemDesc.getText().toString());
@@ -277,8 +314,24 @@ public class FragmentEditMenu extends Fragment {
 
     }
 
+    public void cantDelete(){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(FragmentEditMenu.this.getContext());
+        View mView = getActivity().getLayoutInflater().inflate(R.layout.dialog_cant_delete, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        mView.findViewById(R.id.btnOkay).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                dialog.dismiss();
+            }
+        });
+    }
+
     protected void hideKeyboard(View view)
     {
+        view.clearFocus();
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }

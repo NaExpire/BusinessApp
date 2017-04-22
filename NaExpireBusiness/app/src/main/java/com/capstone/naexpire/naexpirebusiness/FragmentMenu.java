@@ -115,6 +115,7 @@ public class FragmentMenu extends Fragment {
                 final EditText quantity = (EditText) dView.findViewById(R.id.txtQuantity);
                 final EditText dPrice = (EditText) dView.findViewById(R.id.txtDiscountPrice);
                 Button saveDiscount = (Button) dView.findViewById(R.id.btnNewDiscount);
+                Button cancel = (Button) dView.findViewById(R.id.btnCancel);
 
                 final int spot = position;
 
@@ -163,6 +164,13 @@ public class FragmentMenu extends Fragment {
                         }
                     }
                 });
+
+                cancel.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
@@ -171,6 +179,7 @@ public class FragmentMenu extends Fragment {
 
     protected void hideKeyboard(View view)
     {
+        view.clearFocus();
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }

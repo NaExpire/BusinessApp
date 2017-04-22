@@ -133,6 +133,7 @@ public class FragmentAccountInfo extends Fragment {
 
     protected void hideKeyboard(View view)
     {
+        view.clearFocus();
         InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }

@@ -19,19 +19,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/imgDiscountPic"
-        android:layout_centerHorizontal="true"
-        android:text="New Deal"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="Create New Menu Item"
         android:textStyle="bold"
-        android:layout_marginTop="5sp"
-        android:textSize="25sp"/>
+        android:textColor="#000"
+        android:textSize="20dp"/>
 
     <EditText
         android:id="@+id/txtQuantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lblDiscount"
-        android:layout_marginTop="5sp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
         android:hint="Quantity"
         android:inputType="number" />
 
@@ -40,21 +42,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/lblDiscount"
-        android:layout_marginLeft="5sp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5sp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="8dp"
         android:layout_toRightOf="@id/txtQuantity"
         android:hint="Deal Price"
         android:inputType="numberDecimal" />
 
     <Button
         android:id="@+id/btnNewDiscount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/txtQuantity"
-        android:layout_marginTop="5sp"
-        android:text="Add Discount"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorAccent"/>
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Create"
+        android:background="@android:color/transparent"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_below="@id/txtQuantity"
+        android:layout_toLeftOf="@id/btnNewDiscount"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
+        android:text="Cancel"
+        android:background="@android:color/transparent"
+        android:textColor="@color/colorPrimary" />
 
 </RelativeLayout>

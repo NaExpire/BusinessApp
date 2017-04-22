@@ -107,7 +107,10 @@ public class ListAdapterEditMenu extends BaseAdapter {
         holder.bt.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                frag.delete(names.get(position), position);
+                if(getCount()>1)
+                    frag.delete(names.get(position), position);
+                else
+                    frag.cantDelete();
             }
         });
 
