@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -25,13 +26,24 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class FragmentEditMenu extends Fragment {
     private SharedPreferences sharedPref;
     private DatabaseHelperMenu dbHelper = null;
 
     private ListAdapterEditMenu adapter;
     private ImageView newItemImage;
-    private String foodImage;
+    private String foodImage, name, description, image;
+    private double price;
 
 
     public FragmentEditMenu() {
@@ -205,15 +217,15 @@ public class FragmentEditMenu extends Fragment {
                 saveNewItem.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
-                        int id = sharedPref.getInt("mealId", 0) + 1;
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.putInt("mealId", id); //store a value to signify the user just finished registering
-                        editor.commit();
-                        SQLiteDatabase db = dbHelper.getWritableDatabase();
+                        //int id = sharedPref.getInt("mealId", 0) + 1;
+                        //SharedPreferences.Editor editor = sharedPref.edit();
+                        //editor.putInt("mealId", id); //store a value to signify the user just finished registering
+                        //editor.commit();
+                        /*SQLiteDatabase db = dbHelper.getWritableDatabase();
 
                         ContentValues values = new ContentValues();
 
-                        values.put("id", id);
+                        values.put("id", "");
                         values.put("name", newItemName.getText().toString());
                         values.put("price", newItemPrice.getText().toString());
                         values.put("description", newItemDesc.getText().toString());
@@ -221,13 +233,17 @@ public class FragmentEditMenu extends Fragment {
                         values.put("deal", "0");
                         values.put("image", foodImage);
                         db.insert("menu", null, values);
-
                         db.close();
 
                         adapter.newItem(newItemName.getText().toString(),
                                 newItemPrice.getText().toString(),
                                 newItemDesc.getText().toString(),
-                                foodImage);
+                                foodImage);*/
+                        name = newItemName.getText().toString();
+                        price = Double.parseDouble(newItemPrice.getText().toString());
+                        description = newItemDesc.getText().toString();
+                        image = "@drawable/logo.png";
+                        new createMeal().execute("http://138.197.33.88/api/business/meal/create/");
                         dialog.dismiss();
                     }
                 });
@@ -300,6 +316,113 @@ public class FragmentEditMenu extends Fragment {
                 dialog.dismiss();
             }
         });
+    }
+
+    private class createMeal extends AsyncTask<String,String,String> {
+        @Override
+        protected String doInBackground(String... urls){
+            String mealId = "";
+            String line = "";
+            StringBuilder sb = new StringBuilder();
+            HttpURLConnection connection = null;
+
+            try {
+                URL requestURL = new URL(urls[0]);
+                String outputString = toJsonString();
+
+                connection = (HttpURLConnection) requestURL.openConnection();
+                connection.setDoOutput(true);
+                connection.setChunkedStreamingMode(0);
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("charset", "utf-8");
+                connection.setUseCaches(false);
+                connection.setRequestProperty("Content-Length", "" + outputString.getBytes().length);
+                connection.setRequestProperty("Content-Type", "application/json");
+
+                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                writer.write(outputString);
+                writer.flush();
+                writer.close();
+
+                int HttpResult = connection.getResponseCode();
+                android.util.Log.w(this.getClass().getSimpleName(), "Response Code: "+HttpResult);
+
+                if(HttpResult == HttpURLConnection.HTTP_OK){
+                    BufferedReader br = new BufferedReader(new InputStreamReader(
+                            connection.getInputStream(), "utf-8"
+                    ));
+                    while((line = br.readLine()) != null){
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+
+                    try{
+                        JSONObject obj = new JSONObject(sb.toString());
+                        mealId = ""+obj.getInt("id");
+                    }catch (Exception e){}
+
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+sb.toString());
+                }
+                else{
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+connection.getResponseMessage());
+                }
+            }
+            catch (MalformedURLException ex){ ex.printStackTrace(); }
+            catch (IOException e){ e.printStackTrace(); }
+            finally{ connection.disconnect(); }
+
+            return mealId;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            if (!result.equals("")){ //not first login
+
+                //int id = sharedPref.getInt("mealId", 0) + 1;
+                //SharedPreferences.Editor editor = sharedPref.edit();
+                //editor.putInt("mealId", id); //store a value to signify the user just finished registering
+                //editor.commit();
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+                ContentValues values = new ContentValues();
+
+                values.put("id", result);
+                values.put("name", name);
+                values.put("price", price);
+                values.put("description", description);
+                values.put("quantity", "0");
+                values.put("deal", "0");
+                values.put("image", foodImage);
+                db.insert("menu", null, values);
+                db.close();
+
+                adapter.newItem(name, ""+price, description, foodImage);
+            }
+            else Toast.makeText(FragmentEditMenu.this.getContext(),
+                    "Error adding menu item", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public String toJsonString() {//creates a new JSON string from stored movie data
+        String returnJ = "";
+        try{
+            JSONObject js = new JSONObject();
+            js.put("name", name);
+            js.put("description", description);
+            js.put("restaurantID", Integer.parseInt(sharedPref.getString("restaurantId", "")));
+            js.put("price", price);
+            js.put("type", "menu-item"); //for now everything is just regular menu
+            returnJ = js.toString();
+            android.util.Log.w(this.getClass().getSimpleName(),returnJ);
+        }
+        catch (Exception ex){
+            android.util.Log.w(this.getClass().getSimpleName(),
+                    "error converting to/from json");
+        }
+        return returnJ;
     }
 
     protected void hideKeyboard(View view)

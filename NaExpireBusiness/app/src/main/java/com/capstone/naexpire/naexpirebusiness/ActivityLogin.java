@@ -32,7 +32,7 @@ public class ActivityLogin extends AppCompatActivity {
     private SharedPreferences sharedPref;
 
     private EditText txtemail, txtpassword;
-    private String email, password, confirmationCode, loginStatus, userData;
+    private String email, password, confirmationCode, loginStatus, restaurantId;
     private AlertDialog.Builder dialogBuilder;
     private View dialogView;
     private AlertDialog dialog;
@@ -125,7 +125,7 @@ public class ActivityLogin extends AppCompatActivity {
         }
         else Toast.makeText(this, "Fill all fields.", Toast.LENGTH_SHORT).show();*/
 
-        new login().execute("http://138.197.33.88/api/business/login/ ");
+        new login().execute("http://138.197.33.88/api/business/login/");
     }
 
     public void clickForgot(View view) {
@@ -152,14 +152,13 @@ public class ActivityLogin extends AppCompatActivity {
     public void clickRegister(View view) {
         Intent intent = new Intent(this, ActivityRegister.class);
         startActivity(intent);
-        //String y = readFromFile(this, password.getText().toString());
-        //Toast.makeText(this, y, Toast.LENGTH_SHORT).show();
     }
 
     private class login extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){
             loginStatus = "nope";
+            restaurantId = "";
             String line = null;
             StringBuilder sb = new StringBuilder();
             HttpURLConnection connection = null;
@@ -185,8 +184,7 @@ public class ActivityLogin extends AppCompatActivity {
                 int HttpResult = connection.getResponseCode();
                 android.util.Log.w(this.getClass().getSimpleName(), "Response Code: "+HttpResult);
 
-                if(HttpResult == HttpURLConnection.HTTP_FORBIDDEN){
-                    //first login ever
+                if(HttpResult == HttpURLConnection.HTTP_FORBIDDEN){ //signifies first ever login
                     loginStatus = "first";
                     BufferedReader br = new BufferedReader(new InputStreamReader(
                             connection.getInputStream(), "utf-8"
@@ -198,13 +196,11 @@ public class ActivityLogin extends AppCompatActivity {
 
                     try{
                         JSONObject obj = new JSONObject(sb.toString());
-                        userData = obj.getString("sessionID");
+                        loginStatus = obj.getString("sessionID");
                     }catch (Exception e){}
 
                     android.util.Log.w(this.getClass().getSimpleName(),
                             "Response Message: "+sb.toString());
-                    android.util.Log.w(this.getClass().getSimpleName(),
-                            "session: "+userData);
                 }
                 else if(HttpResult == HttpURLConnection.HTTP_OK){
                     BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -218,6 +214,7 @@ public class ActivityLogin extends AppCompatActivity {
                     try{
                         JSONObject obj = new JSONObject(sb.toString());
                         loginStatus = obj.getString("sessionID");
+                        restaurantId = obj.getString("restaurantID");
                     }catch (Exception e){}
 
                     android.util.Log.w(this.getClass().getSimpleName(),
@@ -243,6 +240,7 @@ public class ActivityLogin extends AppCompatActivity {
                 //set current session id
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("sessionId", result);
+                editor.putString("restaurantId", restaurantId);
                 editor.commit();
 
                 //move to nav bar activity

@@ -138,8 +138,6 @@ public class NavDrawer extends AppCompatActivity
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.fragment_container, fragmentAccountInfo).commit();
         } else if (id == R.id.nav_logout){
-            //urlConnection.setRequestProperty("session", sessionID);
-
             new logout().execute("http://138.197.33.88/api/business/logout/ ");
         }
 
@@ -185,9 +183,9 @@ public class NavDrawer extends AppCompatActivity
 
             if (result.equals("true") ){ //successful logout
 
-                //delete old session id
+                //delete all current shared preferences
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("sessionId", "");
+                editor.clear();
                 editor.commit();
 
                 Intent intent = new Intent(NavDrawer.this, ActivityLogin.class);
