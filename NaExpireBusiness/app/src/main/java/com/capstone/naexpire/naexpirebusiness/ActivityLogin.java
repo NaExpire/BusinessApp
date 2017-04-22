@@ -89,7 +89,7 @@ public class ActivityLogin extends AppCompatActivity {
         email = txtemail.getText().toString();
         password = txtpassword.getText().toString();
 
-        if(!email.isEmpty() && !password.isEmpty()){
+        /*if(!email.isEmpty() && !password.isEmpty()){ //if fields are filled
             if(email.equals(sharedPref.getString("email", "")) &&
                     password.equals(sharedPref.getString("password", ""))){
                 if(first == 1){
@@ -114,20 +114,18 @@ public class ActivityLogin extends AppCompatActivity {
                     });
                 }
                 else{
-                    Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    new login().execute("http://138.197.33.88/api/business/login/ ");
+                    //Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //startActivity(intent);
                 }
             }
             else Toast.makeText(this, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
+            new login().execute("http://138.197.33.88/api/business/login/ ");
         }
-        else Toast.makeText(this, "Fill all fields.", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(this, "Fill all fields.", Toast.LENGTH_SHORT).show();*/
 
-        /*if (email.isEmpty() || password.isEmpty()) Toast.makeText(this, "Enter Username & Password",
-                Toast.LENGTH_LONG).show();
-        else {
-            new ActivityLogin.HttpAsyncTask().execute("http://138.197.33.88/api/business/login/");
-        }*/
+        new login().execute("http://138.197.33.88/api/business/login/ ");
     }
 
     public void clickForgot(View view) {
@@ -158,7 +156,7 @@ public class ActivityLogin extends AppCompatActivity {
         //Toast.makeText(this, y, Toast.LENGTH_SHORT).show();
     }
 
-    private class HttpAsyncTask extends AsyncTask<String,String,String> {
+    private class login extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){
             loginStatus = "nope";
@@ -185,8 +183,7 @@ public class ActivityLogin extends AppCompatActivity {
                 writer.close();
 
                 int HttpResult = connection.getResponseCode();
-                android.util.Log.w(this.getClass().getSimpleName(),
-                        "Response Code: "+HttpResult);
+                android.util.Log.w(this.getClass().getSimpleName(), "Response Code: "+HttpResult);
 
                 if(HttpResult == HttpURLConnection.HTTP_FORBIDDEN){
                     //first login ever
@@ -225,8 +222,6 @@ public class ActivityLogin extends AppCompatActivity {
 
                     android.util.Log.w(this.getClass().getSimpleName(),
                             "Response Message: "+sb.toString());
-                    android.util.Log.w(this.getClass().getSimpleName(),
-                            "Session ID: "+loginStatus);
                 }
                 else{
                     android.util.Log.w(this.getClass().getSimpleName(),
@@ -242,11 +237,16 @@ public class ActivityLogin extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            if (!result.equals("first") && !result.equals("nope")){ //not first login
-                userData = result;
 
+            if (!result.equals("first") && !result.equals("nope")){ //not first login
+
+                //set current session id
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("sessionId", result);
+                editor.commit();
+
+                //move to nav bar activity
                 Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
-                //intent.putExtra("userData", userData);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
