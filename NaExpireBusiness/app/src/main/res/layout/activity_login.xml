@@ -34,7 +34,6 @@
         android:inputType="textEmailAddress"
         android:textColor="#fff"
         android:backgroundTint="#fff"
-        android:text="jpeck@gmail.com"
         android:textColorHint="#fff"/>
 
     <EditText
@@ -45,7 +44,6 @@
         android:ems="10"
         android:hint="@string/password"
         android:textColor="#fff"
-        android:text="6^ygvbnmM"
         android:inputType="textPassword"
         android:backgroundTint="#fff"
         android:textColorHint="#fff"/>

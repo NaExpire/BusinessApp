@@ -2,32 +2,36 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/lblOrderInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Order #xxxxxx"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="Order #XXXXXXX"
         android:textStyle="bold"
-        android:layout_marginTop="5sp"
-        android:textSize="25sp"/>
+        android:textColor="#000"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/lblCustNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
         android:layout_below="@id/lblOrderInfo"
-        android:text="Customer Name"
+        android:text="Customer Name:"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/lblCustName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="24dp"
         android:layout_toRightOf="@id/lblCustNameLabel"
         android:layout_alignBaseline="@id/lblCustNameLabel"/>
 
@@ -35,16 +39,18 @@
         android:id="@+id/lblTimePlacedLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
         android:layout_below="@id/lblCustNameLabel"
-        android:text="Time Placed"
+        android:text="Time Placed:"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/lblTimePlaced"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="24dp"
         android:layout_toRightOf="@id/lblTimePlacedLabel"
         android:layout_alignBaseline="@id/lblTimePlacedLabel"/>
 
@@ -52,16 +58,18 @@
         android:id="@+id/lblOrderTotalLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
         android:layout_below="@id/lblTimePlacedLabel"
-        android:text="Order Total"
+        android:text="Order Total:"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/lblOrderTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="24dp"
         android:layout_toRightOf="@id/lblOrderTotalLabel"
         android:layout_alignBaseline="@id/lblOrderTotalLabel"/>
 
@@ -69,28 +77,32 @@
         android:id="@+id/lblItemsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
         android:layout_below="@id/lblOrderTotalLabel"
-        android:text="Items in Order"
+        android:text="Items in Order:"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/lblItems"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="24dp"
         android:layout_toRightOf="@id/lblItemsLabel"
         android:layout_alignBaseline="@id/lblItemsLabel"/>
 
     <Button
         android:id="@+id/btnDismiss"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/lblItems"
         android:text="Dismiss"
-        android:textColor="@android:color/background_light"
-        android:background="@color/colorAccent"/>
+        android:textColor="@color/colorPrimary"
+        android:background="@android:color/transparent"/>
 
 </RelativeLayout>

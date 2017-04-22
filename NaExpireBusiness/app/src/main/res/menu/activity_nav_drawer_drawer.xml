@@ -4,24 +4,20 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_storeMenu"
-            android:icon="@mipmap/ic_restaurant_menu_black_24dp"
-            android:title="Your Deals" />
+            android:icon="@mipmap/ic_money_off_black_24dp"
+            android:title="My Deals" />
         <item
             android:id="@+id/nav_orderInbox"
             android:icon="@mipmap/ic_inbox_black_24dp"
             android:title="Order Inbox" />
         <item
-            android:id="@+id/nav_activeDiscounts"
-            android:icon="@mipmap/ic_money_off_black_24dp"
-            android:title="Active Discounts" />
-        <item
-            android:id="@+id/nav_accountInfo"
-            android:icon="@mipmap/ic_person_black_24dp"
-            android:title="Account Info" />
-        <item
             android:id="@+id/nav_orderHistory"
             android:icon="@mipmap/ic_history_black_24dp"
             android:title="Order History" />
+        <item
+            android:id="@+id/nav_accountInfo"
+            android:icon="@mipmap/ic_person_black_24dp"
+            android:title="My Account" />
         <item
             android:id="@+id/nav_editMenu"
             android:icon="@mipmap/ic_edit_black_24dp"

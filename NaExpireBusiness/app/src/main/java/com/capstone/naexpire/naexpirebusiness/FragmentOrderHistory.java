@@ -75,7 +75,6 @@ public class FragmentOrderHistory extends Fragment {
                 Button okay = (Button) dialogView.findViewById(R.id.btnDismiss);
 
                 datePlaced.setText("Date Placed");
-                okay.setText("Okay");
 
                 orderID.setText("Order #" + adapter.getOrderId(position));
                 custName.setText(adapter.getCustName(position));

@@ -16,8 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/lblnothing"
-        android:text="Account Info"
-        android:textColor="@color/colorAccent"
+        android:text="Account Details"
+        android:textColor="@color/colorPrimary"
         android:background="@android:color/transparent"/>
 
     <Button
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/lblnothing"
         android:text="Food Types"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimary"
         android:background="@android:color/transparent"/>
 
     <Button

@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -131,7 +132,21 @@ public class ActivityLogin extends AppCompatActivity {
 
     public void clickForgot(View view) {
         if(!txtemail.getText().toString().isEmpty()) {
-            Toast.makeText(this, "A Recovery E-Mail Has Been Sent", Toast.LENGTH_LONG).show();
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+            View mView = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
+            TextView header = (TextView) mView.findViewById(R.id.lblText);
+            header.setText("A recovery email has been sent to "+txtemail.getText().toString());
+            Button dismiss = (Button) mView.findViewById(R.id.btnDismiss);
+            mBuilder.setView(mView);
+            final AlertDialog dialog = mBuilder.create();
+            dialog.show();
+
+            dismiss.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    dialog.dismiss();
+                }
+            });
         }
         else Toast.makeText(this, "Enter Email", Toast.LENGTH_LONG).show();
     }

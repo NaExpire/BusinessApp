@@ -2,6 +2,8 @@
     android:id="@+id/layAccount"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.capstone.naexpire.naexpirebusiness.FragmentAccountInfo">
@@ -17,8 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/lblNothing"
-        android:text="Account Info"
-        android:textColor="@color/colorAccent"
+        android:text="Account Details"
+        android:textColor="@color/colorPrimary"
         android:background="@android:color/transparent"/>
 
     <Button
@@ -27,13 +29,23 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/lblNothing"
         android:text="Food Types"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimary"
         android:background="@android:color/transparent"/>
+
+    <Button
+        android:id="@+id/btnSaveAcctEdits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Save Changes"
+        android:textColor="@android:color/background_light"
+        android:background="@color/colorAccent"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btnAcctInfo">
+        android:layout_below="@id/btnAcctInfo"
+        android:layout_above="@id/btnSaveAcctEdits">
 
         <LinearLayout
             android:id="@+id/layAccountScroll"
@@ -227,15 +239,6 @@
                 android:layout_below="@id/lblCNewPass"
                 android:layout_marginTop="5dp"
                 android:inputType="textPassword"/>
-
-            <Button
-                android:id="@+id/btnSaveAcctEdits"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtCNewPass"
-                android:text="Save Changes"
-                android:textColor="@android:color/background_light"
-                android:background="@color/colorAccent"/>
         </LinearLayout>
     </ScrollView>
 

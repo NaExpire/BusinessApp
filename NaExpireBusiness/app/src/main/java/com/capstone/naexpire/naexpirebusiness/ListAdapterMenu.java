@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class ListAdapterMenu extends BaseAdapter {
@@ -43,21 +44,24 @@ public class ListAdapterMenu extends BaseAdapter {
         return position;
     }
 
+    public Integer getId(int position){
+        return menu.get(position).getId();
+    }
     public String getName(int position){ return menu.get(position).getName(); }
-    public String getPrice(int position){ return "$"+menu.get(position).getPrice(); }
+    public Double getPrice(int position){ return menu.get(position).getPrice(); }
     public String getDescription(int position){ return menu.get(position).getDescription(); }
+    public Integer getQuantity(int position){ return menu.get(position).getQuantity(); }
+    public Double getDeal(int position){ return menu.get(position).getDeal(); }
     public String getImage(int position){ return menu.get(position).getImage(); }
     public String getJson(int position) {return menu.get(position).getJson();}
 
-    public void setItem(int position, String name, Double price, String description, String image){
-        menu.get(position).getName();
-        menu.get(position).getPrice();
-        menu.get(position).getDescription();
-        menu.get(position).getImage();
-        notifyDataSetChanged();
-    }
-    public void newItem(int id, String name, Double price, String description, String image){
-        menu.add(new MenuItem(id, name, price, description, image));
+    public void setQuantity(int position, int quantity){ menu.get(position).setQuantity(quantity);}
+    public void setDeal(int position, double deal){ menu.get(position).setDeal(deal);}
+    public void setPrice(int position, double price){ menu.get(position).setPrice(price);}
+
+    public void newItem(int id, String name, Double price, String description, int quantity,
+                        double deal, String image){
+        menu.add(new MenuItem(id, name, price, description, quantity, deal, image));
         notifyDataSetChanged();
     }
 
@@ -79,7 +83,7 @@ public class ListAdapterMenu extends BaseAdapter {
             case 1: //high to low
                 Collections.sort(menu, new Comparator<MenuItem>(){
                     public int compare( MenuItem o1, MenuItem o2){
-                        return -1*o1.getPrice().compareTo(o2.getPrice());
+                        return -1*o1.getDeal().compareTo(o2.getDeal());
                     }
                 });
                 notifyDataSetChanged();
@@ -87,7 +91,7 @@ public class ListAdapterMenu extends BaseAdapter {
             case 2: //low to high
                 Collections.sort(menu, new Comparator<MenuItem>(){
                     public int compare( MenuItem o1, MenuItem o2){
-                        return o1.getPrice().compareTo(o2.getPrice());
+                        return o1.getDeal().compareTo(o2.getDeal());
                     }
                 });
                 notifyDataSetChanged();
@@ -106,7 +110,9 @@ public class ListAdapterMenu extends BaseAdapter {
         holder.im=(ImageView) rowView.findViewById(R.id.imgMenuPic);
 
         holder.nm.setText(menu.get(position).getName());
-        holder.pr.setText("$"+menu.get(position).getPrice());
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        if(getQuantity(position) > 0) holder.pr.setText("$"+decimalFormat.format(getDeal(position)));
+        else holder.pr.setText("");
         holder.ds.setText(menu.get(position).getDescription());
         Glide.with(context).load(menu.get(position).getImage()).into(holder.im);
 
@@ -115,33 +121,42 @@ public class ListAdapterMenu extends BaseAdapter {
 
     public class MenuItem{
         private String name, description, image;
-        private double price;
-        private int id;
+        private double price, deal;
+        private int id, quantity;
 
         MenuItem(){
             id = 0;
             name = "";
             price = 0.00;
             description = "";
+            quantity = 0;
+            deal = 0.0;
             image = "";
         }
 
-        MenuItem(int i, String n, Double p, String d, String im){
-            id = i;
-            name = n;
-            price  = p;
-            description = d;
-            image = im;
+        MenuItem(int id, String name, Double price, String description, int quantity, double deal, String image){
+            this.id = id;
+            this.name = name;
+            this.price  = price;
+            this.description = description;
+            this.quantity = quantity;
+            this.deal = deal;
+            this.image = image;
         }
+        Integer getId(){return id;}
         String getName(){return name;}
         Double getPrice(){return price;}
         String getDescription(){return description;}
+        Integer getQuantity(){return quantity;}
+        Double getDeal(){return deal;}
         String getImage(){return image;}
         String getJson(){return toJsonString(id, name, description, image, price);}
 
         void setName(String n){name = n;}
         void setPrice(Double p){price = p;}
         void setDescription(String d){description = d;}
+        void setQuantity(Integer quantity){this.quantity = quantity;}
+        void setDeal(Double deal){this.deal = deal;}
         void setImage(String i){image = i;}
     }
 

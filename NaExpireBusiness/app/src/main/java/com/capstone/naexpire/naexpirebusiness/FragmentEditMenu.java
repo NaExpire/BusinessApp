@@ -51,7 +51,6 @@ public class FragmentEditMenu extends Fragment {
 
         FragmentEditMenu.this.getActivity().setTitle("Edit Menu"); //set activity title
 
-        Button save = (Button) view.findViewById(R.id.btnEditMenu);
         Button foot = (Button) footer.findViewById(R.id.btnFooterNew);
 
         adapter = new ListAdapterEditMenu(FragmentEditMenu.this.getContext(), FragmentEditMenu.this);
@@ -148,19 +147,6 @@ public class FragmentEditMenu extends Fragment {
                         db.update("menu", v, "name = ?", selectionArgs);
                         db.close();
 
-                        DatabaseHelperActiveDiscounts dbActiveHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
-                        SQLiteDatabase dbActive = dbActiveHelper.getWritableDatabase();
-
-                        ContentValues vals = new ContentValues();
-                        vals.put("name", newItemName.getText().toString());
-
-                        selectionArgs[0] = adapter.getName(position);
-
-                        dbActive.update("activeDiscounts", vals, "name = ?", selectionArgs);
-
-                        dbActive.close();
-                        dbActiveHelper.close();
-
                         adapter.setItem(spot, newItemName.getText().toString(),
                                 newItemPrice.getText().toString(),newItemDesc.getText().toString(),
                                 foodImage);
@@ -231,6 +217,8 @@ public class FragmentEditMenu extends Fragment {
                         values.put("name", newItemName.getText().toString());
                         values.put("price", newItemPrice.getText().toString());
                         values.put("description", newItemDesc.getText().toString());
+                        values.put("quantity", "0");
+                        values.put("deal", "0");
                         values.put("image", foodImage);
                         db.insert("menu", null, values);
 
@@ -243,13 +231,6 @@ public class FragmentEditMenu extends Fragment {
                         dialog.dismiss();
                     }
                 });
-            }
-        });
-
-        save.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Toast.makeText(FragmentEditMenu.this.getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -297,14 +278,6 @@ public class FragmentEditMenu extends Fragment {
                 db.delete("menu", "name = ?", selectionArgs);
 
                 db.close();
-
-                DatabaseHelperActiveDiscounts dbActiveHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
-                SQLiteDatabase dbActive = dbActiveHelper.getWritableDatabase();
-
-                dbActive.delete("activeDiscounts", "name = ?", selectionArgs);
-
-                dbActive.close();
-                dbActiveHelper.close();
 
                 adapter.deleteItem(position);
                 Toast.makeText(FragmentEditMenu.this.getContext(), n + " deleted", Toast.LENGTH_SHORT).show();

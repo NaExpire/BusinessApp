@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -65,6 +68,7 @@ public class ActivityRegister extends AppCompatActivity {
 
     protected void hideKeyboard(View view)
     {
+        view.clearFocus();
         InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
@@ -103,7 +107,21 @@ public class ActivityRegister extends AppCompatActivity {
             startActivity(intent);
         }
         else if(!ready) Toast.makeText(this, "Fill All Fields", Toast.LENGTH_LONG).show();
-        else if(!valid) Toast.makeText(this, "Password must have at least:\n\t8 Characters\n\t1 Capital\n\t1 Number\n\t1 Special Character", Toast.LENGTH_LONG).show();
+        else if(!valid){
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+            View mView = getLayoutInflater().inflate(R.layout.dialog_password, null);
+            Button dismiss = (Button) mView.findViewById(R.id.btnDismiss);
+            mBuilder.setView(mView);
+            final AlertDialog dialog = mBuilder.create();
+            dialog.show();
+
+            dismiss.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    dialog.dismiss();
+                }
+            });
+        }
         else if(!same) Toast.makeText(this, "passwords do not match", Toast.LENGTH_LONG).show();
     }
 

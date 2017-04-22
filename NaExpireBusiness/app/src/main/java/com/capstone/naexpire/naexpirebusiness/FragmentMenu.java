@@ -25,13 +25,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
 public class FragmentMenu extends Fragment {
 
     private DatabaseHelperMenu dbHelper = null;
-    private DatabaseHelperActiveDiscounts dbDiscountsHelper = null;
     private Cursor current = null;
 
     ListAdapterMenu adapter;
@@ -56,10 +56,7 @@ public class FragmentMenu extends Fragment {
 
         FragmentMenu.this.getActivity().setTitle("Menu"); //set activity title
 
-        if (current==null) {
-            dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
-            dbDiscountsHelper = new DatabaseHelperActiveDiscounts(getActivity().getApplicationContext());
-        }
+        dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
 
         //spinner to select filter method for menu items
         Spinner spinner = (Spinner) view.findViewById(R.id.spnFilter);
@@ -75,22 +72,26 @@ public class FragmentMenu extends Fragment {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor result = db.rawQuery("SELECT id, name, price, description, image FROM menu", null);
+        Cursor result = db.rawQuery("SELECT * FROM menu", null);
+
+        //0 id
+        //1 name
+        //2 price
+        //3 description
+        //4 quantity
+        //5 deal
+        //6 image
 
         while(result.moveToNext()){
-            itemId.add(Integer.parseInt(result.getString(0)));
-            name.add(result.getString(1));
-            price.add(Double.parseDouble(result.getString(2)));
-            description.add(result.getString(3));
-            image.add(result.getString(4));
+            adapter.newItem(Integer.parseInt(result.getString(0)), result.getString(1),
+                    Double.parseDouble(result.getString(2)),result.getString(3),
+                    Integer.parseInt(result.getString(4)), Double.parseDouble(result.getString(5)),
+                    result.getString(6));
         }
 
         db.close();
         result.close();
 
-        for(int i = 0; i < name.size(); i++){
-            adapter.newItem(itemId.get(i), name.get(i),price.get(i),description.get(i), image.get(i));
-        }
         adapter.sortMenu(spinner.getSelectedItemPosition());
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -107,7 +108,7 @@ public class FragmentMenu extends Fragment {
         });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
                 AlertDialog.Builder dBuilder = new AlertDialog.Builder(FragmentMenu.this.getContext());
                 View dView = getActivity().getLayoutInflater().inflate(R.layout.dialog_deal, null);
                 ImageView image = (ImageView) dView.findViewById(R.id.imgDiscountPic);
@@ -118,7 +119,18 @@ public class FragmentMenu extends Fragment {
                 Button cancel = (Button) dView.findViewById(R.id.btnCancel);
 
                 final int spot = position;
+                final int numDeals = adapter.getQuantity(position);
 
+                if(numDeals > 0){
+                    quantity.setText(""+adapter.getQuantity(position));
+                    DecimalFormat decimalFormat = new DecimalFormat("0.00");
+                    dPrice.setText(""+decimalFormat.format(adapter.getDeal(position)));
+                    saveDiscount.setText("Save");
+                }
+                else{
+                    quantity.setText("");
+                    dPrice.setText("");
+                }
                 name.setText(adapter.getName(position)+" Deal");
                 Glide.with(FragmentMenu.this.getContext()).load(adapter.getImage(position)).into(image);
 
@@ -142,24 +154,27 @@ public class FragmentMenu extends Fragment {
                         String q = quantity.getText().toString();
                         String p = dPrice.getText().toString();
 
-                        if(q.isEmpty() || p.isEmpty()){
+                        if(q.isEmpty() && p.isEmpty()){
+                            dialog.dismiss();
+                        }
+                        else if(q.isEmpty() || p.isEmpty()){
                             Toast.makeText(FragmentMenu.this.getActivity(),"Fill All Fields", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            SQLiteDatabase db = dbDiscountsHelper.getWritableDatabase();
-
+                            SQLiteDatabase db = dbHelper.getWritableDatabase();
                             ContentValues values = new ContentValues();
-
-                            values.put("id", "1");
-                            values.put("name", adapter.getName(spot));
-                            values.put("price", p);
                             values.put("quantity", q);
-                            values.put("image", adapter.getImage(spot));
-                            db.insert("activeDiscounts", null, values);
-
+                            if(Integer.parseInt(q) > 0) values.put("deal", p);
+                            else values.put("deal", 0.0);
+                            db.update("menu", values, "id = ?", new String[]{""+adapter.getId(position)});
                             db.close();
 
-                            Toast.makeText(FragmentMenu.this.getActivity(),"Deal Created", Toast.LENGTH_SHORT).show();
+                            adapter.setQuantity(position, Integer.parseInt(q));
+                            adapter.setDeal(position, Double.parseDouble(p));
+                            adapter.notifyDataSetChanged();
+
+                            if(numDeals ==0) Toast.makeText(FragmentMenu.this.getActivity(),"Deal Created", Toast.LENGTH_SHORT).show();
+                            else Toast.makeText(FragmentMenu.this.getActivity(),"Deal Updated", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                     }
@@ -187,7 +202,6 @@ public class FragmentMenu extends Fragment {
     @Override
     public void onDestroy() {
         dbHelper.close();
-        dbDiscountsHelper.close();
         super.onDestroy();
     }
 }

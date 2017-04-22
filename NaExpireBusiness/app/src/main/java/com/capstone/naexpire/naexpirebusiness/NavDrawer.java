@@ -121,10 +121,6 @@ public class NavDrawer extends AppCompatActivity
             FragmentOrderHistory fragmentOrderHistory = new FragmentOrderHistory();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.fragment_container, fragmentOrderHistory).commit();
-        } else if (id == R.id.nav_activeDiscounts) {
-            FragmentActiveDiscounts fragmentActiveDiscounts = new FragmentActiveDiscounts();
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.fragment_container, fragmentActiveDiscounts).commit();
         } else if (id == R.id.nav_accountInfo) {
             FragmentAccountInfo fragmentAccountInfo = new FragmentAccountInfo();
             FragmentManager manager = getSupportFragmentManager();
