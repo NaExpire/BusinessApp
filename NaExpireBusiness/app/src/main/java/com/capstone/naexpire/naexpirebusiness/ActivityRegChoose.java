@@ -178,7 +178,7 @@ public class ActivityRegChoose extends AppCompatActivity {
         boolean madeGrabBag = (1 == sharedPref.getInt("madeGrabBag", 0));
         boolean madeMenu = (1 == sharedPref.getInt("madeMenu", 0));
 
-        if((madeGrabBag || madeMenu) && (startTime < endTime)){ //if ready
+        if((madeGrabBag || madeMenu) && (startTime < endTime) && !description.getText().toString().isEmpty()){ //if ready
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("restaurantDescription", description.getText().toString().trim());
             editor.commit();

@@ -122,9 +122,11 @@ public class FragmentAccountInfo extends Fragment {
                 //update restaurant name in the navigation drawer
                 NavigationView navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
                 View header = navigationView.getHeaderView(0);
+                TextView onw = (TextView) header.findViewById(R.id.lblNavOwner);
                 TextView rest = (TextView) header.findViewById(R.id.lblNavRest);
 
                 rest.setText(sharedPref.getString("restaurantName", ""));
+                onw.setText(sharedPref.getString("username", ""));
 
                 //Toast.makeText(getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
             }

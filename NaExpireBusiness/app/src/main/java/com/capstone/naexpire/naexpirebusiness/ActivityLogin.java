@@ -51,8 +51,8 @@ public class ActivityLogin extends AppCompatActivity {
         sharedPref = getSharedPreferences("com.capstone.naexpire.PREFERENCE_FILE_KEY",
                 Context.MODE_PRIVATE);
 
-        if(1 == sharedPref.getInt("fromRegister", 0)){
-            first = 1;
+        if(1 == sharedPref.getInt("fromRegister", 0)){  //checks if the user just came from
+            first = 1;                                  //the first stage of registration
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt("fromRegister", 0); //set that the user didn't just come from register
             editor.commit();
@@ -61,9 +61,9 @@ public class ActivityLogin extends AppCompatActivity {
             txtpassword.setText(sharedPref.getString("password", ""));
         }
 
+        //dialog builder for confirmaiton code dialog
         dialogBuilder = new AlertDialog.Builder(this);
         dialogView = getLayoutInflater().inflate(R.layout.dialog_confirmation_code, null);
-
         dialogBuilder.setView(dialogView);
         dialog = dialogBuilder.create();
 
@@ -78,7 +78,7 @@ public class ActivityLogin extends AppCompatActivity {
         });
     }
 
-    protected void hideKeyboard(View view)
+    protected void hideKeyboard(View view) //method to hide soft-keyboard
     {
         view.clearFocus();
         InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -128,7 +128,7 @@ public class ActivityLogin extends AppCompatActivity {
         new login().execute("http://138.197.33.88/api/business/login/");
     }
 
-    public void clickForgot(View view) {
+    public void clickForgot(View view) { //when forgot password is tapped
         if(!txtemail.getText().toString().isEmpty()) {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
             View mView = getLayoutInflater().inflate(R.layout.dialog_forgot, null);
@@ -159,7 +159,7 @@ public class ActivityLogin extends AppCompatActivity {
         protected String doInBackground(String... urls){
             loginStatus = "nope";
             restaurantId = "";
-            String line = null;
+            String line = "";
             StringBuilder sb = new StringBuilder();
             HttpURLConnection connection = null;
 
@@ -184,11 +184,12 @@ public class ActivityLogin extends AppCompatActivity {
                 int HttpResult = connection.getResponseCode();
                 android.util.Log.w(this.getClass().getSimpleName(), "Response Code: "+HttpResult);
 
+                BufferedReader br = new BufferedReader(new InputStreamReader(
+                        connection.getInputStream(), "utf-8"
+                ));
+
                 if(HttpResult == HttpURLConnection.HTTP_FORBIDDEN){ //signifies first ever login
                     loginStatus = "first";
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            connection.getInputStream(), "utf-8"
-                    ));
                     while((line = br.readLine()) != null){
                         sb.append(line + "\n");
                     }
@@ -203,9 +204,6 @@ public class ActivityLogin extends AppCompatActivity {
                             "Response Message: "+sb.toString());
                 }
                 else if(HttpResult == HttpURLConnection.HTTP_OK){
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            connection.getInputStream(), "utf-8"
-                    ));
                     while((line = br.readLine()) != null){
                         sb.append(line + "\n");
                     }
@@ -267,6 +265,9 @@ public class ActivityLogin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 confirmationCode = code.getText().toString();
+                Intent intent = new Intent(ActivityLogin.this.getBaseContext(), ActivityRegFirstLogin.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 //new ActivityLogin.ConfirmCode().execute("http://138.197.33.88/api/business/register/confirm/");
             }
         });

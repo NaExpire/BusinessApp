@@ -3,6 +3,7 @@ package com.capstone.naexpire.naexpirebusiness;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,6 +34,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,6 +57,9 @@ public class FragmentMenu extends Fragment {
     private ArrayList<Double> price = new ArrayList<Double>();
     private ArrayList<String> description = new ArrayList<String>();
     private ArrayList<String> image = new ArrayList<String>();
+
+    private int mealId, mealQuantity;
+    private double dealPrice;
 
     public FragmentMenu() {
         // Required empty public constructor
@@ -145,13 +150,13 @@ public class FragmentMenu extends Fragment {
                 final int spot = position;
                 final int numDeals = adapter.getQuantity(position);
 
-                if(numDeals > 0){
+                if(numDeals > 0){ //set text fields empty if no deal exists
                     quantity.setText(""+adapter.getQuantity(position));
                     DecimalFormat decimalFormat = new DecimalFormat("0.00");
                     dPrice.setText(""+decimalFormat.format(adapter.getDeal(position)));
                     saveDiscount.setText("Save");
                 }
-                else{
+                else{ //set text fields appropriately if a deal exists
                     quantity.setText("");
                     dPrice.setText("");
                 }
@@ -176,6 +181,7 @@ public class FragmentMenu extends Fragment {
                     @Override
                     public void onClick(View view){
                         String q = quantity.getText().toString();
+                        if(q.equals("")) q = "0";
                         String p = dPrice.getText().toString();
 
                         if(q.isEmpty() && p.isEmpty()){
@@ -197,7 +203,13 @@ public class FragmentMenu extends Fragment {
                             adapter.setDeal(position, Double.parseDouble(p));
                             adapter.notifyDataSetChanged();
 
-                            if(numDeals ==0) Toast.makeText(FragmentMenu.this.getActivity(),"Deal Created", Toast.LENGTH_SHORT).show();
+                            if(numDeals == 0){
+                                mealId = adapter.getId(position);
+                                mealQuantity = Integer.parseInt(q);
+                                dealPrice = Double.parseDouble(p);
+                                new newDeal().execute("http://138.197.33.88/api/business/deal/create/");
+                                Toast.makeText(FragmentMenu.this.getActivity(),"Deal Created", Toast.LENGTH_SHORT).show();
+                            }
                             else Toast.makeText(FragmentMenu.this.getActivity(),"Deal Updated", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
@@ -341,6 +353,78 @@ public class FragmentMenu extends Fragment {
             results.close();
 
             adapter.sortMenu(spinner.getSelectedItemPosition());
+        }
+    }
+
+    private class newDeal extends AsyncTask<String,String,String> {
+        @Override
+        protected String doInBackground(String... urls){
+            String line = "";
+            StringBuilder sb = new StringBuilder();
+            HttpURLConnection connection = null;
+
+            try {
+                URL requestURL = new URL(urls[0]);
+                String outputString = toJsonString();
+
+                connection = (HttpURLConnection) requestURL.openConnection();
+                connection.setDoOutput(true);
+                connection.setChunkedStreamingMode(0);
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("charset", "utf-8");
+                connection.setUseCaches(false);
+                connection.setRequestProperty("Content-Length", "" + outputString.getBytes().length);
+                connection.setRequestProperty("Content-Type", "application/json");
+
+                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                writer.write(outputString);
+                writer.flush();
+                writer.close();
+
+                int HttpResult = connection.getResponseCode();
+                android.util.Log.w(this.getClass().getSimpleName(), "Response Code: "+HttpResult);
+
+                if(HttpResult == HttpURLConnection.HTTP_OK){
+                    BufferedReader br = new BufferedReader(new InputStreamReader(
+                            connection.getInputStream(), "utf-8"
+                    ));
+
+                    while((line = br.readLine()) != null){
+                        sb.append(line + "\n");
+                    }
+                    br.close();
+
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+sb.toString());
+                }
+                else{
+                    android.util.Log.w(this.getClass().getSimpleName(),
+                            "Response Message: "+connection.getResponseMessage());
+                }
+            }
+            catch (MalformedURLException ex){ ex.printStackTrace(); }
+            catch (IOException e){ e.printStackTrace(); }
+            finally{ connection.disconnect(); }
+
+            return line;
+        }
+
+        public String toJsonString() {//creates a new JSON string from stored movie data
+            String returnJ = "";
+            try{
+                JSONObject js = new JSONObject();
+                js.put("meal-id", mealId);
+                js.put("deal-price", dealPrice);
+                js.put("quantity", mealQuantity);
+                js.put("restaurantID", Integer.parseInt(sharedPref.getString("restaurantId", "")));
+                returnJ = js.toString();
+                android.util.Log.w(this.getClass().getSimpleName(),returnJ);
+            }
+            catch (Exception ex){
+                android.util.Log.w(this.getClass().getSimpleName(),
+                        "error converting to/from json");
+            }
+            return returnJ;
         }
     }
 
