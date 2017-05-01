@@ -47,6 +47,7 @@ public class ActivityRegChoose extends AppCompatActivity {
         endTime = 800;
     }
 
+    //user taps to set pickup start time
     public void clickStartTime(View view){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         view = getLayoutInflater().inflate(R.layout.dialog_set_time, null);
@@ -74,6 +75,7 @@ public class ActivityRegChoose extends AppCompatActivity {
                 startTime = Integer.parseInt(hour + minute);
                 String ampm = " AM";
 
+                //convert to AM/PM format from 24 hour
                 if (hour == 0) {
                     hour += 12;
                     ampm = " AM";
@@ -87,12 +89,13 @@ public class ActivityRegChoose extends AppCompatActivity {
                 }
 
                 start.setText(hour +":"+minute+ampm);
-                if(startTime > endTime){
-                    start.setTextColor(Color.RED);
+                if(startTime > endTime){ //if start time is after end time
+                    start.setTextColor(Color.RED); // set text of selected times to red
                     end.setTextColor(Color.RED);
                     Toast.makeText(ActivityRegChoose.this, "start time must be earlier than end time", Toast.LENGTH_SHORT).show();
                 }
-                else{
+                else{ //if start time is before end time
+                    //set time text back to default color
                     start.setTextColor(oldColors);
                     end.setTextColor(oldColors);
 
@@ -105,6 +108,7 @@ public class ActivityRegChoose extends AppCompatActivity {
         });
     }
 
+    //user taps to select end time
     public void clickEndTime(View view){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         view = getLayoutInflater().inflate(R.layout.dialog_set_time, null);
@@ -132,6 +136,7 @@ public class ActivityRegChoose extends AppCompatActivity {
                 endTime = Integer.parseInt(hour + minute);
                 String ampm = " AM";
 
+                //convert time to AM/PM format from 24 hour
                 if (hour == 0) {
                     hour += 12;
                     ampm = " AM";
@@ -146,13 +151,13 @@ public class ActivityRegChoose extends AppCompatActivity {
 
                 end.setText(hour +":"+minute+ampm);
 
-                if(startTime > endTime){
-                    start.setTextColor(Color.RED);
+                if(startTime > endTime){ //if start time is after end time
+                    start.setTextColor(Color.RED); //set time text color to red
                     end.setTextColor(Color.RED);
                     Toast.makeText(ActivityRegChoose.this, "start time must be earlier than end time", Toast.LENGTH_SHORT).show();
                 }
-                else{
-                    start.setTextColor(oldColors);
+                else{ //if start time is before end time
+                    start.setTextColor(oldColors); //set time text color to default color
                     end.setTextColor(oldColors);
 
                     SharedPreferences.Editor editor = sharedPref.edit();
@@ -164,12 +169,12 @@ public class ActivityRegChoose extends AppCompatActivity {
         });
     }
 
-    public void clickGrabBag(View view){
+    public void clickGrabBag(View view){ //navigate to grab bag creation activity
         Intent intent = new Intent(this, ActivityRegGrabBag.class);
         startActivity(intent);
     }
 
-    public void clickRegular(View view){
+    public void clickRegular(View view){ //navigate to regular item creation activity
         Intent intent = new Intent(this, ActivityRegCreateMenu.class);
         startActivity(intent);
     }
@@ -178,6 +183,8 @@ public class ActivityRegChoose extends AppCompatActivity {
         boolean madeGrabBag = (1 == sharedPref.getInt("madeGrabBag", 0));
         boolean madeMenu = (1 == sharedPref.getInt("madeMenu", 0));
 
+        //enforcet that at least one regular menu item or a grab bag is created, start time < end time,
+        //and that the restaurant has a description
         if((madeGrabBag || madeMenu) && (startTime < endTime) && !description.getText().toString().isEmpty()){ //if ready
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("restaurantDescription", description.getText().toString().trim());

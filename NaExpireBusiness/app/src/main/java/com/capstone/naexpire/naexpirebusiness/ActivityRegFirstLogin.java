@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+//activity for getting restaurant info (phone number and address) after first successful login
 public class ActivityRegFirstLogin extends AppCompatActivity {
     private SharedPreferences sharedPref;
 

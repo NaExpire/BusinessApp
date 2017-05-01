@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-
+//fragment to edit food types that the restaurant serves
 public class FragmentEditFoodTypes extends Fragment {
 
     DatabaseHelperFoods dbHelper = null;
@@ -58,21 +58,6 @@ public class FragmentEditFoodTypes extends Fragment {
         foods.add("Turkish");
         foods.add("Caribbean");
 
-        /*f
-        //initial setup for testing
-        dbHelper = new DatabaseHelperFoods(getActivity().getApplicationContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues value = new ContentValues();
-        for(int i = 0; i < fTypes.size(); i++){
-            value.put("name", fTypes.get(i));
-            value.put("checked", "no");
-            db.insert("foods", null, value);
-        }
-        fTypes.clear();
-        checked.clear();
-        db.close();*/
-
         //get checked foods from db
         dbHelper = new DatabaseHelperFoods(getActivity().getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -98,6 +83,7 @@ public class FragmentEditFoodTypes extends Fragment {
         Button acctInfo = (Button) view.findViewById(R.id.btnacctInfo);
         Button save = (Button) view.findViewById(R.id.btnSaveFoods);
 
+        //if add new food type footer is tapped
         foot.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -110,6 +96,7 @@ public class FragmentEditFoodTypes extends Fragment {
                 final AlertDialog dialog = mBuilder.create();
                 dialog.show();
 
+                //add new food type to existing list
                 saveFoodType.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -128,6 +115,7 @@ public class FragmentEditFoodTypes extends Fragment {
             }
         });
 
+        //navigate to account info fragment if button is pressed
         acctInfo.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -137,6 +125,7 @@ public class FragmentEditFoodTypes extends Fragment {
             }
         });
 
+        //save all currently selected food types
         save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

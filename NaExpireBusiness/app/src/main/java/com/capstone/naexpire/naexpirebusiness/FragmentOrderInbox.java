@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
-
+//fragment to show current unfulfilled orders that have been placed
 public class FragmentOrderInbox extends Fragment {
 
     ArrayList<String> orderId = new ArrayList<String>();
@@ -60,6 +60,7 @@ public class FragmentOrderInbox extends Fragment {
             adapter.newOrder(orderId.get(i), name.get(i), timePlaced.get(i), total.get(i), items.get(i));
         }
 
+        //display dialog showing specific order details when order in list is tapped
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FragmentOrderInbox.this.getContext());

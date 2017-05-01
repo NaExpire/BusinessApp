@@ -36,6 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+//fragment to edit menu items
 public class FragmentEditMenu extends Fragment {
     private SharedPreferences sharedPref;
     private DatabaseHelperMenu dbHelper = null;
@@ -70,16 +71,14 @@ public class FragmentEditMenu extends Fragment {
         listView.addFooterView(footer);
         listView.setAdapter(adapter);
 
+        //get current items in local menu db
         dbHelper = new DatabaseHelperMenu(getActivity().getApplicationContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         Cursor result = db.rawQuery("SELECT name, price, description, image FROM menu", null);
-
         while (result.moveToNext()) {
             adapter.newItem(result.getString(0), result.getString(1), result.getString(2),
                     result.getString(3));
         }
-
         result.close();
         db.close();
 
@@ -103,6 +102,7 @@ public class FragmentEditMenu extends Fragment {
 
                 final int spot = position;
 
+                //set dialog text fields
                 newItemName.setText(adapter.getName(position));
                 newItemPrice.setText(adapter.getPrice(position));
                 newItemDesc.setText(adapter.getDescription(position));
@@ -124,6 +124,7 @@ public class FragmentEditMenu extends Fragment {
                     }
                 });
 
+                //open system image picker
                 chooseImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -141,21 +142,17 @@ public class FragmentEditMenu extends Fragment {
                     }
                 });
 
-                //press button to save edits
+                //press button to save edits into local db and list adapter
                 saveNewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //String holdNew = newItemName.getText().toString();
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
                         ContentValues v = new ContentValues();
                         v.put("name", newItemName.getText().toString());
                         v.put("price", newItemPrice.getText().toString());
                         v.put("description", newItemDesc.getText().toString());
                         v.put("image", foodImage);
-
                         String[] selectionArgs = {adapter.getName(position)};
-
                         db.update("menu", v, "name = ?", selectionArgs);
                         db.close();
 
@@ -168,6 +165,7 @@ public class FragmentEditMenu extends Fragment {
             }
         });
 
+        //new menu item footer tapped
         foot.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -181,6 +179,7 @@ public class FragmentEditMenu extends Fragment {
                 Button saveNewItem = (Button) mView.findViewById(R.id.btnSaveItem);
                 Button cancel = (Button) mView.findViewById(R.id.btnCancel);
 
+                //set default image
                 foodImage = ("android.resource://com.capstone.naexpire.naexpirebusiness/drawable/tacos");
 
                 mBuilder.setView(mView);
@@ -214,6 +213,7 @@ public class FragmentEditMenu extends Fragment {
                     }
                 });
 
+                //send new item to backend db
                 saveNewItem.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -265,6 +265,7 @@ public class FragmentEditMenu extends Fragment {
         }
     }
 
+    //delete item from menu
     private boolean deleteResult = false;
     public void delete(String name, final int position){
 
@@ -285,14 +286,13 @@ public class FragmentEditMenu extends Fragment {
             }
         });
 
+        //deletes item from local db
         yes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                 String[] selectionArgs = {n};
-
                 db.delete("menu", "name = ?", selectionArgs);
-
                 db.close();
 
                 adapter.deleteItem(position);
@@ -303,6 +303,8 @@ public class FragmentEditMenu extends Fragment {
 
     }
 
+    //if trying to delete the last item in the list a dialog will be shown telling the user
+    //that they must have 1+ items at all times
     public void cantDelete(){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(FragmentEditMenu.this.getContext());
         View mView = getActivity().getLayoutInflater().inflate(R.layout.dialog_cant_delete, null);
@@ -318,6 +320,7 @@ public class FragmentEditMenu extends Fragment {
         });
     }
 
+    //async call to insert new meal into backend db
     private class createMeal extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){
@@ -381,14 +384,8 @@ public class FragmentEditMenu extends Fragment {
 
             if (!result.equals("")){ //not first login
 
-                //int id = sharedPref.getInt("mealId", 0) + 1;
-                //SharedPreferences.Editor editor = sharedPref.edit();
-                //editor.putInt("mealId", id); //store a value to signify the user just finished registering
-                //editor.commit();
                 SQLiteDatabase db = dbHelper.getWritableDatabase();
-
                 ContentValues values = new ContentValues();
-
                 values.put("id", result);
                 values.put("name", name);
                 values.put("price", price);

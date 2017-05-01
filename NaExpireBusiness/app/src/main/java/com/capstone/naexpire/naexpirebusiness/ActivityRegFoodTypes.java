@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+//activity for setting what types of foods the restaurant serves during registration
 public class ActivityRegFoodTypes extends AppCompatActivity {
     DatabaseHelperFoods dbHelper = null;
 
@@ -60,6 +61,7 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
 
         Button foot = (Button) footer.findViewById(R.id.btnFooterNew);
 
+        //when add new food type footer is tapped
         foot.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -72,6 +74,7 @@ public class ActivityRegFoodTypes extends AppCompatActivity {
                 final AlertDialog dialog = mBuilder.create();
                 dialog.show();
 
+                //add new food type to list of food types if name isn't empty
                 saveFoodType.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){

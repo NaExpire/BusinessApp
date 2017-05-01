@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+//activity for creating a grab-bag meal during registration
 public class ActivityRegGrabBag extends AppCompatActivity {
     private DatabaseHelperMenu dbHelper = null;
     private SharedPreferences sharedPref;
@@ -38,11 +39,10 @@ public class ActivityRegGrabBag extends AppCompatActivity {
                 Context.MODE_PRIVATE);
         dbHelper = new DatabaseHelperMenu(getApplicationContext());
 
+        //if a grab bag meal has been made already then get previously entered info
         if(1 == sharedPref.getInt("madeGrabBag", 0)){
             SQLiteDatabase db = dbHelper.getReadableDatabase();
-
             Cursor result = db.rawQuery("SELECT price, description, image FROM menu WHERE TRIM(name) = '"+(sharedPref.getString("restaurantName", "")+" Grab-Bag Meal").trim()+"'", null);
-
             if(result.moveToNext()){
                 price.setText(result.getString(0));
                 ingredients.setText(result.getString(1));
@@ -51,12 +51,12 @@ public class ActivityRegGrabBag extends AppCompatActivity {
                 newItemImage.getLayoutParams().width = 300;
                 Glide.with(this).load(result.getString(2)).into(newItemImage);
             }
-
             db.close();
             result.close();
         }
     }
 
+    //show description of what grab bag is
     public void clickWhatsThis(View view){
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_grab_bag_descrip, null);
@@ -74,6 +74,7 @@ public class ActivityRegGrabBag extends AppCompatActivity {
         });
     }
 
+    //opens system image picker
     public void clickChooseImage(View view){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -81,12 +82,15 @@ public class ActivityRegGrabBag extends AppCompatActivity {
         startActivityForResult(intent, 3645);
     }
 
+    //next button is tapped
     public void clickGrabNext(View view){
+        //ensure all fields are filled
         if(!ingredients.getText().toString().isEmpty() && !price.getText().toString().isEmpty()){
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
             Toast.makeText(this, sharedPref.getInt("madeGrabBag", 0)+"", Toast.LENGTH_SHORT).show();
 
+            //if one has been created already: update it
             if(1 == sharedPref.getInt("madeGrabBag", 0)){
                 ContentValues v = new ContentValues();
                 v.put("price", price.getText().toString());
@@ -98,7 +102,7 @@ public class ActivityRegGrabBag extends AppCompatActivity {
                 db.update("menu", v, "name = ?", selectionArgs);
                 db.close();
             }
-            else{
+            else{ //insert meal into db
                 ContentValues values = new ContentValues();
 
                 values.put("id", "1");
@@ -120,6 +124,7 @@ public class ActivityRegGrabBag extends AppCompatActivity {
         else Toast.makeText(this, "Fill All Fields", Toast.LENGTH_SHORT).show();
     }
 
+    //place selected image in a global variable
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 

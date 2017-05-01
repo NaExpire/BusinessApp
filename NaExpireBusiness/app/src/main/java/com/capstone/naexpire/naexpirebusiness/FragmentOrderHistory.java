@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Random;
 
-
+//fragment to show past orders customers have placed
 public class FragmentOrderHistory extends Fragment {
 
     ArrayList<String> orderid = new ArrayList<String>();
@@ -62,6 +62,7 @@ public class FragmentOrderHistory extends Fragment {
             adapter.newOrder(orderid.get(i), name.get(i), date.get(i), total.get(i), items.get(i));
         }
 
+        //display dialog showing more order details when item in list is tapped
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(FragmentOrderHistory.this.getContext());

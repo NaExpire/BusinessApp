@@ -31,6 +31,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//activity for user to input initial registration info
 public class ActivityRegister extends AppCompatActivity {
 
     private SharedPreferences sharedPref;
@@ -66,13 +67,6 @@ public class ActivityRegister extends AppCompatActivity {
         });
     }
 
-    protected void hideKeyboard(View view)
-    {
-        view.clearFocus();
-        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-    }
-
     public void clickNext(View view){
         firstName = txtFirstName.getText().toString();
         lastName = txtLastName.getText().toString();
@@ -89,6 +83,7 @@ public class ActivityRegister extends AppCompatActivity {
 
         if(ready && same && valid){ //if all fields are filled and passwords match
 
+            //send info to backend db
             new register().execute("http://138.197.33.88/api/business/register/");
 
             //put values in shared preferences
@@ -107,7 +102,7 @@ public class ActivityRegister extends AppCompatActivity {
             startActivity(intent);
         }
         else if(!ready) Toast.makeText(this, "Fill All Fields", Toast.LENGTH_LONG).show();
-        else if(!valid){
+        else if(!valid){ //if password isn't valid
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
             View mView = getLayoutInflater().inflate(R.layout.dialog_password, null);
             Button dismiss = (Button) mView.findViewById(R.id.btnDismiss);
@@ -125,6 +120,7 @@ public class ActivityRegister extends AppCompatActivity {
         else if(!same) Toast.makeText(this, "passwords do not match", Toast.LENGTH_LONG).show();
     }
 
+    //async call to send registration info to backend db
     private class register extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){
@@ -182,6 +178,8 @@ public class ActivityRegister extends AppCompatActivity {
     public String toJsonString() {//creates a new JSON string from stored movie data
         String returnJ = "";
         try{
+            //some info that is required at this stage for the endpoint, but not actually entered
+            //is filled with random data
             JSONObject js = new JSONObject();
             js.put("firstName", firstName);
             js.put("lastName", lastName);
@@ -216,5 +214,12 @@ public class ActivityRegister extends AppCompatActivity {
 
         return matcher.matches();
 
+    }
+
+    protected void hideKeyboard(View view)
+    {
+        view.clearFocus();
+        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

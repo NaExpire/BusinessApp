@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+//activity to create regular menu items during initial registration
 public class ActivityRegCreateMenu extends AppCompatActivity {
     private DatabaseHelperMenu dbHelper = null;
     private SharedPreferences sharedPref;
@@ -64,7 +65,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
 
         foot.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){
+            public void onClick(View view){ //new item footer tapped
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(ActivityRegCreateMenu.this);
                 View mView = getLayoutInflater().inflate(R.layout.dialog_menu, null);
                 final EditText newItemName = (EditText) mView.findViewById(R.id.txtItemName);
@@ -80,6 +81,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
                 final AlertDialog dialog = mBuilder.create();
                 dialog.show();
 
+                //allow user to choose image from system image picker
                 chooseImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -90,6 +92,9 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
                     }
                 });
 
+                //put entered data in local db
+                //looks like it's putting data in the wrong db
+                //probably should be deals
                 saveNewItem.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -116,6 +121,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
             }
         });
 
+        //when user taps an existing item in the list
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ActivityRegCreateMenu.this);
@@ -140,6 +146,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
                 final AlertDialog dialog = dialogBuilder.create();
                 dialog.show();
 
+                //allow user to choose new image
                 chooseImage.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
@@ -150,6 +157,8 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
                     }
                 });
 
+                //update item info in local db
+                //should probably be changed to deals db
                 saveNewItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -189,6 +198,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //load image into global variable when user returns from selecting an image
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 
@@ -200,6 +210,7 @@ public class ActivityRegCreateMenu extends AppCompatActivity {
         }
     }
 
+    //delete the item from the local db
     public void delete(String name){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String[] selectionArgs = {name};

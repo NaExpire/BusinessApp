@@ -61,7 +61,7 @@ public class ActivityLogin extends AppCompatActivity {
             txtpassword.setText(sharedPref.getString("password", ""));
         }
 
-        //dialog builder for confirmaiton code dialog
+        //dialog builder for confirmation code dialog
         dialogBuilder = new AlertDialog.Builder(this);
         dialogView = getLayoutInflater().inflate(R.layout.dialog_confirmation_code, null);
         dialogBuilder.setView(dialogView);
@@ -89,42 +89,6 @@ public class ActivityLogin extends AppCompatActivity {
         email = txtemail.getText().toString();
         password = txtpassword.getText().toString();
 
-        /*if(!email.isEmpty() && !password.isEmpty()){ //if fields are filled
-            if(email.equals(sharedPref.getString("email", "")) &&
-                    password.equals(sharedPref.getString("password", ""))){
-                if(first == 1){
-                    first = 0;
-                    final EditText code = (EditText) dialogView.findViewById(R.id.txtConfirmCode);
-                    Button submit = (Button) dialogView.findViewById(R.id.btnConfirm);
-
-                    dialog.show();
-
-                    submit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            confirmationCode = code.getText().toString();
-                            if(confirmationCode.equals("123")){
-                                Intent intent = new Intent(ActivityLogin.this.getBaseContext(), ActivityRegFirstLogin.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
-                                dialog.dismiss();
-                            }
-                            else Toast.makeText(ActivityLogin.this, "Incorrect code.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                else{
-                    new login().execute("http://138.197.33.88/api/business/login/ ");
-                    //Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    //startActivity(intent);
-                }
-            }
-            else Toast.makeText(this, "Incorrect email or password.", Toast.LENGTH_SHORT).show();
-            new login().execute("http://138.197.33.88/api/business/login/ ");
-        }
-        else Toast.makeText(this, "Fill all fields.", Toast.LENGTH_SHORT).show();*/
-
         new login().execute("http://138.197.33.88/api/business/login/");
     }
 
@@ -149,7 +113,7 @@ public class ActivityLogin extends AppCompatActivity {
         else Toast.makeText(this, "Enter Email", Toast.LENGTH_LONG).show();
     }
 
-    public void clickRegister(View view) {
+    public void clickRegister(View view) { //register is tapped
         Intent intent = new Intent(this, ActivityRegister.class);
         startActivity(intent);
     }
@@ -203,7 +167,7 @@ public class ActivityLogin extends AppCompatActivity {
                     android.util.Log.w(this.getClass().getSimpleName(),
                             "Response Message: "+sb.toString());
                 }
-                else if(HttpResult == HttpURLConnection.HTTP_OK){
+                else if(HttpResult == HttpURLConnection.HTTP_OK){ //correct login credentials
                     while((line = br.readLine()) != null){
                         sb.append(line + "\n");
                     }
@@ -255,7 +219,7 @@ public class ActivityLogin extends AppCompatActivity {
         }
     }
 
-    public void next(){
+    public void next(){ //show dialog to enter confirmation code
         final EditText code = (EditText) dialogView.findViewById(R.id.txtConfirmCode);
         Button submit = (Button) dialogView.findViewById(R.id.btnConfirm);
 
@@ -273,6 +237,7 @@ public class ActivityLogin extends AppCompatActivity {
         });
     }
 
+    //checks if confirmation code is valid
     private class ConfirmCode extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){

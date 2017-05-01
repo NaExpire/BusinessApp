@@ -41,7 +41,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-
+//fragment to display current menu items & deals
 public class FragmentMenu extends Fragment {
 
     private DatabaseHelperMenu dbHelper = null;
@@ -92,8 +92,8 @@ public class FragmentMenu extends Fragment {
         final ListView listView = (ListView) view.findViewById(R.id.lstRestrauntMenu);
         listView.setAdapter(adapter);
 
+        //get current menu items & deals from local db
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         Cursor result = db.rawQuery("SELECT * FROM menu", null);
 
         //0 id
@@ -110,12 +110,12 @@ public class FragmentMenu extends Fragment {
                     Integer.parseInt(result.getString(4)), Double.parseDouble(result.getString(5)),
                     result.getString(6));
         }
-
         db.close();
         result.close();
 
         adapter.sortMenu(spinner.getSelectedItemPosition());
 
+        //get meals from backend db if none in local
         if(adapter.getCount() == 0) {
             int rId = Integer.parseInt(sharedPref.getString("restaurantId", ""));
             String uri = "http://138.197.33.88/api/business/restaurant/"+rId+"/";
@@ -136,6 +136,7 @@ public class FragmentMenu extends Fragment {
 
         });
 
+        //if meal in list is tapped
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id){
                 AlertDialog.Builder dBuilder = new AlertDialog.Builder(FragmentMenu.this.getContext());
@@ -177,20 +178,21 @@ public class FragmentMenu extends Fragment {
                     }
                 });
 
+                //save new deal info
                 saveDiscount.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view){
                         String q = quantity.getText().toString();
-                        if(q.equals("")) q = "0";
+                        if(q.equals("")) q = "0"; //set quantity to 0 if no value in quantity field
                         String p = dPrice.getText().toString();
 
-                        if(q.isEmpty() && p.isEmpty()){
+                        if(q.isEmpty() && p.isEmpty()){ //dismiss dialog if bot values are empty
                             dialog.dismiss();
                         }
                         else if(q.isEmpty() || p.isEmpty()){
                             Toast.makeText(FragmentMenu.this.getActivity(),"Fill All Fields", Toast.LENGTH_SHORT).show();
                         }
-                        else{
+                        else{ //save new deal values
                             SQLiteDatabase db = dbHelper.getWritableDatabase();
                             ContentValues values = new ContentValues();
                             values.put("quantity", q);
@@ -203,7 +205,7 @@ public class FragmentMenu extends Fragment {
                             adapter.setDeal(position, Double.parseDouble(p));
                             adapter.notifyDataSetChanged();
 
-                            if(numDeals == 0){
+                            if(numDeals == 0){ //create new deal if one doesn't already exist
                                 mealId = adapter.getId(position);
                                 mealQuantity = Integer.parseInt(q);
                                 dealPrice = Double.parseDouble(p);
@@ -228,6 +230,7 @@ public class FragmentMenu extends Fragment {
         return view;
     }
 
+    //async call to get restaurant info
     private class getRestaurant extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){
@@ -257,7 +260,7 @@ public class FragmentMenu extends Fragment {
                     br.close();
 
                     JSONArray meals, deals;
-                    try{
+                    try{ //gets all meal and deal info
                         JSONObject obj = new JSONObject(sb.toString());
                         meals = new JSONArray(obj.getString("meals")); //array of json meals
                         deals = new JSONArray(obj.getString("deals")); //array of json deals
@@ -287,8 +290,6 @@ public class FragmentMenu extends Fragment {
                     }catch (Exception e){}
 
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-
                     //0 id
                     //1 name
                     //2 price
@@ -297,10 +298,8 @@ public class FragmentMenu extends Fragment {
                     //5 deal
                     //6 image
 
-                   for(int i = 0; i < menu.size(); i++){
-
+                   for(int i = 0; i < menu.size(); i++){ //put in local db
                         ContentValues values = new ContentValues();
-
                         values.put("id", menu.get(i).getId());
                         values.put("name", menu.get(i).getName());
                         values.put("price", menu.get(i).getPrice());
@@ -329,11 +328,9 @@ public class FragmentMenu extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String result) { //put menu item into list adapter
             SQLiteDatabase db = dbHelper.getReadableDatabase();
-
             Cursor results = db.rawQuery("SELECT * FROM menu", null);
-
             //0 id
             //1 name
             //2 price
@@ -341,14 +338,12 @@ public class FragmentMenu extends Fragment {
             //4 quantity
             //5 deal
             //6 image
-
             while(results.moveToNext()){
                 adapter.newItem(Integer.parseInt(results.getString(0)), results.getString(1),
                         Double.parseDouble(results.getString(2)),results.getString(3),
                         Integer.parseInt(results.getString(4)), Double.parseDouble(results.getString(5)),
                         results.getString(6));
             }
-
             db.close();
             results.close();
 
@@ -356,6 +351,7 @@ public class FragmentMenu extends Fragment {
         }
     }
 
+    //async call to create new deal
     private class newDeal extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){
@@ -413,8 +409,8 @@ public class FragmentMenu extends Fragment {
             String returnJ = "";
             try{
                 JSONObject js = new JSONObject();
-                js.put("meal-id", mealId);
-                js.put("deal-price", dealPrice);
+                js.put("mealID", mealId);
+                js.put("dealPrice", dealPrice);
                 js.put("quantity", mealQuantity);
                 js.put("restaurantID", Integer.parseInt(sharedPref.getString("restaurantId", "")));
                 returnJ = js.toString();

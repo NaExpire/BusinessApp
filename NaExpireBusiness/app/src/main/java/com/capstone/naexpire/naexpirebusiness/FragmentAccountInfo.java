@@ -31,7 +31,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+//fragment for viewing and editing account info
 public class FragmentAccountInfo extends Fragment {
 
     private SharedPreferences sharedPref;
@@ -85,6 +85,7 @@ public class FragmentAccountInfo extends Fragment {
             }
         });
 
+        //save changes button tapped
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +94,7 @@ public class FragmentAccountInfo extends Fragment {
                 address = restAddr.getText().toString();
                 phoneNumber = restPhone.getText().toString();
 
+                //get info from shared preferences
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("restaurantName", name);
                 editor.putString("restaurantAddress", address);
@@ -107,8 +109,8 @@ public class FragmentAccountInfo extends Fragment {
 
                 String enteredpass = pass.getText().toString();
                 String enteredcpass = cPass.getText().toString();
-                if(isValidPassword(enteredpass)){
-                    if(enteredcpass.equals(enteredpass)){
+                if(isValidPassword(enteredpass)){ //if password is valid
+                    if(enteredcpass.equals(enteredpass)){ //if passwords match, make it the new one
                         editor.putString("password", enteredpass);
                     }
                     else Toast.makeText(FragmentAccountInfo.this.getContext(),
@@ -127,8 +129,6 @@ public class FragmentAccountInfo extends Fragment {
 
                 rest.setText(sharedPref.getString("restaurantName", ""));
                 onw.setText(sharedPref.getString("username", ""));
-
-                //Toast.makeText(getContext(), "Changes Saved", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -154,6 +154,7 @@ public class FragmentAccountInfo extends Fragment {
         return view;
     }
 
+    //async call using endpoint to update restaurant info
     private class updateRestaurant extends AsyncTask<String,String,String> {
         @Override
         protected String doInBackground(String... urls){
@@ -211,7 +212,6 @@ public class FragmentAccountInfo extends Fragment {
         protected void onPostExecute(String result) {
 
             if (result.equals("true")){ //updated successfully
-
                 Toast.makeText(FragmentAccountInfo.this.getContext(), "Changes saved", Toast.LENGTH_SHORT).show();
             }
             else{
