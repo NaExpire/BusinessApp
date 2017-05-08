@@ -89,7 +89,13 @@ public class ActivityLogin extends AppCompatActivity {
         email = txtemail.getText().toString();
         password = txtpassword.getText().toString();
 
-        new login().execute("http://138.197.33.88/api/business/login/");
+        if (first != 1) new login().execute("http://138.197.33.88/api/business/login/");
+        else{
+            //move to the rest of registration without official login
+            Intent intent = new Intent(ActivityLogin.this.getBaseContext(), ActivityRegFirstLogin.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 
     public void clickForgot(View view) { //when forgot password is tapped
@@ -197,7 +203,22 @@ public class ActivityLogin extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            if (!result.equals("first") && !result.equals("nope")){ //not first login
+            if(result.equals("nope")){ //incorrect login attempt
+                Toast.makeText(ActivityLogin.this, "Email or Password Incorrect", Toast.LENGTH_SHORT).show();
+            }
+            else if(loginStatus.equals("first")){ //correct credentials, first login
+                //set current session id
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("sessionId", result);
+                editor.putString("restaurantId", restaurantId);
+                editor.commit();
+
+                //move to nav bar activity
+                Intent intent = new Intent(ActivityLogin.this.getBaseContext(), ActivityRegFirstLogin.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+            else { //not first login
 
                 //set current session id
                 SharedPreferences.Editor editor = sharedPref.edit();
@@ -209,12 +230,6 @@ public class ActivityLogin extends AppCompatActivity {
                 Intent intent = new Intent(ActivityLogin.this.getBaseContext(), NavDrawer.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-            }
-            else if(result.equals("nope")){ //incorrect login attempt
-                Toast.makeText(ActivityLogin.this, "Email or Password Incorrect", Toast.LENGTH_SHORT).show();
-            }
-            else if(loginStatus.equals("first")){ //correct credentials, first login
-                next();
             }
         }
     }

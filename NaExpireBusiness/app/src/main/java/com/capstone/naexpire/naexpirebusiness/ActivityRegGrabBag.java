@@ -88,7 +88,7 @@ public class ActivityRegGrabBag extends AppCompatActivity {
         if(!ingredients.getText().toString().isEmpty() && !price.getText().toString().isEmpty()){
             SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-            Toast.makeText(this, sharedPref.getInt("madeGrabBag", 0)+"", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, sharedPref.getInt("madeGrabBag", 0)+"", Toast.LENGTH_SHORT).show();
 
             //if one has been created already: update it
             if(1 == sharedPref.getInt("madeGrabBag", 0)){

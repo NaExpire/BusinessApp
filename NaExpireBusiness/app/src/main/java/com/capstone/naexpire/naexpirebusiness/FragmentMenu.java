@@ -105,9 +105,14 @@ public class FragmentMenu extends Fragment {
         //6 image
 
         while(result.moveToNext()){
+            double price = 0.00, deal = 0.00;
+            int quantity = 0;
+            if(result.getString(2) != null) price = Double.parseDouble(result.getString(2));
+            if(result.getString(4) != null) quantity = Integer.parseInt(result.getString(4));
+            if(result.getString(5) != null) deal = Double.parseDouble(result.getString(5));
             adapter.newItem(Integer.parseInt(result.getString(0)), result.getString(1),
-                    Double.parseDouble(result.getString(2)),result.getString(3),
-                    Integer.parseInt(result.getString(4)), Double.parseDouble(result.getString(5)),
+                    price,result.getString(3),
+                    quantity, deal,
                     result.getString(6));
         }
         db.close();
